@@ -1,6 +1,7 @@
 name: Task / work request
 description: Create a clear, scoped work request
 title: "[Task] "
+
 body:
   - type: textarea
     id: objective
