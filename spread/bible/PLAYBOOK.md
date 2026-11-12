@@ -1,7 +1,8 @@
-# Prospect Theory: el playbook de arquitectura de la decisión
+# La biblia de Spread: Prospect Theory y arquitectura de la decisión
 
-> Base de trabajo para todo lo que construyamos: copy, UX, pricing, notificaciones, promos,
-> onboarding, retención. Si una pieza le pide a alguien que decida algo con plata, pasa por acá.
+> Aplica a Spread y solo a Spread: su oferta, su web, su outbound, su contenido, sus ads, su
+> pricing y el trabajo que Spread hace para sus clientes. Si una pieza de Spread le pide a alguien
+> que decida algo, pasa por acá. Es mecanismo interno: **nunca aparece en el pitch**.
 
 Kahneman y Tversky publicaron *Prospect Theory: An Analysis of Decision under Risk* en
 *Econometrica* (1979). El movimiento central es un cambio de objeto: la teoría clásica define la
@@ -21,7 +22,8 @@ experimentación limitada. Después mandan los experimentos. Ver
 - [Cómo usar este documento](#cómo-usar-este-documento)
 - [El modelo en una página](#el-modelo-en-una-página)
 - [Las cuatro palancas](#las-cuatro-palancas)
-- [Aplicarlo a todo: superficie por superficie](#aplicarlo-a-todo-superficie-por-superficie)
+- [Aplicarlo en Spread](#aplicarlo-en-spread)
+- [Para clientes fintech](#para-clientes-fintech)
 - [Banco de copy](#banco-de-copy)
 - [Checklist de revisión](#checklist-de-revisión)
 - [De la teoría al experimento](#de-la-teoría-al-experimento)
@@ -35,15 +37,17 @@ experimentación limitada. Después mandan los experimentos. Ver
 
 | Si estás… | Hacé esto |
 |---|---|
-| **Creando** una pieza (pantalla, mail, landing, promo) | Buscá la superficie en [Aplicarlo a todo](#aplicarlo-a-todo-superficie-por-superficie) y pasá la [checklist](#checklist-de-revisión). |
-| **Revisando** archivos existentes (cientos o miles) | Corré el auditor: `python3 tools/copy_audit.py <carpeta> --format md > auditoria.md`. Cada hallazgo es una hipótesis con su palanca y su acción. |
-| **Comparando dos encuadres** con números | Usá la calculadora: `python3 tools/prospect_theory.py --help` (ejemplos abajo). |
-| **Proponiendo un experimento** | Abrí un issue con la plantilla *Behavioral experiment* (`.github/ISSUE_TEMPLATE/experiment.yml`). |
-| **Abriendo un PR** que toca copy, UX o pricing | Completá la sección *Decision architecture* de la plantilla de PR. |
+| **Creando** una pieza de Spread (web, outbound, contenido, ad, propuesta) | Buscá la superficie en [Aplicarlo en Spread](#aplicarlo-en-spread) y pasá la [checklist](#checklist-de-revisión). |
+| **Trabajando para un cliente fintech** | Usá [Para clientes fintech](#para-clientes-fintech). |
+| **Revisando** archivos existentes (cientos o miles) | Corré el auditor: `python3 spread/tools/copy_audit.py <carpeta> --format md > auditoria.md`. Cada hallazgo es una hipótesis con su palanca y su acción. |
+| **Comparando dos encuadres** con números | Usá la calculadora: `python3 spread/tools/prospect_theory.py --help` (ejemplos abajo). |
+| **Proponiendo un experimento** | Usá la plantilla `spread/templates/experiment-issue.yml` (copiala a `.github/ISSUE_TEMPLATE/` del repo de Spread). |
+| **Abriendo un PR** en un repo de Spread que toca copy, web o pricing | Pegá la sección de `spread/templates/pull-request-section.md`. |
 
-Todos los números de este documento salen de `tools/prospect_theory.py` con los parámetros que
-Tversky y Kahneman estimaron en 1992 (α = β = 0,88; λ = 2,25; γ = 0,61; δ = 0,69) y están
-cubiertos por tests (`python3 -m unittest discover -s tools/tests`).
+El contexto del negocio (posicionamiento, oferta, canales, brief de la web) vive en
+`spread/context/`. Todos los números de este documento salen de `spread/tools/prospect_theory.py`
+con los parámetros que Tversky y Kahneman estimaron en 1992 (α = β = 0,88; λ = 2,25; γ = 0,61;
+δ = 0,69) y están cubiertos por tests (`python3 -m unittest discover -s spread/tools/tests`).
 
 ---
 
@@ -110,8 +114,8 @@ menos que dos chicas que suman lo mismo. Richard Thaler (1985) completó el ejer
 reglas más que salen de la misma geometría.
 
 ```
-python3 tools/prospect_theory.py edit 40 40        # → SEGREGATE
-python3 tools/prospect_theory.py edit -3 -1.5 -0.5 # → INTEGRATE (comisión, spread, fee de red)
+python3 spread/tools/prospect_theory.py edit 40 40        # → SEGREGATE
+python3 spread/tools/prospect_theory.py edit -3 -1.5 -0.5 # → INTEGRATE (comisión, spread, fee de red)
 ```
 
 #### R1. Separá las ganancias
@@ -151,7 +155,7 @@ python3 tools/prospect_theory.py edit -3 -1.5 -0.5 # → INTEGRATE (comisión, s
   «cuenta» y en otro momento), no en la curva. **Tratala siempre como experimento.**
 
 ```
-python3 tools/prospect_theory.py edit 2 -10   # el modelo y la heurística discrepan → testear
+python3 spread/tools/prospect_theory.py edit 2 -10   # el modelo y la heurística discrepan → testear
 ```
 
 ### 2. Mové el punto de referencia y movés la actitud frente al riesgo
@@ -187,7 +191,7 @@ Usuario con saldo ocioso, queremos que active los rendimientos de la cuenta remu
 - Versión pérdida: «Estás dejando sobre la mesa 300 USD por año.»
 
 Mismo número, misma oferta. Por aversión a las pérdidas la segunda pesa unas 2,25 veces más en el
-modelo (`python3 tools/prospect_theory.py frame 300`). Eso es una predicción para priorizar el
+modelo (`python3 spread/tools/prospect_theory.py frame 300`). Eso es una predicción para priorizar el
 test, no el uplift que vas a ver en el funnel.
 
 - Calculá el monto **con el saldo real del usuario**, no con un ejemplo genérico.
@@ -200,7 +204,7 @@ como 5,5 %, así que el premio grande e improbable le gana al incentivo chico y 
 plata sean equivalentes.
 
 ```
-python3 tools/prospect_theory.py raffle --prize 1000 --prob 0.01 --sure 10
+python3 spread/tools/prospect_theory.py raffle --prize 1000 --prob 0.01 --sure 10
 # valor esperado por participante: 10 · valor sentido: 37,2 (3,7×) → el modelo prefiere el sorteo
 ```
 
@@ -218,7 +222,71 @@ congelado, devolución), decila como certeza. Si no lo es, no la vendas como tal
 
 ---
 
-## Aplicarlo a todo: superficie por superficie
+## Aplicarlo en Spread
+
+Spread vende **pipeline calificado** a builders: empresas, en particular B2B SaaS, que ya
+construyeron un buen producto y no consiguen que su mercado se entere. El primer cliente son los
+proyectos propios: se prueba ahí y después se vende. Detalle y estado de cada decisión en
+[`spread/context/POSITIONING.md`](../context/POSITIONING.md).
+
+El punto de referencia del comprador casi siempre es el mismo: «ya construí, el producto es
+bueno». Parado ahí, contratar distribución es una ganancia potencial más, y se descuenta. El
+trabajo de Spread es mostrarle, **con evidencia de su propio caso**, que ese status quo ya es una
+pérdida. *El problema no es hacer. El problema es vender.*
+
+### Mecanismo, no categoría
+
+Reglas de la casa:
+
+- **Prospect Theory desaparece del pitch.** No vendemos «behavioral economics»: la usamos para
+  mejorar oferta, copy, landing, pricing, CTA, outbound, ads y framing.
+- **Tampoco salen al mercado** signals, agentes, decision architecture, distribution layer,
+  opportunity engine, revenue capture ni decision intelligence. Son el mecanismo interno.
+- **La oferta describe algo que el cliente ya quiere comprar:** más empresas correctas entrando
+  al pipeline, más reuniones calificadas, mejor conversión del tráfico que ya tiene, menos trabajo
+  manual, claridad sobre qué genera oportunidades.
+- El auditor marca esta jerga con la regla SP01.
+
+### Del aumentá X al ya estás perdiendo X
+
+La palanca 2 aplicada a B2B. Una promesa de «más» deja al comprador en cero; una pérdida actual y
+verificable lo pone en el dominio donde cambiar se siente como recuperar.
+
+| No | Sí | Qué cambia |
+|---|---|---|
+| Increase your conversion rate. | You're already paying to bring the right companies to your site. We're fixing what happens before they disappear. | De ganancia potencial a pérdida actual. |
+| We help companies grow. | Great products don't distribute themselves. | El status quo («ya construí») deja de ser neutro. |
+| Te ayudamos a vender más. | Todos construyen. Pocos venden, porque nadie sabe que existen. | Ídem, en castellano. |
+| We do AEO and GEO. | When buyers ask ChatGPT for *[categoría]*, it recommends *[competidor]*. Here is the prompt. | Pérdida con evidencia del propio prospecto. |
+| We can improve your landing page. | Your demo form loses *[N]* % of the visitors who reach it. | Solo con el dato real medido. |
+
+**Condición:** la pérdida se muestra con los datos de ese cliente (sus prompts, su tráfico, sus
+cuentas). Sin evidencia, el encuadre de pérdida es una táctica de miedo y no se usa. El auditor
+marca las promesas de ganancia B2B con la regla PT08.
+
+### Superficie por superficie
+
+| Superficie | Palanca | Hacé | Evitá | Métrica principal |
+|---|---|---|---|---|
+| **Oferta y posicionamiento** | 2 | Status quo como pérdida: buen producto que nadie encuentra. | Vender la categoría (GTM, distribution, IA). | Tasa de respuesta, reuniones |
+| **Hero de la web** | 2 + 3 | Tres opciones de hero; al menos una con encuadre de pérdida actual. | Promesas de «más» sin referencia. | Clic al CTA, reuniones |
+| **Outbound (email, LinkedIn, X)** | 2 + 3 | Abrir con una pérdida observable de esa cuenta: un prompt de IA que pierde, tráfico que no convierte, una página que rompe en mobile. | Pitch de servicios; jerga. | Respuestas positivas |
+| **Lead magnet: auditoría o demo** | 2 + certeza | Auditoría AEO o demo funcional gratis con datos del prospecto: el «wow moment» lo pone en el dominio de pérdidas con evidencia. | Auditorías genéricas en PDF. | Auditoría → reunión |
+| **Propuesta y pricing** | R2 + R3 + R1 | Un solo precio por el Pipeline Build; los entregables listados uno por uno. | Cotizar cada componente por separado; un setup fee chico como línea aparte (integralo). | Cierre de propuestas |
+| **Bonus en la propuesta** | R4 (testear) | El extra (por ejemplo, una auditoría AEO de su categoría) como regalo aparte. | «−10 % si firmás hoy» como único incentivo. | Cierre |
+| **Reporting al cliente** | R1 + R2 | Cada reunión u oportunidad nueva como su propio aviso; problemas y costos, juntos en un único reporte. | Un PDF mensual que comprime todo. | Renovación |
+| **Garantías** | Certeza | Si hay garantía, que sea cierta y concreta. | Garantizar resultados que no controlamos. | Cierre; reembolsos como guardrail |
+| **Contenido (X, carruseles, reels)** | 2 + 3 | Hooks de pérdida con dato real («si seguís escribiendo artículos para rellenar keywords, estás tirando la plata»). | Hooks de pérdida sin respaldo. | Guardados, follows, DMs |
+| **Paid ads** | 2 + 3 | Variante pérdida contra variante ganancia sobre el mismo creativo. | Cambiar creativo y encuadre a la vez: no se aprende nada. | Costo por lead calificado |
+| **Influencers y partners** | 4 | Un premio grande e improbable (un Build completo sorteado entre quienes comparten) contra descuentos chicos para muchos. | Canjes sin medición. | Leads atribuidos |
+| **Renovación de clientes** | 3 | Mostrar lo que se corta si se va: cuentas en secuencia, pipeline activo, aprendizajes. | Amenazas o lock-in artificial. | Renovación |
+
+---
+
+## Para clientes fintech
+
+Los ejemplos originales del marco vienen de marketing fintech. Si Spread trabaja para una fintech
+(o para un producto propio con plata de por medio), esta es la tabla:
 
 | Superficie | Palanca principal | Hacé | Evitá | Métrica principal |
 |---|---|---|---|---|
@@ -240,7 +308,21 @@ congelado, devolución), decila como certeza. Si no lo es, no la vendas como tal
 
 ## Banco de copy
 
-Pares de partida para testear. Reemplazá `X`, `N` y las fuentes con datos reales del usuario.
+Pares de partida para testear. Reemplazá `X`, `N`, los corchetes y las fuentes con datos reales.
+
+### Spread (B2B)
+
+| Situación | Antes | Después (hipótesis) | Palanca |
+|---|---|---|---|
+| Hero | Increase your conversion rate. | You're already paying to bring the right companies to your site. We're fixing what happens before they disappear. | 2 |
+| Oferta | Signals + AI agents for GTM. | We build the system that turns your target market into qualified sales conversations. | Regla de la casa |
+| Outbound AEO | We'd love to help with your AI search visibility. | When buyers ask ChatGPT for [categoría], it recommends [competidor]. Here is the prompt. | 2 |
+| Propuesta | Targeting $X · Outbound $Y · Web $Z · … | Pipeline Build: $T. Incluye: [cada entregable en su línea]. | R2 + R1 |
+| Reporting | Monthly report: 12 meetings. | *Cada lunes:* «3 reuniones nuevas esta semana con [cuentas].» | R1 |
+| Bonus | 10 % off if you sign this week. | *Aparte:* «Incluimos una auditoría AEO de tu categoría.» | R4 (testear) |
+| Contenido | Tips de SEO para 2027. | El SEO tradicional está muerto. Si seguís escribiendo para rellenar keywords, estás tirando la plata. | 2 + 3 |
+
+### Clientes fintech
 
 | Situación | Antes | Después (hipótesis) | Palanca |
 |---|---|---|---|
@@ -258,7 +340,7 @@ Pares de partida para testear. Reemplazá `X`, `N` y las fuentes con datos reale
 
 ## Checklist de revisión
 
-Para cualquier pieza que pida una decisión con plata:
+Para cualquier pieza de Spread, o de un cliente, que pida una decisión:
 
 1. **¿Dónde está parado el usuario?** ¿Cuál es su punto de referencia hoy y lo estamos moviendo a
    propósito?
@@ -271,7 +353,9 @@ Para cualquier pieza que pida una decisión con plata:
 7. **¿El encuadre es de ganancia cuando podría ser de pérdida evitada?**
 8. **¿Hay un incentivo chico y seguro** que podría ser un sorteo del mismo costo esperado?
 9. **¿Algo prometido como cierto es realmente cierto?** ¿Algo improbable se presenta honestamente?
-10. **¿Pasa los [límites éticos](#límites-éticos-y-regulatorios)?** ¿Lo publicaríamos con el
+10. **¿Hay jerga interna?** Signals, agentes, decision architecture, Prospect Theory: afuera.
+11. **¿Algún resultado, testimonio, métrica o caso es inventado?** Si no está verificado, no va.
+12. **¿Pasa los [límites éticos](#límites-éticos-y-regulatorios)?** ¿Lo publicaríamos con el
     razonamiento a la vista?
 
 ---
@@ -303,7 +387,7 @@ automático. El marco decide **qué** probar; el experimento decide **si** funci
 **Priorización.** Con capacidad limitada, ordená por (impacto esperado × solidez del mecanismo) /
 esfuerzo. Para la solidez usá la tabla de [abajo](#qué-tan-sólido-es-cada-efecto).
 
-Plantilla lista: issue *Behavioral experiment* (`.github/ISSUE_TEMPLATE/experiment.yml`).
+Plantilla lista: `spread/templates/experiment-issue.yml` (issue form de GitHub).
 
 ---
 
@@ -325,7 +409,11 @@ un test dice que «funciona»:
 6. **Cumplimos las normas de transparencia de cada mercado** (costo financiero total, tasas
    nominales y efectivas, publicidad de productos financieros). Si una norma y una técnica de este
    documento chocan, gana la norma.
-7. **Test de la vidriera:** si no te animarías a explicarle al usuario por qué el copy está escrito
+7. **Nada inventado.** Ningún resultado, testimonio, métrica, caso ni cliente que no podamos
+   verificar. Si todavía no hay casos, se muestra trabajo demostrable de otra forma honesta.
+8. **Personas reales detrás de cada cuenta.** La automatización ayuda a una persona real a
+   publicar y responder; no se crean perfiles falsos ni se simula a alguien que no existe.
+9. **Test de la vidriera:** si no te animarías a explicarle al usuario por qué el copy está escrito
    así, no se publica.
 
 ---

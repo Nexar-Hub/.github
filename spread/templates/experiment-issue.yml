@@ -1,5 +1,5 @@
 name: Behavioral experiment
-description: Propose a test grounded in the Prospect Theory playbook (docs/prospect-theory/PLAYBOOK.md)
+description: Propose a test grounded in the Spread bible (spread/bible/PLAYBOOK.md)
 title: "[Experiment] "
 labels: ["experiment"]
 
@@ -63,7 +63,7 @@ body:
     id: model
     attributes:
       label: Model prediction (optional)
-      description: Output of tools/prospect_theory.py for this comparison. A prediction to prioritize the test, not the expected uplift.
+      description: Output of spread/tools/prospect_theory.py for this comparison. A prediction to prioritize the test, not the expected uplift.
       render: shell
 
   - type: input

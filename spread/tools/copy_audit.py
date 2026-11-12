@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""Auditor de copy con Prospect Theory (ES/EN). Solo stdlib.
+"""Auditor de copy de Spread con Prospect Theory (ES/EN). Solo stdlib.
 
-Recorre archivos de texto, UI, traducciones y templates y marca los lugares
-donde la arquitectura de la decisión se puede mejorar según el playbook
-(docs/prospect-theory/PLAYBOOK.md). Cada hallazgo es una HIPÓTESIS a testear,
-no un error: el auditor arma la lista de qué probar y por qué.
+Recorre archivos de texto, UI, traducciones y templates (de Spread o de sus
+clientes) y marca los lugares donde la arquitectura de la decisión se puede
+mejorar según la biblia (spread/bible/PLAYBOOK.md). Cada hallazgo es una
+HIPÓTESIS a testear, no un error: el auditor arma la lista de qué probar y por qué.
 
 Uso:
-    python3 tools/copy_audit.py RUTA [RUTA ...]           # texto, un bloque por hallazgo
-    python3 tools/copy_audit.py src/ --format md > audit.md
-    python3 tools/copy_audit.py src/ --format json
-    echo "Ganá 300 USD al año" | python3 tools/copy_audit.py -
-    python3 tools/copy_audit.py src/ --only PT01,PT04 --strict   # exit 1 si hay hallazgos
-    python3 tools/copy_audit.py --list-rules
+    python3 spread/tools/copy_audit.py RUTA [RUTA ...]           # un bloque por hallazgo
+    python3 spread/tools/copy_audit.py src/ --format md > audit.md
+    python3 spread/tools/copy_audit.py src/ --format json
+    echo "Increase your conversion rate" | python3 spread/tools/copy_audit.py -
+    python3 spread/tools/copy_audit.py src/ --only PT05,PT08 --strict   # exit 1 si hay hallazgos
+    python3 spread/tools/copy_audit.py --list-rules
 
 Para silenciar una línea puntual, agregale el comentario:  prospect-audit: ignore
 """
@@ -27,7 +27,8 @@ import sys
 from dataclasses import asdict, dataclass
 from typing import Callable, Iterable, Iterator, Sequence
 
-PLAYBOOK = "docs/prospect-theory/PLAYBOOK.md"
+PLAYBOOK = "spread/bible/PLAYBOOK.md"  # como se muestra en los reportes
+PLAYBOOK_FILE = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "bible", "PLAYBOOK.md"))
 
 TEXT_EXTENSIONS = {
     ".md", ".mdx", ".txt", ".html", ".htm", ".json", ".yml", ".yaml", ".js", ".jsx",
@@ -55,7 +56,10 @@ MONEY = re.compile(
 
 COST_CATEGORIES: list[tuple[str, re.Pattern[str]]] = [
     ("comision", re.compile(r"\bcomisi[oó]n(?:es)?\b|\bcommissions?\b", F)),
-    ("spread", re.compile(r"\bspreads?\b", F)),
+    # "Spread" también es la marca: solo cuenta como costo con contexto de costo.
+    ("spread", re.compile(
+        r"\bspreads?\b(?=\s*(?::|=|\d|\$|de\b|del\b|cambiari|bid|fx))"
+        r"|\b(?:el|un|the|a|fx|bid[- ]ask) spreads?\b|\bspread (?:fee|cost|costo|cargo)s?\b", F)),
     ("red", re.compile(
         r"\b(?:fee|costo|cargo|tarifa)s? (?:de|por) (?:la )?red\b|\bnetwork fees?\b"
         r"|\bgas fees?\b|\bfee de gas\b|\bcosto de gas\b", F)),
@@ -108,7 +112,10 @@ STATUS_QUO_SOFT = re.compile(
     r"\bm[aá]s (?:simples?|f[aá]cil(?:es)?|conveniente|segur[oa]s?)\b|\b(?:easier|simpler|safer)\b", F)
 INERTIA_CONTEXT = re.compile(
     r"\bswift\b|\bwire\b|\bbanco\b|\bbank\b|\befectivo\b|\bcash\b(?! ?back)|\bremesa|\bremittance"
-    r"|\btransferencia internacional\b|\bd[oó]lar(?:iz|es)|\bstablecoin|\busdt\b|\busdc\b|\bplazo fijo\b", F)
+    r"|\btransferencia internacional\b|\bd[oó]lar(?:iz|es)|\bstablecoin|\busdt\b|\busdc\b|\bplazo fijo\b"
+    # Status quo de un comprador B2B: agencia, equipo interno, trabajo manual.
+    r"|\bagenc(?:y|ies|ia|ias)\b|\bin-house\b|\bmanual(?:es|ly)?\b|\bspreadsheets?\b|\bplanillas?\b"
+    r"|\bexcel\b|\bsdrs?\b|\bcold call|\bhiring\b|\bcontratar\b", F)
 
 RAFFLE = re.compile(
     r"\bsorteos?\b|\bsorteamos\b|\bsortea\b|\braffles?\b|\bsweepstakes?\b|\bgiveaways?\b"
@@ -119,6 +126,26 @@ SMALL_SURE = re.compile(
 PROMO_CONTEXT = re.compile(
     r"\breferid|\breferí|\binvit[aá]|\binvite|\brefer|\bpromo|\bbienvenida|\bwelcome|\bsign[- ]?up"
     r"|\bregistr|\bonboarding|\bprimer(?:a)? (?:dep[oó]sito|transferencia|compra)|\bfirst (?:deposit|transfer)", F)
+
+GAIN_PROMISE = re.compile(
+    r"\b(?:increase|boost|grow|improve|maximi[sz]e|scale|double|triple|supercharge|skyrocket"
+    r"|drive more|get more|generate more|aument[aá]|increment[aá]|mejor[aá]|potenci[aá]|escal[aá]"
+    r"|multiplic[aá]|duplic[aá]|maximiz[aá]|consegu[ií] m[aá]s|gener[aá] m[aá]s|obten[eé] m[aá]s)\b"
+    r"(?P<rest>.{0,40})", F)
+B2B_OBJECT = re.compile(
+    r"conversion|pipeline|\bleads?\b|\bsales\b|revenue|traffic|meetings?|\bdemos?\b|sign-?ups?|customers"
+    r"|clients|growth|\bmrr\b|\barr\b|\broi\b|ventas|conversi[oó]n|clientes|reuniones|tr[aá]fico"
+    r"|facturaci[oó]n|ingresos|oportunidades|registros|crecimiento", F)
+LOSS_WORDS = re.compile(
+    r"perd|perdés|losing|\blose\b|\blost\b|leaving|dejando|disappear|desaparec|tirando|wasting|desperdici"
+    r"|already paying|ya (?:est[aá]s )?pag", F)
+
+INTERNAL_JARGON = re.compile(
+    r"\bsignals?\b|\bse[ñn]ales de compra\b|\bai agents?\b|\bagentes(?: de ia)?\b"
+    r"|\bdecision architecture\b|\barquitectura de (?:la )?decisi[oó]n\b|\bprospect theory\b"
+    r"|\bbehavioral (?:economics|science)\b|\becono?m[ií]a (?:conductual|del comportamiento)\b"
+    r"|\bopportunity engine\b|\brevenue capture\b|\bdecision intelligence\b|\bconversion layer\b"
+    r"|\bdistribution layer\b|\bgtm engine\b|\bgo-to-market engine\b", F)
 
 FINE_PRINT = re.compile(
     r"\b(?:gratis|sin (?:costo|comisi[oó]n(?:es)?|cargo)s?|free|no fees?|zero fees?|0 ?%)\s?\*", F)
@@ -178,8 +205,22 @@ RULES: dict[str, Rule] = {r.id: r for r in [
          "Incentivo chico y seguro en promo/referidos",
          "Con el mismo costo esperado, un sorteo se siente ~3,7 veces su valor (1.000 al 1 % ≈ 37 seguros).",
          "Testeá reemplazar el bono fijo por un sorteo de igual costo esperado "
-         "(python3 tools/prospect_theory.py raffle --prize P --prob p --sure S).",
+         "(python3 spread/tools/prospect_theory.py raffle --prize P --prob p --sure S).",
          "4-los-sorteos-funcionan-por-la-curva-de-peso-de-probabilidades"),
+    Rule("PT08", "promesa-de-ganancia", "Mover el punto de referencia (B2B)",
+         "Promesa de ganancia («aumentá tu conversión»)",
+         "Para un builder parado en cero, «más X» es una ganancia potencial: la curva es cóncava y la "
+         "promesa se descuenta. Si su status quo se lee como pérdida actual, cambiar se siente como recuperar.",
+         "Testeá reencuadrar como pérdida actual y verificable: «Ya estás pagando para traer a las empresas "
+         "correctas a tu sitio. Arreglamos lo que pasa antes de que desaparezcan.»",
+         "del-aumentá-x-al-ya-estás-perdiendo-x"),
+    Rule("SP01", "jerga-interna", "Regla de la casa",
+         "Jerga interna en copy para clientes",
+         "El cliente compra pipeline calificado, no signals, agentes ni arquitectura de decisión: eso es "
+         "el mecanismo interno. Prospect Theory desaparece del pitch.",
+         "Reemplazá por el resultado que el cliente ya quiere comprar: empresas correctas en el pipeline, "
+         "reuniones calificadas, menos trabajo manual, claridad sobre qué genera oportunidades.",
+         "mecanismo-no-categoría"),
     Rule("PT90", "letra-chica", "Límite ético",
          "«Gratis / sin comisión» con asterisco",
          "Integrar pérdidas es presentarlas juntas, no esconderlas. Un asterisco rompe confianza y "
@@ -243,6 +284,11 @@ def _line_checks() -> dict[str, LineCheck]:
         return bool(STATUS_QUO.search(s)
                     or (STATUS_QUO_SOFT.search(s) and INERTIA_CONTEXT.search(s)))
 
+    def pt08(s: str) -> bool:
+        if LOSS_WORDS.search(s):
+            return False  # ya está encuadrado como pérdida
+        return any(B2B_OBJECT.search(m.group("rest") or "") for m in GAIN_PROMISE.finditer(s))
+
     def pt07(s: str) -> bool:
         return bool(SMALL_SURE.search(s) and PROMO_CONTEXT.search(s))
 
@@ -253,6 +299,8 @@ def _line_checks() -> dict[str, LineCheck]:
         "PT05": pt05,
         "PT06": lambda s: bool(RAFFLE.search(s)),
         "PT07": pt07,
+        "PT08": pt08,
+        "SP01": lambda s: bool(INTERNAL_JARGON.search(s)),
         "PT90": lambda s: bool(FINE_PRINT.search(s)),
     }
 
@@ -302,7 +350,7 @@ def audit_text(text: str, path: str = "<stdin>", rules: Iterable[str] | None = N
             if rule_id not in active or not check(content):
                 continue
             extra = ""
-            if rule_id == "PT05" and INERTIA_CONTEXT.search(content):
+            if rule_id in ("PT05", "PT08") and INERTIA_CONTEXT.search(content):
                 extra = "contexto de inercia detectado: prioridad alta"
             add(rule_id, idx, extra)
 
@@ -363,7 +411,7 @@ def render_text(findings: list[Finding], scanned: int) -> str:
 
 
 def render_md(findings: list[Finding], scanned: int) -> str:
-    out = ["# Auditoría Prospect Theory", "",
+    out = ["# Auditoría Prospect Theory · Spread", "",
            f"{len(findings)} hipótesis en {scanned} archivo(s). Cada fila es algo para **testear**, "
            f"no un error. Marco: `{PLAYBOOK}`.", "",
            "| Regla | Palanca | Hallazgos |", "|---|---|---|"]

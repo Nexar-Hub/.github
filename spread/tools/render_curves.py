@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Renders the two Prospect Theory curves as static SVGs for the playbook.
 
-    python3 tools/render_curves.py            # writes docs/prospect-theory/img/*.svg
+    python3 spread/tools/render_curves.py     # writes spread/bible/img/*.svg
 
-The curves are computed from tools/prospect_theory.py, so if the parameters
+The curves are computed from spread/tools/prospect_theory.py, so if the parameters
 change the charts stay honest. Light and dark styles are both embedded.
 """
 
@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 import prospect_theory as pt  # noqa: E402
 
-OUT = os.path.join(os.path.dirname(__file__), "..", "docs", "prospect-theory", "img")
+OUT = os.path.join(os.path.dirname(__file__), "..", "bible", "img")
 W, H = 720, 440
 M = {"l": 64, "r": 32, "t": 84, "b": 56}
 

@@ -16,7 +16,6 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import copy_audit as ca  # noqa: E402
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 
 def rules_for(text):
@@ -32,6 +31,8 @@ class Fires(unittest.TestCase):
         "PT05": "Enviá dinero al exterior más rápido y más barato que con SWIFT",
         "PT06": "Participá del sorteo de un iPhone",
         "PT07": "Invitá a un amigo y llevate $5",
+        "PT08": "Increase your conversion rate.",
+        "SP01": "Our AI agents turn buying signals into pipeline.",
         "PT90": "Transferencias gratis*",
     }
 
@@ -50,6 +51,24 @@ class Fires(unittest.TestCase):
     def test_inertia_context_raises_priority(self):
         f = [x for x in ca.audit_text("Más barato que tu banco") if x.rule == "PT05"][0]
         self.assertIn("prioridad alta", f.why)
+
+    def test_b2b(self):
+        self.assertIn("PT08", rules_for("Aumentá tus ventas con un sistema de outbound"))
+        self.assertIn("PT08", rules_for("We help B2B SaaS grow pipeline"))
+        self.assertIn("SP01", rules_for("Usamos Prospect Theory y economía conductual"))
+        f = [x for x in ca.audit_text("Get more meetings than your agency ever booked") if x.rule == "PT08"][0]
+        self.assertIn("prioridad alta", f.why)
+
+    def test_loss_framed_promise_is_not_flagged(self):
+        # The house example: already a loss frame.
+        text = ("You're already paying to bring the right companies to your site. "
+                "We're fixing what happens before they disappear.")
+        self.assertNotIn("PT08", rules_for(text))
+        self.assertNotIn("PT08", rules_for("Estás perdiendo reuniones: aumentá tu conversión"))
+
+    def test_brand_name_spread_is_not_a_cost(self):
+        self.assertEqual(rules_for("Spread arma tu pipeline. Fee mensual: $5.000"), set())
+        self.assertIn("PT01", rules_for("Spread: 0,8%\nComisión: $3"))
 
     def test_soft_comparison_needs_inertia_context(self):
         self.assertNotIn("PT05", rules_for("Una app más simple"))
@@ -122,13 +141,28 @@ def github_slug(heading):
 
 class PlaybookLinks(unittest.TestCase):
     def test_every_rule_anchor_exists(self):
-        path = os.path.join(ROOT, ca.PLAYBOOK)
-        with open(path, encoding="utf-8") as fh:
-            headings = re.findall(r"^#{1,6}\s+(.+?)\s*$", fh.read(), flags=re.M)
+        with open(ca.PLAYBOOK_FILE, encoding="utf-8") as fh:
+            text = re.sub(r"^```.*?^```", "", fh.read(), flags=re.M | re.S)  # skip code blocks
+        headings = re.findall(r"^#{1,6}\s+(.+?)\s*$", text, flags=re.M)
         slugs = {github_slug(h) for h in headings}
         for rule in ca.RULES.values():
             with self.subTest(rule=rule.id):
                 self.assertIn(rule.anchor, slugs)
+
+
+class DocLinks(unittest.TestCase):
+    def test_relative_links_resolve(self):
+        spread = os.path.normpath(os.path.join(os.path.dirname(ca.PLAYBOOK_FILE), ".."))
+        for dirpath, _, files in os.walk(spread):
+            for name in files:
+                if not name.endswith(".md"):
+                    continue
+                path = os.path.join(dirpath, name)
+                with open(path, encoding="utf-8") as fh:
+                    text = fh.read()
+                for target in re.findall(r"\]\(([^)#:]+?)(?:#[^)]*)?\)", text):
+                    with self.subTest(doc=os.path.relpath(path, spread), link=target):
+                        self.assertTrue(os.path.exists(os.path.join(dirpath, target)))
 
 
 if __name__ == "__main__":

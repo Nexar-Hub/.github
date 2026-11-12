@@ -1,0 +1,30 @@
+# Spread
+
+Base de trabajo de Spread: la biblia de decisión, el contexto del negocio y las herramientas que
+los aplican. Spread es independiente de Nexar; este material aplica **solo a Spread** y vive acá
+de forma provisoria (ver *Dónde vive* abajo).
+
+| Carpeta | Qué hay |
+|---|---|
+| [`bible/PLAYBOOK.md`](bible/PLAYBOOK.md) | **La biblia.** Prospect Theory como arquitectura de la decisión: las dos curvas, las cuatro palancas, cómo se aplican a la oferta, la web, el outbound, el contenido, los ads y el pricing de Spread (y a clientes fintech), banco de copy, checklist, protocolo de experimentos, límites éticos. |
+| [`context/POSITIONING.md`](context/POSITIONING.md) | Qué vende Spread, la oferta V1 *Pipeline Build*, el modelo operativo interno, qué está confirmado y qué es propuesta, preguntas abiertas. |
+| [`context/CHANNELS.md`](context/CHANNELS.md) | Canales y tácticas de distribución (X, SEO, AEO/GEO, paid, video, UGC, influencers, medición, ventas), cada una con su palanca. |
+| [`context/WEBSITE_BRIEF.md`](context/WEBSITE_BRIEF.md) | El brief de la web, textual, con su cruce con la biblia. |
+| [`context/SOURCES.md`](context/SOURCES.md) | Inventario de los archivos compartidos y todos los links, sin tracking. |
+| [`tools/`](tools/) | `copy_audit.py` (auditor de copy ES/EN), `prospect_theory.py` (calculadora), `render_curves.py` (gráficos) y tests. |
+| [`templates/`](templates/) | Issue form de experimento y sección de PR para instalar en los repos de Spread. |
+
+```sh
+python3 spread/tools/copy_audit.py <carpeta> --format md > auditoria.md
+python3 spread/tools/prospect_theory.py frame 300
+python3 -m unittest discover -s spread/tools/tests
+```
+
+Python 3.9+ y solo la librería estándar.
+
+## Dónde vive
+
+Este repo (`Nexar-Hub/.github`) es **público** y pertenece a Nexar. Spread es otra empresa, y
+`context/` incluye estrategia interna (la oferta, el equipo de agentes oculto, la regla de que
+Prospect Theory no aparece en el pitch). Conviene moverlo a un repo privado de Spread: la carpeta
+es autocontenida, alcanza con copiar `spread/` entero.

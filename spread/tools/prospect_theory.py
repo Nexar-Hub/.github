@@ -13,13 +13,13 @@ Defaults are the 1992 median estimates: alpha = beta = 0.88, lambda = 2.25,
 gamma = 0.61, delta = 0.69.
 
 CLI examples:
-    python3 tools/prospect_theory.py value 100 -100
-    python3 tools/prospect_theory.py weight 0.01 0.95
-    python3 tools/prospect_theory.py edit 40 40          # segregate or integrate?
-    python3 tools/prospect_theory.py frame 300           # gain frame vs loss frame
-    python3 tools/prospect_theory.py raffle --prize 1000 --prob 0.01 --sure 10
-    python3 tools/prospect_theory.py prospect 10:0.5,0:0.5 5:1
-    python3 tools/prospect_theory.py prospect -- -10:0.5,0:0.5 -5:1
+    python3 spread/tools/prospect_theory.py value 100 -100
+    python3 spread/tools/prospect_theory.py weight 0.01 0.95
+    python3 spread/tools/prospect_theory.py edit 40 40          # segregate or integrate?
+    python3 spread/tools/prospect_theory.py frame 300           # gain frame vs loss frame
+    python3 spread/tools/prospect_theory.py raffle --prize 1000 --prob 0.01 --sure 10
+    python3 spread/tools/prospect_theory.py prospect 10:0.5,0:0.5 5:1
+    python3 spread/tools/prospect_theory.py prospect -- -10:0.5,0:0.5 -5:1
 """
 
 from __future__ import annotations
