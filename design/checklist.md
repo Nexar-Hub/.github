@@ -18,14 +18,6 @@ packaging). Si algo da "no", se corrige antes de mandarlo.
 - [ ] Assets: ¿**pedí** los efectos, fuentes y texturas en vez de perder tiempo
       buscándolos?
 
-## Mientras diseño: sistema 3 × 20
-
-Sin límite de tiempo, uno lo piensa de más. Un límite obliga a decidir.
-
-1. **Ronda 1 · 20 min · Layout**: grilla, jerarquía, composición, vacío.
-2. **Ronda 2 · 20 min · Tipografía**: familias, escala, ritmo.
-3. **Ronda 3 · 20 min · Polish**: color, textura, sombras, detalles.
-
 ## Filtro final (las 10 leyes)
 
 Puntuá de 1 a 5. Menos de 3 en cualquiera → volver.

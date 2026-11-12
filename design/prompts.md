@@ -21,7 +21,7 @@ tensión que rompe el orden, y una emoción que se entiende sin explicarla.
 LAS 10 LEYES:
 1. Intención antes que decoración.
 2. Con poco, mucho (minimalismo cálido; el vacío también es diseño).
-3. Tensión controlada: orden + una ruptura + control del vacío.
+3. Tensión controlada: base ordenada + un solo elemento que se sale.
 4. Que diga sin decir: primero la emoción.
 5. Humano > perfecto: anti look IA, textura, trazo, sensación analógica.
 6. Profundidad: planos, primer plano que enmarca, sombras, relieve.

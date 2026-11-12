@@ -3,7 +3,8 @@
 > Lo que me gusta, escrito como reglas que puedo usar.
 > Sale de ~430 mensajes, 230 links y 200 imágenes guardadas en el grupo
 > *Design · Diseño · Insp brand* (2023 → nov 2026). Las frases entre comillas
-> son notas mías de ese chat.
+> son notas mías de ese chat. Las imágenes se leyeron solo por lo que muestran
+> (composición, color, luz, materiales), no por el texto que tengan adentro.
 
 ---
 
@@ -43,23 +44,24 @@ explique.**
   pero se ve muy clean." · "Designed to disappear."
 - Es el tema que más se repite en el chat: unas 10 notas hablan de minimal,
   clean, "menos es más" o "con poco".
-- Minimalismo **con calidez**: no es frío ni corporativo. Es el *buen gusto
-  japonés*: **Kanso** (sacar lo que sobra), **Shibui** (equilibrio entre lo
-  simple y lo complejo: "Esto es todo") y **Fukinsei** (equilibrio en la
-  imperfección).
+- Minimalismo **con calidez**: no es frío ni corporativo. Es "el buen gusto
+  japonés": sacar lo que sobra, "the balance of simplicity and complexity
+  (esto es todo)" y "balance in imperfection".
 - El vacío también es diseño: espacio negativo generoso, figura chica en
   espacio enorme.
 
 ### 3. Tensión controlada
 - "Tension is what gives brands gravity. Old vs new. Calm vs chaos. Tradition
   vs rebellion." · "Contraste de lo viejo y lo nuevo." · "Brutalismo combinado
-  con diseño piola." · "Chaos is rarely a bad thing."
-- La fórmula: **orden, ruptura y control del vacío**. Un bloque estable
-  (grilla, repetición, simetría) y **una sola** ruptura colocada donde el ojo
-  descansa. La estabilidad es lo que hace potente la ruptura.
+  con diseño piola."
+- Lo que se repite en las imágenes que guardo: una **base ordenada** (grilla,
+  repetición, simetría) y **un solo** elemento que se sale (una figura aparte,
+  un color que no pertenece, un objeto fuera de época). La estabilidad es lo
+  que hace potente la ruptura.
 - Pares que me funcionan: viejo / nuevo · calma / caos · tradición / rebeldía ·
   orgánico / geométrico · analógico / tech · palacio barroco / interior mínimo.
-- "Datsuzoku": romper el hábito para descubrir lo que puede ser.
+- "Break the mush be to what can be": romper con lo que "tiene que ser" para
+  llegar a lo que puede ser.
 
 ### 4. Que diga sin decir
 - "Pensar el diseño desde qué dice sin decir: la cantidad de espacio vacío
@@ -76,8 +78,8 @@ explique.**
 - "Human imperfections." · "Anti AI design." · "Todo va para este lado:
   cercanía, conexión, trazos humanos." · "Al video le da efecto hecho por un
   humano." · "Sensación analógica." · "Claymation."
-- Referencias: el logo dibujado por un nene de seis años, letterings a mano,
-  ilustración con trazo, collage, papel, grano de film.
+- Referencias: logos con lettering a mano casi infantil, ilustración con
+  trazo, collage, papel, grano de film.
 - La IA sirve como herramienta (Midjourney, Nano Banana, Flux, Seedance), pero
   el **acabado** tiene que ser humano: textura, imperfección, un trazo, una
   decisión rara.
@@ -93,11 +95,10 @@ explique.**
 - Máscaras para meter una imagen dentro de otra o dentro de una letra.
 
 ### 7. Color con propósito
-- "Dos colores." · "Color that speaks with purpose." · "Marrón celeste va." ·
-  "Ese color marrón." · "Te recontra queda lo del otro color." · "La gama de
-  colores."
-- Base **terrosa y de baja saturación** + **un** acento fuerte. Así el
-  mensaje lo da la forma y no el color.
+- "Dos colores." · "Marrón celeste va." · "Ese color marrón." · "Te recontra
+  queda lo del otro color." · "La gama de colores."
+- Lo que muestran las imágenes que marcaste por color: base **terrosa y de
+  baja saturación** + **un** acento fuerte (rojo, azul, amarillo).
 - Ver la [paleta](#paleta) más abajo.
 
 ### 8. Raíz local, mirada global
@@ -132,8 +133,8 @@ explique.**
 
 - **Horizonte arriba o abajo. Nunca al medio.**
 - **Composición centrada** y simétrica como base, rota por un elemento aislado.
-- **Grillas**: "Clave los grids" · "Obsessed with grids, scale and layout".
-  Bloques geométricos estables, repetición y ritmo.
+- **Grillas**: "Clave los grids". Bloques geométricos estables, repetición y
+  ritmo.
 - **Espacio negativo**: figura humana chica en un paisaje enorme (escala,
   soledad, aspiración).
 - **Las miradas cuentan la historia** ("Eyelines shape the story"): hacia dónde
@@ -141,8 +142,8 @@ explique.**
 - **Jugar con los ángulos**: contrapicado, cenital, desde atrás de un objeto.
 - **Marcos dentro de marcos**: ventanas, puertas, cuadros, recortes. Es un
   motivo que se repite muchísimo en lo que guardo ("hay algo con las ventanas").
-- **Multitud mínima**: repetir formas parecidas (vacas, figuras, pósters,
-  mapas) hasta que formen un patrón.
+- **Repetición que forma patrón**: formas parecidas (vacas, figuras, pósters,
+  mapas) que de lejos se leen como una textura.
 - **Sistema "nombre + dos imágenes"** para layouts editoriales.
 - **Una imagen gigante que scrollea** como recurso web.
 - **Fotos de producto o comida**: números impares, mitad del plato fuera de
@@ -163,9 +164,9 @@ fotos y en las imágenes que guardé por su color.
 | Gris roca | `#55585C` | 15 | Texto secundario, sombras | Mis fotos de costa rocosa |
 | Arena | `#AE9C83` | 10 | Apoyo, texturas, ilustración | Paletas terrosas que guardé |
 | **Acento** (elegí uno) | | 5 | Llamar la atención, la ruptura | |
-| ↳ Rojo señal | `#E4391F` | | Energía, deporte, comida | Bacha roja, C&C, póster rojo |
+| ↳ Rojo señal | `#E4391F` | | Energía, deporte, comida | Bacha roja, póster rojo y crema |
 | ↳ Azul cobalto | `#0055CC` | | Tech, futuro, nitidez | Azul con recorte de cielo, pósters azules |
-| ↳ Amarillo editorial | `#FEE741` | | Estudio, editorial, pop | Maison Onado, interfaz amarilla y negra |
+| ↳ Amarillo editorial | `#FEE741` | | Estudio, editorial, pop | Póster amarillo, interfaz amarilla y negra |
 | ↳ Ámbar atardecer | `#F5A65B` | | Calidez, golden hour | Mis atardeceres |
 | Noche (base oscura alternativa) | `#0E1626` | | Modo oscuro, nocturno | "Gama de colores" azul noche |
 
@@ -219,14 +220,11 @@ fotos y en las imágenes que guardé por su color.
 - **Texto que aparece o se resalta al scrollear.**
 - **Al scrollear pasa algo relevante** en el video, ligado a cada negocio.
 - **Números que suben** para mostrar progreso o resultados.
-- **Motion que guía a la acción**, y un CTA acorde a la etapa: "la mayoría de
-  los CTA fallan porque piden compromiso cuando el visitante todavía está
-  explorando".
+- **Motion que guía a la acción.**
 - **El objeto entra a escena**; "el motion como decisión de transmitir la
   esencia".
 - **Editar al ritmo del tema**: primero elegir la canción, después cortar en los
   beats.
-- **Contar historias, no novedades** ("tell stories, not just updates").
 - Herramientas: Webflow + Spline, calculadoras interactivas, After Effects para
   darle mano humana.
 
@@ -262,7 +260,6 @@ Cosas que se repiten en las imágenes que guardo aunque casi nunca las anoto:
 - Horizonte al medio.
 - Muchos colores sin jerarquía.
 - Animar por animar.
-- CTA que pide compromiso demasiado temprano.
 - Imágenes sin sombra ni contexto, que quedan "vacías".
 - La primera idea que se le ocurriría a cualquiera.
 

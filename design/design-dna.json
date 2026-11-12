@@ -5,8 +5,8 @@
   "essence": "Poco, con intención y con alma humana: base calma y terrosa, una sola tensión que rompe el orden, y una emoción que se entiende sin que nadie la explique.",
   "principles": [
     { "id": 1, "name": "Intención antes que decoración", "rule": "Cada elemento tiene que poder defenderse con una función: guiar, emocionar, ordenar o identificar.", "test": "¿Puedo explicar por qué existe cada elemento?" },
-    { "id": 2, "name": "Con poco, mucho", "rule": "Minimalismo cálido (Kanso, Shibui, Fukinsei). El vacío también es diseño.", "test": "¿Qué puedo sacar sin que se pierda nada?" },
-    { "id": 3, "name": "Tensión controlada", "rule": "Orden, ruptura y control del vacío: base estable + una sola ruptura donde descansa el ojo.", "test": "¿Cuál es el contraste que le da carácter?", "tension_pairs": ["viejo/nuevo", "calma/caos", "tradición/rebeldía", "orgánico/geométrico", "analógico/tech", "barroco/mínimo"] },
+    { "id": 2, "name": "Con poco, mucho", "rule": "Minimalismo cálido, buen gusto japonés: sacar lo que sobra, equilibrio entre lo simple y lo complejo, equilibrio en la imperfección. El vacío también es diseño.", "test": "¿Qué puedo sacar sin que se pierda nada?" },
+    { "id": 3, "name": "Tensión controlada", "rule": "Base ordenada (grilla, repetición, simetría) + un solo elemento que se sale.", "test": "¿Cuál es el contraste que le da carácter?", "tension_pairs": ["viejo/nuevo", "calma/caos", "tradición/rebeldía", "orgánico/geométrico", "analógico/tech", "barroco/mínimo"] },
     { "id": 4, "name": "Que diga sin decir", "rule": "Elegir una emoción y producirla con composición, color y luz. Visuals evoke emotions; emotional connection sells.", "test": "¿Qué siente alguien antes de leer una palabra?" },
     { "id": 5, "name": "Humano > perfecto", "rule": "Anti AI design: textura, trazo, imperfección, sensación analógica. La IA es herramienta, el acabado es humano.", "test": "¿Se nota una mano detrás?" },
     { "id": 6, "name": "Profundidad", "rule": "Más planos, primer plano que enmarca, máscaras, sombras reales y relieve.", "test": "¿Hay primer plano, medio y fondo? ¿Tiene sombra?" },
@@ -64,25 +64,20 @@
     "Las miradas dirigen la historia",
     "Ángulos poco obvios: contrapicado, cenital, desde atrás de un objeto",
     "Marcos dentro de marcos: ventanas, puertas, cuadros, recortes",
-    "Multitud mínima: repetir formas hasta formar patrón",
+    "Repetición que forma patrón: formas parecidas que de lejos se leen como textura",
     "Layout editorial: nombre + dos imágenes",
     "Producto/comida: números impares, mitad del plato fuera de cuadro"
   ],
   "texture_finish": ["grano de film", "overlay texture", "film burn", "golden hour", "contraluz", "LUT cálido levemente desaturado", "motion blur / larga exposición", "blur selectivo", "materiales orgánicos: piedra, enredadera, cerámica, azulejo, madera", "halftone, punteado, grabado, riso", "claymation, 3D táctil", "sombras reales y relieve"],
-  "motion_web": ["pocas animaciones, muy clean", "transiciones de texto que dejan lo importante", "texto que aparece al scrollear", "scroll que dispara algo relevante para el negocio", "números que suben", "motion que guía a la acción", "CTA acorde a la etapa: no pedir compromiso mientras el usuario explora", "el objeto entra a escena", "editar al beat de la canción", "contar historias, no novedades"],
+  "motion_web": ["pocas animaciones, muy clean", "transiciones de texto que dejan lo importante", "texto que aparece al scrollear", "scroll que dispara algo relevante para el negocio", "números que suben", "motion que guía a la acción", "el objeto entra a escena", "editar al beat de la canción"],
   "motifs": ["ventanas, puertas y marcos", "mar, horizonte, costa rocosa, atardecer", "brutalismo, azulejos, vitrales, palacios vs interiores mínimos", "Japón y Corea", "interiores cálidos de madera y luz baja", "deporte y outdoor", "figura chica en paisaje grande", "ilustración editorial bold en packaging"],
-  "avoid": ["decoración sin función", "diseño tibio y neutral para todos", "look IA plástico y perfecto", "horizonte al medio", "muchos colores sin jerarquía", "animar por animar", "CTA que pide compromiso demasiado temprano", "imágenes sin sombra ni contexto", "la primera idea que se le ocurriría a cualquiera"],
+  "avoid": ["decoración sin función", "diseño tibio y neutral para todos", "look IA plástico y perfecto", "horizonte al medio", "muchos colores sin jerarquía", "animar por animar","imágenes sin sombra ni contexto", "la primera idea que se le ocurriría a cualquiera"],
   "image_prompt_modifiers": {
     "positive": "cinematic, backlit, golden hour, 35mm film grain, subtle film overlay texture, horizon in the upper or lower third, generous negative space, small human figure in a vast landscape, foreground framing through a window or doorway, earthy muted palette (warm off-white, window-frame brown, sky blue, rock grey) with a single {accent} accent, natural soft shadows, tactile organic materials, slight human imperfection, analog feel",
     "negative": "plastic CGI look, perfect AI skin, oversaturated colors, centered horizon, cluttered composition, generic SaaS gradient, flat lighting, stock photo smile, decorative elements without purpose"
   },
   "process": {
     "brief_questions": ["¿Cuál es el porqué real de la marca?", "¿Para quién es?", "¿Qué emoción tiene que generar?", "¿Cuál es la tensión?", "¿Dónde va a vivir?", "¿Qué tiene de local o cultural?"],
-    "timeboxing": [
-      { "round": 1, "minutes": 20, "focus": "layout" },
-      { "round": 2, "minutes": 20, "focus": "tipografía" },
-      { "round": 3, "minutes": 20, "focus": "polish" }
-    ],
     "client_presentation": ["mostrar 2-4 territorios de estilo", "explicar decisiones: No [lo obvio]. En cambio, [la decisión]. Porque [la emoción].", "mostrar en mockup real"],
     "final_filter": "Revisá tus propuestas. Eliminá todo lo que un diseñador promedio también hubiera propuesto. ¿Qué queda?"
   }
