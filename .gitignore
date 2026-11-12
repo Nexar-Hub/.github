@@ -1,0 +1,7 @@
+# Datos personales del radar: nunca al repo (es público)
+hermes/private/
+hermes/workspace/inbox/*.jsonl
+hermes/workspace/inbox/*.zip
+hermes/workspace/inbox/*.txt
+__pycache__/
+*.pyc
