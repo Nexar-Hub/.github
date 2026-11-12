@@ -1,18 +1,18 @@
 ## Objective
 
-What should this change accomplish?
+<!-- What should this change accomplish? -->
 
 ## Scope
 
-What is included in this Pull Request?
+<!-- What is included in this Pull Request? -->
 
 ## Out of scope
 
-What must not change?
+<!-- What must not change? -->
 
 ## Verification
 
-What was checked or tested?
+<!-- What was checked or tested? -->
 
 ## Review
 

@@ -53,7 +53,7 @@ body:
       required: true
 
   - type: textarea
-    id: scope
+    id: out_of_scope
     attributes:
       label: Out of scope
       description: What should explicitly not be changed?
@@ -63,9 +63,9 @@ body:
     attributes:
       label: Priority
       options:
-        - High
-        - Medium
         - Low
+        - Medium
+        - High
     validations:
       required: true
 
