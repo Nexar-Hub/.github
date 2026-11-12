@@ -1,0 +1,126 @@
+name: Behavioral experiment
+description: Propose a test grounded in the Prospect Theory playbook (docs/prospect-theory/PLAYBOOK.md)
+title: "[Experiment] "
+labels: ["experiment"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The framework decides **what** to test and why it should work. The experiment decides **whether** it worked.
+        Fill in every field before launch; decisions written after seeing data do not count.
+
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Hypothesis
+      description: If [change] on [surface], then [primary metric] will [go up/down], because [Prospect Theory mechanism].
+      placeholder: If the idle-balance banner says "You are leaving 300 USD a year on the table" instead of "Earn 300 USD a year", activation will go up, because losses weigh ~2.25x gains.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: lever
+    attributes:
+      label: Lever
+      multiple: true
+      options:
+        - "R1 · Separate gains"
+        - "R2 · Bundle losses"
+        - "R3 · Fold a small loss into a large gain"
+        - "R4 · Show a small gain apart from a large loss (weak evidence)"
+        - "2 · Move the reference point (status quo as a loss)"
+        - "3 · Loss framing"
+        - "4 · Probability weighting (raffle / large improbable prize)"
+        - "Certainty effect"
+        - "Other"
+    validations:
+      required: true
+
+  - type: input
+    id: surface
+    attributes:
+      label: Surface
+      description: Landing, onboarding, home, yields, remittances, FX, checkout, card, notifications, referrals, retention...
+    validations:
+      required: true
+
+  - type: textarea
+    id: variants
+    attributes:
+      label: Control and variant(s)
+      description: Exact copy or screens. Replace placeholders with how each number is computed for the user.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reference_point
+    attributes:
+      label: Reference point
+      description: Where does the user think they stand today, and how does the variant move it?
+
+  - type: textarea
+    id: model
+    attributes:
+      label: Model prediction (optional)
+      description: Output of tools/prospect_theory.py for this comparison. A prediction to prioritize the test, not the expected uplift.
+      render: shell
+
+  - type: input
+    id: primary_metric
+    attributes:
+      label: Primary metric
+      placeholder: e.g. % of idle-balance users who activate yields within 7 days
+    validations:
+      required: true
+
+  - type: textarea
+    id: guardrails
+    attributes:
+      label: Guardrail metrics
+      description: What must not get worse? (support tickets, complaints, opt-outs, refunds, churn, D30 retention)
+    validations:
+      required: true
+
+  - type: textarea
+    id: design
+    attributes:
+      label: Design
+      description: Minimum detectable effect, sample size per arm, duration in full weeks, allocation.
+    validations:
+      required: true
+
+  - type: textarea
+    id: decision_rule
+    attributes:
+      label: Decision rule
+      description: What we do if it wins, loses, or is inconclusive. Written now, not after the results.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: strength
+    attributes:
+      label: Mechanism strength (from the playbook table)
+      options:
+        - High
+        - Medium
+        - Low-medium
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: ethics
+    attributes:
+      label: Ethical and regulatory limits
+      options:
+        - label: Any loss we name is real, calculated for the user and backed by a source.
+          required: true
+        - label: Costs stay visible before confirmation; nothing is hidden or revealed after payment.
+          required: true
+        - label: Probabilities and guarantees are stated honestly; raffles have terms and legal review.
+          required: true
+        - label: The test does not push users toward riskier financial products and has no confirmshaming.
+          required: true
+        - label: We will not stop early or slice segments after the fact to force a winner.
+          required: true
