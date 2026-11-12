@@ -16,15 +16,29 @@ un criterio que se puede **usar** y no solo mirar.
 1. **Como filtro.** Antes de mandar algo, pasalo por el
    [checklist](checklist.md). Tiene 10 preguntas y una que manda: *¿esto lo
    habría propuesto un diseñador promedio?*
-2. **Como copiloto de IA.** Cargá [`prompts.md`](prompts.md) + `criterios.md` +
-   `design-dna.json` en un Proyecto de Claude (o un Gem de Gemini). Desde ahí te
-   propone y te critica con *tus* reglas, no con las genéricas.
+2. **Como criterio de Claude.** La skill
+   [`criterio-diseno`](../.claude/skills/criterio-diseno/SKILL.md) hace que
+   Claude aplique estas reglas solo cada vez que le pidas algo de diseño (ver
+   abajo). Para Gemini o ChatGPT, usá [`prompts.md`](prompts.md).
 3. **Con clientes.** Presentá 2–4 territorios de estilo y explicá cada decisión
    con la fórmula *"No [lo obvio]. En cambio, [la decisión]. Porque [la
    emoción]."* Pasás de "me gusta" a criterio defendible.
 4. **Como punto de partida.** Arrancá cada proyecto desde la paleta base y las
    leyes, y cambiá solo lo que el proyecto pida. Así todo lo que hacés tiene
    una firma reconocible.
+
+## Que Claude lo use solo (skill `criterio-diseno`)
+
+- **En Claude Code**, dentro de este repo: la skill está en
+  `.claude/skills/criterio-diseno/` y se activa sola con cualquier pedido de
+  diseño.
+- **En claude.ai** (web y app): subí el zip `criterio-diseno.zip` en la sección
+  **Skills** de la configuración (*Subir skill*). Desde ahí, en cualquier chat,
+  cuando pidas una marca, un post, una crítica o un prompt de imagen, Claude
+  usa tu criterio.
+- Para armar el zip: una carpeta `criterio-diseno/` con `SKILL.md` +
+  `criterios.md`, `checklist.md`, `prompts.md` y `design-dna.json`,
+  comprimida. Cada vez que actualices el criterio, volvé a subirla.
 
 ## Cómo mantenerlo vivo
 
