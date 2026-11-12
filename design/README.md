@@ -6,7 +6,7 @@ un criterio que se puede **usar** y no solo mirar.
 | Archivo | Para qué sirve |
 |---------|----------------|
 | [`criterios.md`](criterios.md) | **El ADN.** Las 10 leyes, la paleta, la composición, la tipografía, el motion y lo que NO. |
-| [`checklist.md`](checklist.md) | Filtro antes de entregar y cómo presentarle al cliente. |
+| [`checklist.md`](checklist.md) | Filtro antes de entregar, el sistema 3 × 20 min y cómo presentarle al cliente. |
 | [`prompts.md`](prompts.md) | Prompts listos para que Claude, Gemini o ChatGPT trabajen con tu criterio. |
 | [`design-dna.json`](design-dna.json) | El mismo criterio en formato máquina (para IA, tokens o herramientas). |
 | [`referencias.md`](referencias.md) | La biblioteca de links del chat, limpia y ordenada por tema. |

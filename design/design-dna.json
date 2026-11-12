@@ -4,37 +4,145 @@
   "updated": "2026-11-12",
   "essence": "Poco, con intención y con alma humana: base calma y terrosa, una sola tensión que rompe el orden, y una emoción que se entiende sin que nadie la explique.",
   "principles": [
-    { "id": 1, "name": "Intención antes que decoración", "rule": "Cada elemento tiene que poder defenderse con una función: guiar, emocionar, ordenar o identificar.", "test": "¿Puedo explicar por qué existe cada elemento?" },
-    { "id": 2, "name": "Con poco, mucho", "rule": "Minimalismo cálido, buen gusto japonés: sacar lo que sobra, equilibrio entre lo simple y lo complejo, equilibrio en la imperfección. El vacío también es diseño.", "test": "¿Qué puedo sacar sin que se pierda nada?" },
-    { "id": 3, "name": "Tensión controlada", "rule": "Base ordenada (grilla, repetición, simetría) + un solo elemento que se sale.", "test": "¿Cuál es el contraste que le da carácter?", "tension_pairs": ["viejo/nuevo", "calma/caos", "tradición/rebeldía", "orgánico/geométrico", "analógico/tech", "barroco/mínimo"] },
-    { "id": 4, "name": "Que diga sin decir", "rule": "Elegir una emoción y producirla con composición, color y luz. Visuals evoke emotions; emotional connection sells.", "test": "¿Qué siente alguien antes de leer una palabra?" },
-    { "id": 5, "name": "Humano > perfecto", "rule": "Anti AI design: textura, trazo, imperfección, sensación analógica. La IA es herramienta, el acabado es humano.", "test": "¿Se nota una mano detrás?" },
-    { "id": 6, "name": "Profundidad", "rule": "Más planos, primer plano que enmarca, máscaras, sombras reales y relieve.", "test": "¿Hay primer plano, medio y fondo? ¿Tiene sombra?" },
-    { "id": 7, "name": "Color con propósito", "rule": "Base terrosa de baja saturación + un acento. 2-3 colores protagonistas.", "test": "¿Cada color tiene un rol?" },
-    { "id": 8, "name": "Raíz local, mirada global", "rule": "Tomar algo cultural y específico y llevarlo a un lenguaje contemporáneo. Tierra y cielo.", "test": "¿Se nota de dónde viene?" },
-    { "id": 9, "name": "Diseñá para dónde va a vivir", "rule": "Probar siempre en el contexto real; el soporte es material de diseño.", "test": "¿Lo vi en su lugar real?" },
-    { "id": 10, "name": "Eliminá lo que haría cualquiera", "rule": "Revisá tus propuestas. Eliminá todo lo que un diseñador promedio también hubiera propuesto. ¿Qué queda?", "test": "¿Esto lo habría propuesto un diseñador promedio?" }
+    {
+      "id": 1,
+      "name": "Intención antes que decoración",
+      "rule": "Cada elemento tiene que poder defenderse con una función: guiar, emocionar, ordenar o identificar.",
+      "test": "¿Puedo explicar por qué existe cada elemento?"
+    },
+    {
+      "id": 2,
+      "name": "Con poco, mucho",
+      "rule": "Minimalismo cálido (Kanso, Shibui, Fukinsei). El vacío también es diseño.",
+      "test": "¿Qué puedo sacar sin que se pierda nada?"
+    },
+    {
+      "id": 3,
+      "name": "Tensión controlada",
+      "rule": "Orden, ruptura y control del vacío: base estable + una sola ruptura donde descansa el ojo.",
+      "test": "¿Cuál es el contraste que le da carácter?",
+      "tension_pairs": [
+        "viejo/nuevo",
+        "calma/caos",
+        "tradición/rebeldía",
+        "orgánico/geométrico",
+        "analógico/tech",
+        "barroco/mínimo"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Que diga sin decir",
+      "rule": "Elegir una emoción y producirla con composición, color y luz. Visuals evoke emotions; emotional connection sells.",
+      "test": "¿Qué siente alguien antes de leer una palabra?"
+    },
+    {
+      "id": 5,
+      "name": "Humano > perfecto",
+      "rule": "Anti AI design: textura, trazo, imperfección, sensación analógica. La IA es herramienta, el acabado es humano.",
+      "test": "¿Se nota una mano detrás?"
+    },
+    {
+      "id": 6,
+      "name": "Profundidad",
+      "rule": "Más planos, primer plano que enmarca, máscaras, sombras reales y relieve.",
+      "test": "¿Hay primer plano, medio y fondo? ¿Tiene sombra?"
+    },
+    {
+      "id": 7,
+      "name": "Color con propósito",
+      "rule": "Base terrosa de baja saturación + un acento. 2-3 colores protagonistas.",
+      "test": "¿Cada color tiene un rol?"
+    },
+    {
+      "id": 8,
+      "name": "Raíz local, mirada global",
+      "rule": "Tomar algo cultural y específico y llevarlo a un lenguaje contemporáneo. Tierra y cielo.",
+      "test": "¿Se nota de dónde viene?"
+    },
+    {
+      "id": 9,
+      "name": "Diseñá para dónde va a vivir",
+      "rule": "Probar siempre en el contexto real; el soporte es material de diseño.",
+      "test": "¿Lo vi en su lugar real?"
+    },
+    {
+      "id": 10,
+      "name": "Eliminá lo que haría cualquiera",
+      "rule": "Revisá tus propuestas. Eliminá todo lo que un diseñador promedio también hubiera propuesto. ¿Qué queda?",
+      "test": "¿Esto lo habría propuesto un diseñador promedio?"
+    }
   ],
   "palette": {
     "base": [
-      { "name": "Blanco mejillón", "hex": "#E8E2D6", "ratio": 40, "role": "fondo, aire" },
-      { "name": "Marrón marco de ventana", "hex": "#5A2E24", "ratio": 15, "role": "texto, marcos, estructura" },
-      { "name": "Celeste cielo", "hex": "#A3C4E4", "ratio": 15, "role": "calma, superficies" },
-      { "name": "Gris roca", "hex": "#55585C", "ratio": 15, "role": "texto secundario, sombras" },
-      { "name": "Arena", "hex": "#AE9C83", "ratio": 10, "role": "apoyo, texturas" }
+      {
+        "name": "Blanco mejillón",
+        "hex": "#E8E2D6",
+        "ratio": 40,
+        "role": "fondo, aire"
+      },
+      {
+        "name": "Marrón marco de ventana",
+        "hex": "#5A2E24",
+        "ratio": 15,
+        "role": "texto, marcos, estructura"
+      },
+      {
+        "name": "Celeste cielo",
+        "hex": "#A3C4E4",
+        "ratio": 15,
+        "role": "calma, superficies"
+      },
+      {
+        "name": "Gris roca",
+        "hex": "#55585C",
+        "ratio": 15,
+        "role": "texto secundario, sombras"
+      },
+      {
+        "name": "Arena",
+        "hex": "#AE9C83",
+        "ratio": 10,
+        "role": "apoyo, texturas"
+      }
     ],
     "accents": {
       "$comment": "Elegí uno por proyecto. Máximo 5-10% de la superficie.",
       "options": [
-        { "name": "Rojo señal", "hex": "#E4391F", "use": "energía, deporte, comida" },
-        { "name": "Azul cobalto", "hex": "#0055CC", "use": "tech, futuro, nitidez" },
-        { "name": "Amarillo editorial", "hex": "#FEE741", "use": "estudio, editorial, pop" },
-        { "name": "Ámbar atardecer", "hex": "#F5A65B", "use": "calidez, golden hour" }
+        {
+          "name": "Rojo señal",
+          "hex": "#E4391F",
+          "use": "energía, deporte, comida"
+        },
+        {
+          "name": "Azul cobalto",
+          "hex": "#0055CC",
+          "use": "tech, futuro, nitidez"
+        },
+        {
+          "name": "Amarillo editorial",
+          "hex": "#FEE741",
+          "use": "estudio, editorial, pop"
+        },
+        {
+          "name": "Ámbar atardecer",
+          "hex": "#F5A65B",
+          "use": "calidez, golden hour"
+        }
       ],
       "ratio": 5
     },
-    "dark_base": { "name": "Noche", "hex": "#0E1626", "role": "modo oscuro, nocturno" },
-    "signature_pairs": ["marrón + celeste", "rojo + crema", "azul + negro", "amarillo + negro"],
+    "dark_base": {
+      "name": "Noche",
+      "hex": "#0E1626",
+      "role": "modo oscuro, nocturno"
+    },
+    "signature_pairs": [
+      "marrón + celeste",
+      "rojo + crema",
+      "azul + negro",
+      "amarillo + negro"
+    ],
     "contrast_wcag": {
       "marron_on_mejillon": 8.8,
       "roca_on_mejillon": 5.5,
@@ -48,12 +156,27 @@
     "max_families": 2,
     "scale": "contraste fuerte: título enorme + cuerpo chico y aireado",
     "families": [
-      { "type": "serif editorial", "use": "títulos con carácter, tono revista" },
-      { "type": "grotesk bold / condensada", "use": "impacto, pósters, eventos" },
-      { "type": "script / lettering a mano", "use": "calidez, gastronomía, firma de marca" },
-      { "type": "mono", "use": "etiquetas técnicas chicas" }
+      {
+        "type": "serif editorial",
+        "use": "títulos con carácter, tono revista"
+      },
+      {
+        "type": "grotesk bold / condensada",
+        "use": "impacto, pósters, eventos"
+      },
+      {
+        "type": "script / lettering a mano",
+        "use": "calidez, gastronomía, firma de marca"
+      },
+      {
+        "type": "mono",
+        "use": "etiquetas técnicas chicas"
+      }
     ],
-    "devices": ["texto vertical o rotado", "texto como máscara de imagen"],
+    "devices": [
+      "texto vertical o rotado",
+      "texto como máscara de imagen"
+    ],
     "workflow": "fontsinuse.com → identificar → descargar"
   },
   "composition": [
@@ -64,21 +187,106 @@
     "Las miradas dirigen la historia",
     "Ángulos poco obvios: contrapicado, cenital, desde atrás de un objeto",
     "Marcos dentro de marcos: ventanas, puertas, cuadros, recortes",
-    "Repetición que forma patrón: formas parecidas que de lejos se leen como textura",
+    "Multitud mínima: repetir formas hasta formar patrón",
     "Layout editorial: nombre + dos imágenes",
     "Producto/comida: números impares, mitad del plato fuera de cuadro"
   ],
-  "texture_finish": ["grano de film", "overlay texture", "film burn", "golden hour", "contraluz", "LUT cálido levemente desaturado", "motion blur / larga exposición", "blur selectivo", "materiales orgánicos: piedra, enredadera, cerámica, azulejo, madera", "halftone, punteado, grabado, riso", "claymation, 3D táctil", "sombras reales y relieve"],
-  "motion_web": ["pocas animaciones, muy clean", "transiciones de texto que dejan lo importante", "texto que aparece al scrollear", "scroll que dispara algo relevante para el negocio", "números que suben", "motion que guía a la acción", "el objeto entra a escena", "editar al beat de la canción"],
-  "motifs": ["ventanas, puertas y marcos", "mar, horizonte, costa rocosa, atardecer", "brutalismo, azulejos, vitrales, palacios vs interiores mínimos", "Japón y Corea", "interiores cálidos de madera y luz baja", "deporte y outdoor", "figura chica en paisaje grande", "ilustración editorial bold en packaging"],
-  "avoid": ["decoración sin función", "diseño tibio y neutral para todos", "look IA plástico y perfecto", "horizonte al medio", "muchos colores sin jerarquía", "animar por animar","imágenes sin sombra ni contexto", "la primera idea que se le ocurriría a cualquiera"],
+  "texture_finish": [
+    "grano de film",
+    "overlay texture",
+    "film burn",
+    "golden hour",
+    "contraluz",
+    "LUT cálido levemente desaturado",
+    "preset de color (CapCut, filtro Green Orange): brillo -4, contraste +10, saturación +10, exposición -2, nitidez +10, luces +2, sombras -2, temperatura +2",
+    "motion blur / larga exposición",
+    "blur selectivo",
+    "materiales orgánicos: piedra, enredadera, cerámica, azulejo, madera",
+    "halftone, punteado, grabado, riso",
+    "claymation, 3D táctil",
+    "sombras reales y relieve"
+  ],
+  "motion_web": [
+    "pocas animaciones, muy clean",
+    "transiciones de texto que dejan lo importante",
+    "texto que aparece al scrollear",
+    "scroll que dispara algo relevante para el negocio",
+    "números que suben",
+    "motion que guía a la acción",
+    "CTA acorde a la etapa: no pedir compromiso mientras el usuario explora",
+    "el objeto entra a escena",
+    "editar al beat de la canción"
+  ],
+  "motifs": [
+    "ventanas, puertas y marcos",
+    "mar, horizonte, costa rocosa, atardecer",
+    "brutalismo, azulejos, vitrales, palacios vs interiores mínimos",
+    "Japón y Corea",
+    "interiores cálidos de madera y luz baja",
+    "deporte y outdoor",
+    "figura chica en paisaje grande",
+    "ilustración editorial bold en packaging"
+  ],
+  "avoid": [
+    "decoración sin función",
+    "diseño tibio y neutral para todos",
+    "look IA plástico y perfecto",
+    "horizonte al medio",
+    "muchos colores sin jerarquía",
+    "animar por animar",
+    "CTA que pide compromiso demasiado temprano",
+    "imágenes sin sombra ni contexto",
+    "la primera idea que se le ocurriría a cualquiera"
+  ],
   "image_prompt_modifiers": {
     "positive": "cinematic, backlit, golden hour, 35mm film grain, subtle film overlay texture, horizon in the upper or lower third, generous negative space, small human figure in a vast landscape, foreground framing through a window or doorway, earthy muted palette (warm off-white, window-frame brown, sky blue, rock grey) with a single {accent} accent, natural soft shadows, tactile organic materials, slight human imperfection, analog feel",
-    "negative": "plastic CGI look, perfect AI skin, oversaturated colors, centered horizon, cluttered composition, generic SaaS gradient, flat lighting, stock photo smile, decorative elements without purpose"
+    "negative": "plastic CGI look, perfect AI skin, oversaturated colors, centered horizon, cluttered composition, generic SaaS gradient, flat lighting, stock photo smile, decorative elements without purpose",
+    "midjourney_sref": [
+      {
+        "code": "--sref 4172145212",
+        "look": "esquemas retro con energía futurista: objetos translúcidos, colores ácidos sobre azul o crema, anotaciones técnicas"
+      },
+      {
+        "code": "--sref 4783669923",
+        "look": "rojo intenso con contraste blanco, figuras en tinta, deportivo"
+      }
+    ],
+    "ai_techniques": [
+      "Boceto + personajes + referencia de estilo: pasarle a Nano Banana un sketch con la pose y composición, fotos de los personajes y una foto como style reference, y pedir que respete el sketch con precisión",
+      "Desarmar un objeto: 'Create an image of the different patterns that make up this [objeto]. Lay them out individually against a neutral surface'"
+    ]
   },
   "process": {
-    "brief_questions": ["¿Cuál es el porqué real de la marca?", "¿Para quién es?", "¿Qué emoción tiene que generar?", "¿Cuál es la tensión?", "¿Dónde va a vivir?", "¿Qué tiene de local o cultural?"],
-    "client_presentation": ["mostrar 2-4 territorios de estilo", "explicar decisiones: No [lo obvio]. En cambio, [la decisión]. Porque [la emoción].", "mostrar en mockup real"],
+    "brief_questions": [
+      "¿Cuál es el porqué real de la marca?",
+      "¿Para quién es?",
+      "¿Qué emoción tiene que generar?",
+      "¿Cuál es la tensión?",
+      "¿Dónde va a vivir?",
+      "¿Qué tiene de local o cultural?"
+    ],
+    "timeboxing": [
+      {
+        "round": 1,
+        "minutes": 20,
+        "focus": "layout"
+      },
+      {
+        "round": 2,
+        "minutes": 20,
+        "focus": "tipografía"
+      },
+      {
+        "round": 3,
+        "minutes": 20,
+        "focus": "polish"
+      }
+    ],
+    "client_presentation": [
+      "mostrar 2-4 territorios de estilo",
+      "explicar decisiones: No [lo obvio]. En cambio, [la decisión]. Porque [la emoción].",
+      "mostrar en mockup real"
+    ],
     "final_filter": "Revisá tus propuestas. Eliminá todo lo que un diseñador promedio también hubiera propuesto. ¿Qué queda?"
   }
 }

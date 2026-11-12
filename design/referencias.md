@@ -132,7 +132,7 @@ Saqué los parámetros de rastreo de las URLs (`?igsh=`, `?rcm=`, `?t=`, etc.).
 - **Para un evento, crear algo así**: <https://x.com/METALOCUS/status/1940125148646195511>
 - **Alta estética, pero hacerla más minimalista**: <https://www.instagram.com/kuromaru_kenichi>
 - **El buen gusto japonés**: <https://www.instagram.com/reel/DHW29AhhMpH>
-- **Logo con lettering a mano, casi infantil**: <https://www.linkedin.com/posts/maxottignon_a-logo-drawn-by-a-six-year-old-the-identity-ugcPost-7361343718601228289-0Da5>
+- **Un logo dibujado por un nene de seis años**: <https://www.linkedin.com/posts/maxottignon_a-logo-drawn-by-a-six-year-old-the-identity-ugcPost-7361343718601228289-0Da5>
 - **Minimalismo**: <https://www.linkedin.com/posts/dougsweeny_one-year-ago-we-launched-%C5%8Dura-ring-4-and-ugcPost-7379123922245652480-rHJg>
 - **Para Nexar**: <https://x.com/hxmzaehsan/status/1987830310529052717>
 - **Evento minimalista y premium**: <https://x.com/sergeantsref/status/1993639192950141339>

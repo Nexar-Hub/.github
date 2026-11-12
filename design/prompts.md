@@ -21,7 +21,7 @@ tensión que rompe el orden, y una emoción que se entiende sin explicarla.
 LAS 10 LEYES:
 1. Intención antes que decoración.
 2. Con poco, mucho (minimalismo cálido; el vacío también es diseño).
-3. Tensión controlada: base ordenada + un solo elemento que se sale.
+3. Tensión controlada: orden + una ruptura + control del vacío.
 4. Que diga sin decir: primero la emoción.
 5. Humano > perfecto: anti look IA, textura, trazo, sensación analógica.
 6. Profundidad: planos, primer plano que enmarca, sombras, relieve.
@@ -92,6 +92,29 @@ plastic CGI look, perfect AI skin, oversaturated colors, centered horizon,
 cluttered composition, generic SaaS gradient, flat lighting, stock photo
 smile, decorative elements without purpose
 ```
+
+### Códigos de estilo de Midjourney que guardaste
+
+| Código | Look |
+|--------|------|
+| `--sref 4172145212` | Esquemas retro con energía futurista: objetos translúcidos, colores ácidos sobre azul o crema, anotaciones técnicas. |
+| `--sref 4783669923` | Rojo intenso con contraste blanco, figuras en tinta, deportivo ("INCREÍBLE"). |
+
+### Técnicas con Nano Banana que guardaste
+
+- **Boceto → imagen**: pasale un sketch con la pose y la composición, fotos de
+  los personajes y una foto como *style reference* para el fondo. Pedile que
+  respete el sketch con precisión.
+  ```text
+  Use [persona 1] as [rol], [persona 2] as [rol], match the sketch pose and
+  composition precisely, use the [foto] as style reference for the background.
+  ```
+- **Desarmar un objeto en sus partes** (sirve para packaging, producto o
+  posts de proceso):
+  ```text
+  Create an image of the different patterns that make up this [objeto].
+  Lay them out individually against a neutral surface.
+  ```
 
 ## 5. Sacar un "style" de una referencia en JSON
 

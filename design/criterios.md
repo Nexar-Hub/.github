@@ -3,8 +3,10 @@
 > Lo que me gusta, escrito como reglas que puedo usar.
 > Sale de ~430 mensajes, 230 links y 200 imágenes guardadas en el grupo
 > *Design · Diseño · Insp brand* (2023 → nov 2026). Las frases entre comillas
-> son notas mías de ese chat. Las imágenes se leyeron solo por lo que muestran
-> (composición, color, luz, materiales), no por el texto que tengan adentro.
+> son notas mías de ese chat o tips que guardé. Del texto que aparece en las
+> imágenes conté solo el que enseña algo (tips, análisis, ajustes, prompts); el
+> texto que es parte de un diseño (titulares, slogans, marcas) no cuenta: esas
+> imágenes se leyeron por lo que muestran.
 
 ---
 
@@ -44,24 +46,27 @@ explique.**
   pero se ve muy clean." · "Designed to disappear."
 - Es el tema que más se repite en el chat: unas 10 notas hablan de minimal,
   clean, "menos es más" o "con poco".
-- Minimalismo **con calidez**: no es frío ni corporativo. Es "el buen gusto
-  japonés": sacar lo que sobra, "the balance of simplicity and complexity
-  (esto es todo)" y "balance in imperfection".
+- Minimalismo **con calidez**: no es frío ni corporativo. Es el *buen gusto
+  japonés*:
+  - **Kanso**: todo tiene un propósito, nada está de decoración.
+  - **Shibui**: belleza sobria; el equilibrio entre lo simple y lo complejo
+    que hace que nunca te canses de mirarlo ("Esto es todo").
+  - **Fukinsei**: asimetría equilibrada; la belleza de lo imperfecto (como el
+    ensō, el círculo zen que se pinta incompleto).
 - El vacío también es diseño: espacio negativo generoso, figura chica en
   espacio enorme.
 
 ### 3. Tensión controlada
 - "Tension is what gives brands gravity. Old vs new. Calm vs chaos. Tradition
   vs rebellion." · "Contraste de lo viejo y lo nuevo." · "Brutalismo combinado
-  con diseño piola."
-- Lo que se repite en las imágenes que guardo: una **base ordenada** (grilla,
-  repetición, simetría) y **un solo** elemento que se sale (una figura aparte,
-  un color que no pertenece, un objeto fuera de época). La estabilidad es lo
-  que hace potente la ruptura.
+  con diseño piola." · "Chaos is rarely a bad thing."
+- La fórmula: **orden, ruptura y control del vacío**. Un bloque estable
+  (grilla, repetición, simetría) y **una sola** ruptura colocada donde el ojo
+  descansa. La estabilidad es lo que hace potente la ruptura.
 - Pares que me funcionan: viejo / nuevo · calma / caos · tradición / rebeldía ·
   orgánico / geométrico · analógico / tech · palacio barroco / interior mínimo.
-- "Break the mush be to what can be": romper con lo que "tiene que ser" para
-  llegar a lo que puede ser.
+- **Datsuzoku**: liberarse del hábito y la fórmula; dejar lo que "tiene que
+  ser" para descubrir lo que puede ser.
 
 ### 4. Que diga sin decir
 - "Pensar el diseño desde qué dice sin decir: la cantidad de espacio vacío
@@ -78,8 +83,8 @@ explique.**
 - "Human imperfections." · "Anti AI design." · "Todo va para este lado:
   cercanía, conexión, trazos humanos." · "Al video le da efecto hecho por un
   humano." · "Sensación analógica." · "Claymation."
-- Referencias: logos con lettering a mano casi infantil, ilustración con
-  trazo, collage, papel, grano de film.
+- Referencias: el logo dibujado por un nene de seis años, letterings a mano,
+  ilustración con trazo, collage, papel, grano de film.
 - La IA sirve como herramienta (Midjourney, Nano Banana, Flux, Seedance), pero
   el **acabado** tiene que ser humano: textura, imperfección, un trazo, una
   decisión rara.
@@ -93,12 +98,14 @@ explique.**
   fondo que respira.
 - Sombras reales y relieve (emboss, papel, objetos) en vez de todo plano.
 - Máscaras para meter una imagen dentro de otra o dentro de una letra.
+- Para darle profundidad a un cuadro no hacen falta efectos complejos: alcanza
+  con un objeto en primer plano o un marco real dentro de la escena.
 
 ### 7. Color con propósito
 - "Dos colores." · "Marrón celeste va." · "Ese color marrón." · "Te recontra
   queda lo del otro color." · "La gama de colores."
-- Lo que muestran las imágenes que marcaste por color: base **terrosa y de
-  baja saturación** + **un** acento fuerte (rojo, azul, amarillo).
+- Base **terrosa y de baja saturación** + **un** acento fuerte. Así el
+  mensaje lo da la forma y no el color.
 - Ver la [paleta](#paleta) más abajo.
 
 ### 8. Raíz local, mirada global
@@ -126,6 +133,19 @@ explique.**
 - Es el filtro final de todo. Si la idea es la primera que se le ocurriría a
   cualquiera, se descarta o se empuja.
 - "You avoided conflict. You stayed neutral. And now no one remembers you."
+- Ojo con el **branding genérico**: marcas de sectores muy distintos que
+  terminan con logos que se parecen. Si se parece a la tendencia del momento,
+  es genérico.
+
+### Lecciones sueltas que guardé
+
+1. Encontrá tus modelos conceptuales.
+2. Simplificar es decir que no.
+3. El encuadre es magia.
+4. La consistencia se acumula.
+5. El caos rara vez es algo malo.
+6. Cambiar es el único camino.
+7. La alegría es el verdadero legado.
 
 ---
 
@@ -133,8 +153,8 @@ explique.**
 
 - **Horizonte arriba o abajo. Nunca al medio.**
 - **Composición centrada** y simétrica como base, rota por un elemento aislado.
-- **Grillas**: "Clave los grids". Bloques geométricos estables, repetición y
-  ritmo.
+- **Grillas**: "Clave los grids" · "Obsessed with grids, scale and layout".
+  Bloques geométricos estables, repetición y ritmo.
 - **Espacio negativo**: figura humana chica en un paisaje enorme (escala,
   soledad, aspiración).
 - **Las miradas cuentan la historia** ("Eyelines shape the story"): hacia dónde
@@ -142,8 +162,8 @@ explique.**
 - **Jugar con los ángulos**: contrapicado, cenital, desde atrás de un objeto.
 - **Marcos dentro de marcos**: ventanas, puertas, cuadros, recortes. Es un
   motivo que se repite muchísimo en lo que guardo ("hay algo con las ventanas").
-- **Repetición que forma patrón**: formas parecidas (vacas, figuras, pósters,
-  mapas) que de lejos se leen como una textura.
+- **Multitud mínima**: repetir formas parecidas (vacas, figuras, pósters,
+  mapas) hasta que formen un patrón.
 - **Sistema "nombre + dos imágenes"** para layouts editoriales.
 - **Una imagen gigante que scrollea** como recurso web.
 - **Fotos de producto o comida**: números impares, mitad del plato fuera de
@@ -191,6 +211,9 @@ fotos y en las imágenes que guardé por su color.
   papel.
 - **Luz**: golden hour, contraluz ("más cinematic"), luz cálida interior y tenue.
 - **LUTs cálidos** y algo desaturados, con sensación analógica.
+- **Preset de color que guardé** (CapCut, sobre el filtro "Green Orange"):
+  Brillo −4 · Contraste +10 · Saturación +10 · Exposición −2 · Nitidez +10 ·
+  Luces +2 · Sombras −2 · Temperatura +2.
 - **Movimiento**: motion blur y larga exposición para hablar de velocidad o
   futuro.
 - **Blur selectivo** ("que el oso tenga ese efecto blur queda god").
@@ -220,7 +243,9 @@ fotos y en las imágenes que guardé por su color.
 - **Texto que aparece o se resalta al scrollear.**
 - **Al scrollear pasa algo relevante** en el video, ligado a cada negocio.
 - **Números que suben** para mostrar progreso o resultados.
-- **Motion que guía a la acción.**
+- **Motion que guía a la acción**, y un CTA acorde a la etapa: "la mayoría de
+  los CTA fallan porque piden compromiso cuando el visitante todavía está
+  explorando".
 - **El objeto entra a escena**; "el motion como decisión de transmitir la
   esencia".
 - **Editar al ritmo del tema**: primero elegir la canción, después cortar en los
@@ -260,6 +285,7 @@ Cosas que se repiten en las imágenes que guardo aunque casi nunca las anoto:
 - Horizonte al medio.
 - Muchos colores sin jerarquía.
 - Animar por animar.
+- CTA que pide compromiso demasiado temprano.
 - Imágenes sin sombra ni contexto, que quedan "vacías".
 - La primera idea que se le ocurriría a cualquiera.
 
