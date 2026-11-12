@@ -150,7 +150,9 @@ Default to the simplest solution capable of achieving the business objective.
 Complexity requires evidence. Novelty requires evidence. Additional tools require evidence.
 
 DEFAULT STACK
-Core: Next.js, TypeScript, Tailwind, shadcn/ui, GSAP, PostHog.
+Core: Next.js, TypeScript, Tailwind, shadcn/ui, GSAP.
+Hosting: Cloudflare (DNS + Workers).
+Analytics: GA4 + Search Console + Microsoft Clarity; PostHog only when funnels or product analytics are needed.
 Data: Airtable for operations, Supabase for applications, Sanity for content when needed.
 Automation: Cloudflare Workers, n8n.
 Premium visual: GSAP, Lottie, React Three Fiber, Drei.
@@ -322,7 +324,7 @@ Do not explain your decisions. Deliver the best version you can imagine.
 
 Tres prompts, tres modelos o tres sesiones. No se saltea el paso 2.
 
-**Paso 1 — Investigador (Kimi / Perplexity)**
+**Paso 1 — Investigador (Kimi)**
 
 ```
 Actuá como investigador, no como consultor.

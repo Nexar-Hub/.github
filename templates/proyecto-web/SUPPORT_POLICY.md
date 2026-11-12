@@ -116,7 +116,7 @@ Tres modalidades disponibles:
 ### Lo que el cliente paga directamente
 
 - Dominio (~$15/año, registrado a nombre del cliente)
-- Hosting (Vercel Pro o Cloudflare, según uso; el plan Hobby de Vercel no es para sitios comerciales)
+- Hosting y DNS en Cloudflare (puede ser plan gratis o pago según uso)
 - CMS, si el proyecto lo usa (Sanity: puede ser plan gratis o pago según uso)
 - Resend (puede ser plan gratis o pago según uso)
 - Cualquier otro servicio externo que el cliente quiera

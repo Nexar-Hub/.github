@@ -145,8 +145,8 @@ Segmentar por **métrica → proceso → industria**, no al revés. Nadie compra
 ## 6. Qué NO hacemos
 
 - Prometer rankings de SEO. Solo SEO técnico de fundación (y GEO: webs legibles por máquinas).
-- E-commerce serio con catálogo grande → Tienda Nube / Shopify + integración.
-- Sitios de presupuesto mínimo → Webflow o derivar.
+- E-commerce con catálogo grande construido a medida → se monta sobre Shopify + integración. (Para DTC chico sí: tienda propia en vez de depender de marketplaces o de Tienda Nube.)
+- Sitios de presupuesto mínimo → se derivan.
 - Web sin claridad de marca → primero estrategia de marca, después web.
 - Clonar sitios de terceros (copyright, marca, trade dress). Reverse engineering solo sobre webs del propio cliente o como referencia sin copiar assets.
 - Construir CRM, analytics, dashboards, generadores creativos, landing builders, RAG o harness propios mientras exista una herramienta que alcance.
@@ -195,7 +195,7 @@ Las herramientas son reemplazables. Los criterios, las decisiones y la evidencia
 ```
 Next.js (App Router) + TypeScript strict + Tailwind + shadcn/ui
 GitHub → preview → QA visual → aprobación → main → producción
-Cloudflare DNS · Vercel o Cloudflare Workers
+Cloudflare: DNS + Workers (Next.js vía adaptador OpenNext) · R2 / Images para media pesada
 GA4 + Search Console + Microsoft Clarity
 ```
 
@@ -210,7 +210,7 @@ GA4 + Search Console + Microsoft Clarity
 | Leads a CRM | Webhook → HubSpot / Airtable / Supabase |
 | Funnels o producto | PostHog |
 | Datos vivos | Airtable (operación) / Supabase (aplicaciones) |
-| Presencia en tiempo real | WebSockets / PartyKit (solo si la experiencia depende de eso) |
+| Presencia en tiempo real | Cloudflare Durable Objects / PartyKit (solo si la experiencia depende de eso) |
 
 WebGL y realtime **no son default**. Entran solo si mejoran comprensión, exploración, deseo o demostración de producto. Si la web estándar logra el 80% del resultado, se usa la web estándar.
 
@@ -218,11 +218,24 @@ WebGL y realtime **no son default**. Entran solo si mejoran comprensión, explor
 
 | Rol | Herramienta actual | Hace | No hace |
 |-----|-------------------|------|---------|
-| Ejecución y coordinación | Claude Code | planifica, implementa, revisa, integra | research profundo |
-| Research | Kimi / Perplexity | junta evidencia con fuentes | decide |
+| Ejecución y coordinación | Claude Code / Codex | planifica, implementa, revisa, integra | research profundo |
+| Research | Kimi | junta evidencia con fuentes | decide |
 | Verificación | ChatGPT / Claude (modo auditor) | critica supuestos, busca huecos | programa |
 | Memoria | Markdown + Git (este repo) | guarda decisiones, playbooks, prompts | razona |
 | Automatización | n8n / Cloudflare Workers | ejecuta flujos estables | piensa |
+
+### Ya no se usa (no reintroducir sin una razón nueva)
+
+| Herramienta | Reemplazo | Desde |
+|-------------|-----------|-------|
+| Webflow (delivery de webs) | Código: Next.js + Claude Code / Codex | sep 2026 (blueprint) |
+| Vercel (hosting) | Cloudflare Workers | sep 2026 ("salir de Vercel, full Cloudflare") |
+| Perplexity | Kimi | sep 2026 |
+| TinaCMS | Contenido en el repo; Sanity si el cliente edita seguido | sep 2026 (blueprint) |
+| Vercel Analytics / Plausible | GA4 + Search Console + Clarity; PostHog para funnels | sep 2026 (blueprint) |
+| Framer Motion | Motion (mismo proyecto, nuevo nombre) | — |
+| Antigravity / OpenCode como ejecutores | Claude Code / Codex | jul–sep 2026 |
+| Tienda Nube como recomendación | Tienda propia / Shopify | jun 2026 |
 
 ### Regla para adoptar una herramienta
 

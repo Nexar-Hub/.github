@@ -367,7 +367,7 @@ Configurar metadata por página:
 - Title (50-60 chars) específico por página
 - Description (150-160 chars) específico por página
 - OG image (1200x630) específica por página principal
-- Twitter Card configurada
+- X (Twitter) Card configurada
 - Canonical URLs
 - Locale correcto
 
@@ -458,9 +458,9 @@ Audit de performance del sitio:
 1. Lighthouse en cada página principal (target: 90+)
 2. Core Web Vitals:
    - LCP < 2.5s
-   - FID/INP < 100ms
+   - INP < 200ms
    - CLS < 0.1
-3. Bundle size analysis (next build --profile)
+3. Bundle size analysis (@next/bundle-analyzer)
 4. Identificar componentes pesados que pueden ser dynamic imports
 5. Verificar lazy loading below-fold
 
@@ -568,7 +568,7 @@ Reportá lo que falla y arreglemos uno por uno.
 ### 12.3 — OG images y favicon
 
 - [ ] Generar OG image por página principal (1200x630)
-- [ ] Verificar preview en WhatsApp, LinkedIn, Twitter
+- [ ] Verificar preview en WhatsApp, LinkedIn y X
 - [ ] Favicon en múltiples tamaños (16, 32, 180, 192, 512)
 - [ ] Apple touch icon
 - [ ] manifest.json con theme color
@@ -577,7 +577,7 @@ Reportá lo que falla y arreglemos uno por uno.
 
 ## FASE 13: Deploy y DNS
 
-### 13.1 — Deploy (Vercel o Cloudflare)
+### 13.1 — Deploy (Cloudflare Workers)
 
 Pipeline: branch → GitHub → preview → QA visual → aprobación → merge a main → producción. **Nunca se edita producción directamente.**
 

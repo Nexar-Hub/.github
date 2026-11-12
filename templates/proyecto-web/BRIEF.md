@@ -167,7 +167,7 @@ Lista todas las páginas. Marcá cuáles son críticas (MVP) y cuáles son nice-
 ## 11. Restricciones técnicas
 
 ### Stack confirmado
-- [ ] Next.js + Tailwind + shadcn/ui en Vercel o Cloudflare (default Nexar Hub)
+- [ ] Next.js + Tailwind + shadcn/ui en Cloudflare (default Nexar Hub)
 - [ ] Otro: 
 
 ### Integraciones específicas requeridas

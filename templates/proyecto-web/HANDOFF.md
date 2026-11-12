@@ -65,7 +65,7 @@ Mirá este Loom de [duración] minutos donde te muestro paso a paso cómo usar e
 Te invité al vault de 1Password con todos los accesos. Incluye:
 
 - Cuenta del CMS (si aplica)
-- Cuenta de hosting (Vercel o Cloudflare)
+- Cuenta de Cloudflare (hosting y DNS)
 - Cuenta de email del sistema (Resend o ZeptoMail)
 - Google Analytics, Search Console y Microsoft Clarity
 - Acceso al dominio y DNS (Cloudflare)
@@ -79,14 +79,14 @@ Te invité al vault de 1Password con todos los accesos. Incluye:
 
 | Servicio | Plan actual | Costo | Quién paga |
 |----------|-------------|-------|-----------|
-| Hosting (Vercel Pro o Cloudflare) | [plan] | [costo] | Cliente |
+| Hosting y DNS (Cloudflare) | [plan] | [costo] | Cliente |
 | CMS (Sanity, si aplica) | [plan] | [costo] | Cliente |
 | Email del sistema (Resend / ZeptoMail) | [plan] | [costo] | Cliente |
 | Dominio | Anual | [costo] | Cliente |
 | Analytics (GA4 + GSC + Clarity) | Gratis | $0 | — |
 | **Total mensual estimado** | | **[total]** | |
 
-> Verificar precios y condiciones vigentes de cada servicio al momento de la entrega. Ojo: el plan Hobby de Vercel es solo para uso personal no comercial; un sitio de empresa va en Pro o en Cloudflare.
+> Verificar precios y condiciones vigentes de cada servicio al momento de la entrega.
 
 ### Cuándo deberías considerar upgrade
 
@@ -150,7 +150,7 @@ Modalidades disponibles:
 → Antes de subir, pasá la imagen por https://tinypng.com/ para optimizarla. Tamaño máximo recomendado: 2MB. Dimensiones según indica el panel.
 
 ### "Edité algo y no aparece en el sitio"
-→ Verificá que le diste a "Save" Y "Publish" (son dos botones distintos). Después esperá 1-2 minutos para que el sitio se actualice.
+→ Si tenés panel de edición: verificá que publicaste el cambio (guardar un borrador no lo publica). Después esperá 1-2 minutos para que el sitio se actualice. Si no tenés panel: confirmá que aprobaste la preview que te mandamos.
 
 ### "Borré algo sin querer"
 → Avisanos por WhatsApp. Como todo está en Git, podemos restaurar versiones anteriores.

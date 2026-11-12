@@ -35,7 +35,7 @@ Alineado con el blueprint de webs (`brain/workflows/website.md` en `Nexar-Hub/.g
 - **Framework:** Next.js (App Router) + TypeScript strict
 - **Estilos y UI:** Tailwind CSS + shadcn/ui
 - **Contenido:** Markdown / JSON en el repo por default. Sanity solo si el cliente edita contenido seguido
-- **Hosting:** Vercel o Cloudflare Workers · DNS en Cloudflare
+- **Hosting:** Cloudflare Workers (Next.js vía adaptador OpenNext) · DNS en Cloudflare · media pesada en R2 / Images
 - **Formularios:** server action + Resend o ZeptoMail
 - **Animaciones:** GSAP (+ ScrollTrigger y Lenis para scrollytelling) para timelines; Motion para micro-interacciones de UI
 - **3D (solo si mejora comprensión, deseo o exploración):** React Three Fiber + Drei
@@ -65,12 +65,12 @@ proyecto-web/
 2. **Nunca aceptás un cliente sin haber leído juntos SUPPORT_POLICY.md.**
 3. **Nunca entregás un proyecto sin haber tildado todos los items críticos de CHECKLIST.md.**
 4. **Nunca prometés rankings de SEO. Solo SEO técnico de fundación.**
-5. **Nunca dejás imágenes en el repo de GitHub. Siempre en CDN externo.**
+5. **Nunca subís imágenes sin optimizar al repo.** Fotos y video pesados en CDN (Cloudflare R2 / Images); el resto en AVIF con variantes por tamaño.
 
 ## Cuándo NO usar este sistema
 
-- Cliente quiere e-commerce serio con catálogo grande → mandalo a Tienda Nube + integración
-- Cliente quiere sitio de $500 → mandalo a Webflow o derivá
+- Cliente quiere e-commerce con catálogo grande → Shopify + integración (no se construye a medida)
+- Cliente con presupuesto mínimo → derivá
 - Cliente no tiene contenido ni claridad de marca → primero brand strategy, después web
 
 ## Mantenimiento del sistema

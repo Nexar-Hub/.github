@@ -91,8 +91,8 @@ Dark border:       #
 - **Mono (si aplica):** [Familia]
 
 ### Carga de fuentes
+- [ ] Self-hosted, variable fonts (default Nexar: subir archivos a /public/fonts o usar next/font/local)
 - [ ] Google Fonts
-- [ ] Self-hosted (subir archivos a /public/fonts)
 - [ ] Adobe Fonts (requiere kit)
 - [ ] Fonts.com / otra
 

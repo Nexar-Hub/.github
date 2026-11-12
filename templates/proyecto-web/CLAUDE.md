@@ -23,6 +23,7 @@
 - Server actions + Resend o ZeptoMail para email transaccional
 - GA4 + Search Console + Microsoft Clarity como analytics base
 - Lucide React para íconos
+- Deploy en Cloudflare Workers (adaptador OpenNext). No Vercel
 
 ## Convenciones de código
 
@@ -62,7 +63,7 @@
 - priority en LCP image (típicamente hero)
 - sizes attribute apropiado
 - AVIF (calidad 50–70 en fotos), variantes por tamaño real de uso (400w / 800w en cards, 960w / 1440w / 1920w en heroes)
-- Source de imágenes desde CDN externo o /public/
+- Fotos y video pesados desde CDN (Cloudflare R2 / Images); assets livianos optimizados en /public/
 
 ### Data fetching
 
@@ -215,7 +216,7 @@ Al empezar una sesión, leer en este orden:
 Si el proyecto requiere algo no contemplado en el stack default:
 
 - Cliente que edita contenido seguido: Sanity
-- E-commerce serio: Shopify Hydrogen o Medusa.js
+- E-commerce: Shopify (Hydrogen solo si hace falta un front a medida)
 - Multi-idioma: next-intl
 - Auth: Clerk o NextAuth
 - Database: Supabase

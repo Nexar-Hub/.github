@@ -44,7 +44,7 @@ Decisiones que se fijan acá: qué se muestra primero, qué se oculta, qué se r
 
 ### 2. Elegir blueprint
 
-Default: **Lean Company Web** — Next.js, TypeScript, Tailwind, shadcn/ui, GitHub, Cloudflare DNS, Vercel o Cloudflare Workers, analytics, email transaccional si hace falta. Estas cosas no se vuelven a decidir para cada cliente. Ver stack completo en `brain/nexar.md` §9.
+Default: **Lean Company Web** — Next.js, TypeScript, Tailwind, shadcn/ui, GitHub, Cloudflare (DNS + Workers), analytics, email transaccional si hace falta. Estas cosas no se vuelven a decidir para cada cliente. Ver stack completo en `brain/nexar.md` §9.
 
 ### 3. Scaffold
 
@@ -108,7 +108,8 @@ Después Playwright con screenshots en **390 · 768 · 1280 · 1440** px y compa
 DOMAIN          → registrar
 DNS             → Cloudflare
 CODE            → GitHub
-WEB             → Vercel / Cloudflare
+WEB             → Cloudflare Workers
+MEDIA PESADA    → Cloudflare R2 / Images
 CONTENT         → Git o Sanity
 BUSINESS EMAIL  → proveedor de mailbox
 SYSTEM EMAIL    → Resend / ZeptoMail

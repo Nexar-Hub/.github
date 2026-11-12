@@ -42,7 +42,7 @@
 - [ ] Fuentes cargadas con next/font
 - [ ] Estructura de carpetas establecida
 - [ ] Variables de entorno definidas en .env.example
-- [ ] Proyecto de hosting (Vercel o Cloudflare) creado y conectado al repo con previews por branch
+- [ ] Proyecto en Cloudflare Workers creado y conectado al repo con previews por branch
 
 ---
 
@@ -155,7 +155,7 @@
 - [ ] 🔴 Title único por página (50-60 chars)
 - [ ] 🔴 Description única por página (150-160 chars)
 - [ ] 🔴 OG image por página principal
-- [ ] 🔴 Twitter Card configurada
+- [ ] 🔴 X (Twitter) Card configurada
 - [ ] 🔴 Canonical URLs
 - [ ] 🔴 Heading hierarchy correcta (1 H1 por página)
 - [ ] 🔴 Alt text en todas las imágenes
@@ -281,7 +281,7 @@
 
 - [ ] OG images verificadas en WhatsApp
 - [ ] OG images verificadas en LinkedIn (LinkedIn Inspector)
-- [ ] OG images verificadas en Twitter (Twitter Card Validator)
+- [ ] OG images verificadas en X (compartiendo en un post de prueba; el Card Validator ya no muestra preview)
 - [ ] Favicon visible en todos los browsers
 - [ ] Apple touch icon en iOS
 - [ ] Theme color en mobile
