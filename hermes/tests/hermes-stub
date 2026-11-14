@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Fake `hermes` CLI for tests: records calls in $FAKE_HH/calls.log and emulates only
+# the commands install.sh uses. Never runs a real agent.
+echo "$*" >> "$FAKE_HH/calls.log"
+case "$1 $2" in
+  "config path") echo "$FAKE_HH/config.yaml" ;;
+  "config get") cat "$FAKE_HH/ext.json" 2>/dev/null || echo '[]' ;;
+  "config set") printf '%s' "$4" > "$FAKE_HH/ext.json" ;;
+  "cron list") cat "$FAKE_HH/cron.txt" 2>/dev/null ;;
+  "cron create") n=""; while [ $# -gt 0 ]; do [ "$1" = --name ] && n="$2"; shift; done; echo "$n" >> "$FAKE_HH/cron.txt" ;;
+  "skills list") python3 -c 'import json,sys,os;[print(d) for p in json.load(open(sys.argv[1])) for _,ds,_ in os.walk(p) for d in ds]' "$FAKE_HH/ext.json" 2>/dev/null ;;
+  "gateway status") exit 0 ;;
+  *) [ "$1" = "--version" ] && echo "hermes 0.23.1 (stub)" ;;
+esac

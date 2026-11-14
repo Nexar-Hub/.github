@@ -1,7 +1,7 @@
 ---
 name: session-distill
 description: Destila sesiones pasadas de Hermes, Claude Code, Codex y chats exportados (ChatGPT/Claude) en errores repetidos → reglas de una línea, workflows repetidos → skills (verbos) y preferencias estables → memoria. Propone borradores y guarda solo con aprobación. Usar cuando el usuario pide "destilá mis sesiones", "qué aprendimos", "convertí esto en skill", o en el cron mensual.
-version: 1.0.0
+version: 2.0.0
 author: Nexar Hub
 platforms: [macos, linux, windows]
 metadata:
@@ -35,19 +35,22 @@ Leé solo las que existan. Nunca cargues todo el historial al contexto: buscá y
 
 ## Procedimiento
 
-1. **Definí la ventana**: los últimos 30 días, salvo que el usuario pida otra.
-2. **Buscá señales con grep o jq**, no leyendo todo:
-   - correcciones del usuario: "no", "otra vez", "te dije", "mal", "revertí", "eso no", "de nuevo";
-   - tool calls fallidas y reintentos;
-   - el mismo pedido escrito 3 o más veces;
-   - secuencias de pasos que se repiten entre proyectos.
-3. **Clasificá cada patrón** con su evidencia (fecha o id de sesión, y cantidad de veces):
+1. **Corré el extractor.** Es de solo lectura, redacta secretos y no carga todo el historial al contexto:
+
+   ```
+   python3 ${HERMES_SKILL_DIR}/scripts/distill_sessions.py --since 30 --out destilados/<AAAA-MM-DD>-candidatos.md
+   ```
+
+   El script lee Claude Code, Codex y Hermes (`state.db`, en modo solo lectura). Si el usuario dejó exports de ChatGPT o Claude.ai, agregá `--path sesiones/conversations.json`. Devuelve grupos de **correcciones**, **pedidos repetidos** y **errores repetidos**, con la cantidad de veces, las sesiones, las fechas y ejemplos redactados.
+2. **Leé solo los grupos marcados `promover`** (≥3 apariciones). Los `vigilar` (2 apariciones) se mencionan, no se promueven. Si un grupo es ambiguo, abrí 1 o 2 sesiones de ejemplo para entender el contexto. No las abras todas.
+3. **Clasificá cada patrón:**
 
    | tipo | se convierte en | destino |
    |---|---|---|
-   | error repetido (≥3) | regla de 1 línea | `AGENTS.md` o `CLAUDE.md` del proyecto donde ocurrió |
-   | workflow repetido (≥3) | skill con nombre de verbo (`auditar-landing`, `publicar-reel`, `armar-propuesta`) | `~/.hermes/skills/<categoria>/<verbo>/SKILL.md` |
-   | preferencia estable | 1 línea de memoria | memoria `user` de Hermes (USER.md tiene un límite de ~1.375 caracteres) |
+   | corrección repetida | regla de 1 línea | `AGENTS.md` o `CLAUDE.md` del proyecto donde ocurrió |
+   | pedido repetido en ≥2 sesiones | skill con nombre de verbo (`auditar-landing`, `publicar-reel`, `armar-propuesta`) | `~/.hermes/skills/<categoria>/<verbo>/SKILL.md` |
+   | error de tool repetido | regla o arreglo del entorno | `AGENTS.md` del proyecto, o un pendiente para `goal-contract` |
+   | preferencia estable | 1 línea de memoria | memoria `user` de Hermes (USER.md tiene un límite de 1.375 caracteres) |
    | decisión tomada | entrada con su "qué la revertiría" | `decisiones.md` del radar |
 
 4. **Redactá los borradores.** Cada skill lleva frontmatter (`name`, `description`, `version`, `metadata.hermes.tags`) y las secciones When to Use, Procedure, Pitfalls y Verification. Separá lo **verificado** (funcionó en una sesión real) de lo **no probado** (recomendación).

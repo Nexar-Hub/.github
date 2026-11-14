@@ -361,19 +361,25 @@ def main() -> None:
         return self_test()
     if not args.export:
         ap.error("export path required")
-    state = args.state or args.out / "processed.txt"
-    done = set(state.read_text().split()) if state.exists() else set()
-    items, thoughts = build(parse_messages(read_export(args.export)), done)
-    args.out.mkdir(parents=True, exist_ok=True)
-    with open(args.out / "inbox.jsonl", "w", encoding="utf-8") as fh:
-        for it in items:
-            fh.write(json.dumps(it.__dict__, ensure_ascii=False) + "\n")
-    with open(args.out / "thoughts.jsonl", "w", encoding="utf-8") as fh:
-        for t in thoughts:
-            fh.write(json.dumps(t, ensure_ascii=False) + "\n")
-    (args.out / "inbox.md").write_text(summary_md(items, thoughts), encoding="utf-8")
+    items, thoughts = ingest(args.export, args.out, args.state)
     new = sum(i.status == "new" for i in items)
     print(f"{len(items)} links ({new} new), {len(thoughts)} notes -> {args.out}/")
+
+
+def ingest(export: Path, out: Path, state: Path | None = None) -> tuple[list[Item], list[dict]]:
+    """Parse an export and (re)write inbox.jsonl, thoughts.jsonl and inbox.md in `out`."""
+    state = state or out / "processed.txt"
+    done = set(state.read_text().split()) if state.exists() else set()
+    items, thoughts = build(parse_messages(read_export(export)), done)
+    out.mkdir(parents=True, exist_ok=True)
+    with open(out / "inbox.jsonl", "w", encoding="utf-8") as fh:
+        for it in items:
+            fh.write(json.dumps(it.__dict__, ensure_ascii=False) + "\n")
+    with open(out / "thoughts.jsonl", "w", encoding="utf-8") as fh:
+        for t in thoughts:
+            fh.write(json.dumps(t, ensure_ascii=False) + "\n")
+    (out / "inbox.md").write_text(summary_md(items, thoughts), encoding="utf-8")
+    return items, thoughts
 
 
 if __name__ == "__main__":

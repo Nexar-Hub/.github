@@ -1,7 +1,7 @@
 ---
 name: goal-contract
 description: Convierte un pedido de construcción en un contrato verificable (estado final, evidencia, restricciones, presupuesto), elige el verificador antes de correr y supervisa a Claude Code / Codex como loop externo hasta que el verificador pase. Usar cuando hay que construir, arreglar o automatizar algo con un agente de código, o el usuario dice "armá", "implementá", "dejalo funcionando", "/goal".
-version: 1.0.0
+version: 2.0.0
 author: Nexar Hub
 platforms: [macos, linux, windows]
 metadata:
@@ -27,20 +27,16 @@ Esta skill no reemplaza a Claude Code ni a Codex, porque ya traen su propio loop
 
 ### 1. Escribí el contrato
 
-Guardalo en `runs/AAAA-MM-DD-<slug>.md` dentro del repo o del workspace.
-
-```markdown
-## Objetivo (estado final observable)
-## Evidencia requerida (verificador elegido ANTES de correr)
-- p.ej.: `npm test` verde · `tsc --noEmit` sin errores · screenshot de /pricing en 390px · benchmark ≤ X ms
-## Restricciones
-- scope: … · no tocar: … · sin push/merge/deploy sin aprobación · rama/worktree: …
-## Presupuesto
-- turnos o tiempo máx · costo máx · criterio de corte (qué hago si no llega)
-## Fuera de alcance
+```
+C="python3 ${HERMES_SKILL_DIR}/scripts/contract.py"
+$C new <slug> --dir runs        # crea runs/AAAA-MM-DD-<slug>.md con la plantilla
 ```
 
-Lo que el agente dice sobre su propio trabajo no cuenta como evidencia. Si no existe un verificador, el primer paso es crearlo.
+Completá en ese archivo: el objetivo como estado final observable, las restricciones (scope, qué no tocar, sin push/merge/deploy sin aprobación, rama o worktree), el presupuesto y el criterio de corte.
+
+En **Evidencia requerida**, escribí una línea por chequeo con el formato `` - `comando` ``. Por ejemplo `` - `npm test` ``, `` - `npx tsc --noEmit` `` o `` - `python3 bench.py --max-ms 200` ``. Lo que no se puede expresar como comando (un screenshot, una revisión humana) va como texto: queda NOT TESTED, nunca PASS.
+
+**Lo que el agente dice sobre su propio trabajo no cuenta como evidencia. Si no existe un verificador, el primer paso es crearlo.**
 
 ### 2. Prototipá antes de comprometerte
 
@@ -69,10 +65,17 @@ El prompt de implementación es:
 
 ### 5. Corré el loop externo
 
-Despertá, inspeccioná el progreso, corré el verificador, comparalo con el contrato y mandá la siguiente instrucción. Repetí hasta que pase o se agote el presupuesto.
+Despertá, inspeccioná el progreso y juzgá con el script:
+
+```
+$C verify runs/<run>.md --cwd <repo>    # exit 0 solo si todos los chequeos pasan
+```
+
+El resultado, con la salida de lo que falló, se agrega al archivo del run. Mandá la siguiente instrucción con esos errores y repetí hasta PASS o hasta que se agote el presupuesto.
 
 - Si el mismo error aparece 2 veces seguidas, cambiá de estrategia. No reintentes igual.
-- Si el contexto se degrada, cortá la sesión, resumí el estado en el archivo del run y arrancá una sesión limpia. Una señal es que el agente pierde instrucciones básicas.
+- Si el contexto se degrada, cortá la sesión, resumí el estado en la Bitácora del run y arrancá una sesión limpia. Una señal es que el agente pierde instrucciones básicas.
+- Para correrlo solo, de noche: `hermes cron create "every 2h" "Seguí el contrato runs/<run>.md hasta PASS" --skill goal-contract --workdir <repo> --repeat 6`.
 
 ### 6. Hacé la revisión humana
 
@@ -102,5 +105,6 @@ En el archivo del run quedan: los comandos corridos y su resultado, el diff, los
 ## Verification
 
 - El contrato existe y fija el verificador antes de la primera ejecución.
+- La última `## Verificación` del archivo dice PASS (`$C status runs/<run>.md`).
 - El reporte final marca cada criterio como **PASS**, **FAIL** o **NOT TESTED**, con el comando y la salida que lo respaldan.
 - No hubo acciones irreversibles sin aprobación.

@@ -1,127 +1,124 @@
 # Radar de Leverage para Hermes Agent
 
-Un kit mínimo que convierte el grupo de WhatsApp donde se guardan links en un **radar que solo avisa cuando algo cambia una decisión, mejora el stack o abre una apuesta**.
-
-Está pensado para [Hermes Agent](https://github.com/NousResearch/hermes-agent) (Nous Research). Los comandos de este README se revisaron contra los docs del repo de Hermes (v0.23.x, noviembre de 2026). Si tu versión es otra, confirmalos con `hermes --help`.
+Convierte el grupo de WhatsApp donde guardás links en un radar que **solo te escribe cuando algo cambia una decisión, mejora tu stack o abre una apuesta**. Todo lo demás lo descarta en silencio.
 
 ```
-WhatsApp / Telegram ──► inbox ──► TRIAGE (modelo barato, diario) ──► CANDIDATO / DROP
-                                                     │
-                       DIGEST (modelo fuerte, semanal) ◄─┘──► Telegram: ≤5 señales
-                                                     │
-                     ADOPT ─► propuesta en stack/decisiones (con tu "sí")
-                     TEST  ─► experimentos.md (máx 3, 20–40 min por sesión)
+mandás un link al bot ──► el radar lo guarda y te da el veredicto en 4 líneas
+todos los días        ──► un modelo barato filtra lo nuevo (si no hay nada nuevo, no gasta)
+todos los días        ──► alertas sin LLM: rabbit holes, experimentos vencidos, radar parado
+los lunes             ──► el único mensaje: máximo 5 señales, con el próximo paso de cada una
+cuando quieras        ──► dashboard.html: el panel visual, desde el celular
 ```
 
-## Qué hay acá
+## Instalar (3 comandos)
 
-| ruta | qué es |
-|---|---|
-| `skills/radar/leverage-radar/` | Skill principal (CAPTURE, INGEST, TRIAGE, DIGEST, SCAN), con sus criterios, el mapa de capacidades y los scripts |
-| `skills/radar/leverage-radar/scripts/whatsapp_to_inbox.py` | Pasa un export de WhatsApp a `inbox.jsonl`: deduplica, normaliza URLs, ordena por prioridad. Sin red y sin LLM |
-| `skills/radar/leverage-radar/scripts/fetch_post.py` | Trae el texto de un post de X (fxtwitter, con oEmbed de respaldo) o los metadatos y el README de un repo de GitHub, sin navegador |
-| `skills/radar/capability-first/` | Pasa de "investigá X" a capacidad → opciones → prueba mínima |
-| `skills/radar/goal-contract/` | Arma un contrato verificable y deja a Hermes como loop externo de Claude Code o Codex |
-| `skills/radar/session-distill/` | Aplica la regla de 3: errores repetidos se vuelven reglas, workflows repetidos se vuelven skills y preferencias estables se vuelven memoria |
-| `workspace/` | Plantilla del workspace del radar: `AGENTS.md`, perfil, stack, decisiones, experimentos |
-
-Tus datos personales (perfil completo, inbox, notas) **no van a este repo**, porque es público. Quedan en tu máquina, en el workspace. `.gitignore` bloquea `hermes/private/` y los archivos del inbox.
-
-## Instalación (unos 10 minutos)
+En la máquina donde corre Hermes. En Windows, desde Git Bash o WSL.
 
 ```bash
-# 1. Kit
 git clone https://github.com/Nexar-Hub/.github ~/src/nexar-hub-github
-
-# 2. Workspace (también puede ir dentro de tu vault de Obsidian)
-cp -r ~/src/nexar-hub-github/hermes/workspace ~/radar
-mkdir -p ~/radar/{digests,runs,destilados}
-#    → completá perfil.md, stack.md y decisiones.md (o pegá tu pack privado encima)
-#    → corregí la línea KIT= en ~/radar/AGENTS.md si clonaste en otra ruta
+bash ~/src/nexar-hub-github/hermes/install.sh --private ~/Downloads/radar-privado.zip --cron \
+     --cheap-model <modelo-barato> --cheap-provider <proveedor>
+bash ~/src/nexar-hub-github/hermes/install.sh --doctor
 ```
 
-Sumá las skills en `~/.hermes/config.yaml` sin copiarlas. Así, un `git pull` las actualiza:
+El instalador hace estas cinco cosas y nada más:
 
-```yaml
-skills:
-  external_dirs:
-    - ~/src/nexar-hub-github/hermes/skills
-```
+- Crea `~/radar` sin pisar nada que ya hayas editado.
+- Carga tu pack privado.
+- Agrega las skills a Hermes, con backup de `config.yaml`.
+- Copia 2 scripts a `<HERMES_HOME>/scripts/`.
+- Crea 5 cron jobs, y si ya existen no los duplica.
 
-Para comprobar que cargaron, abrí `hermes` y probá `/leverage-radar`. Si tenés una skill con el mismo nombre en `~/.hermes/skills/`, esa tiene prioridad.
+No toca tu memoria, tu SOUL.md ni tus tokens. `--doctor` muestra en verde lo que funciona y en amarillo lo que falta.
 
-**Windows:** si Hermes corre en WSL, cloná y creá `~/radar` dentro de WSL.
+Sin `--private`, el workspace arranca con plantillas para completar. Sin `--cron`, no se programa nada. Si no le pasás `--cheap-model`, todo usa tu modelo principal.
 
-**Telegram:** si todavía no está, corré `hermes gateway setup`, elegí Telegram, ejecutá `/sethome` en el chat con el bot y dejá corriendo `hermes gateway`. Los cron jobs corren dentro del gateway.
+## Usarlo
 
-## Primer uso
+| querés… | hacés… |
+|---|---|
+| evaluar un link | mandale al bot `/leverage-radar https://… tu nota` |
+| cargar todo lo que ya guardaste | WhatsApp → Exportar chat → Sin archivos → dejá el `.zip` en `~/radar/inbox/` → `/leverage-radar ingest` |
+| ver el panel | `/leverage-radar dashboard` → abrí `~/radar/dashboard.html` |
+| corregir al radar | "no, esto era TEST porque…": queda guardado y mejora la medición |
+| construir algo con Claude Code o Codex | `/goal-contract`: contrato + verificador; el juez es un script, no el agente |
+| aprender de tus sesiones | `/session-distill`: lo que se repite 3 veces se propone como regla o skill |
+| evaluar una herramienta | `/capability-first`: capacidad → opciones (incluida "no hacer nada") → prueba mínima |
 
-1. En WhatsApp, abrí el grupo y elegí **Exportar chat → Sin archivos**. Dejá el `.zip` en `~/radar/inbox/`.
-2. En Hermes, abierto en `~/radar`, pedí: `/leverage-radar ingest`. El comando ejecuta esto:
+## Qué corre solo
 
-   ```bash
-   python3 ~/src/nexar-hub-github/hermes/skills/radar/leverage-radar/scripts/whatsapp_to_inbox.py \
-     ~/radar/inbox/"WhatsApp Chat - Articles Twitter.zip" --out ~/radar/inbox
-   ```
+| job | cuándo | modelo | te escribe |
+|---|---|---|---|
+| `radar-triage` | todos los días, 8:00 | barato · **no corre si el inbox no cambió** (`--monitor-script`) | no |
+| `radar-alertas` | todos los días, 9:00 | **ninguno** (`--no-agent`) | solo si hay una alerta |
+| `radar-digest` | lunes, 9:00 | principal | sí: el digest semanal |
+| `radar-scan` | jueves, 9:00 | barato, con presupuesto de 6 búsquedas | no (los hallazgos van al inbox) |
+| `radar-destilado` | día 1 de cada mes | principal | sí: propuestas para aprobar |
 
-   Genera `inbox.jsonl` con un link único por línea, `thoughts.jsonl` con tus notas sin link y `inbox.md` con un resumen de temas y links compartidos más de una vez. Re-exportar más adelante es seguro: lo que ya se juzgó queda como `done`.
-3. Desde ese momento, **mandá los links al bot de Hermes en vez de al grupo**: `/leverage-radar https://x.com/... nota opcional`. Te contesta el veredicto en 4 líneas, o `DROP · motivo`.
+Para revisarlos: `hermes cron list`. Para correr uno ya: `hermes cron run <id>`. Para pausar uno: `hermes cron pause <id>`.
 
-## Cron jobs
+## Cómo está hecho
 
-`--workdir` hace que el job cargue el `AGENTS.md` del radar. `--model` fija un modelo por job: el barato para filtrar y el fuerte solo donde hay más incertidumbre.
+El modelo solo pone el juicio. Todo lo mecánico es código determinístico (Python stdlib, sin dependencias):
+
+| pieza | qué hace |
+|---|---|
+| `skills/radar/leverage-radar/scripts/radar.py` | El motor: ingest, captura con deduplicación, lotes, **validación de veredictos** (rechaza ADOPT sin evidencia, TEST sin cupo, WATCH sin disparador…), alertas, experimentos con máximo 3 activos, datos del digest, evals y dashboard |
+| `…/whatsapp_to_inbox.py` | Pasa el export de WhatsApp (iOS o Android) a un inbox deduplicado, sin trackers ni números sueltos |
+| `…/fetch_post.py` | Trae el texto de un post de X o los metadatos y el README de un repo de GitHub, sin navegador |
+| `skills/radar/goal-contract/scripts/contract.py` | `new` crea el contrato. `verify` corre los chequeos y registra PASS, FAIL o NOT TESTED |
+| `skills/radar/session-distill/scripts/distill_sessions.py` | Lee Claude Code, Codex y Hermes (`state.db`, en modo solo lectura) y agrupa correcciones, pedidos y errores repetidos, con los secretos redactados |
+| `install.sh` | Instalación idempotente y diagnóstico con `--doctor` |
+| `workspace/` | Plantillas: `AGENTS.md`, perfil, stack, decisiones, experimentos |
+
+Tus datos (perfil, inbox, veredictos, correcciones) viven solo en `~/radar`. Este repo es público y nunca los recibe.
+
+## Medir al radar
+
+Cada vez que corregís un veredicto, la corrección queda en `evals/gold.jsonl`. Con eso:
 
 ```bash
-# Filtro diario, silencioso (no manda nada a Telegram)
-hermes cron create "daily at 8am" \
-  "Modo TRIAGE: procesá hasta 15 ítems nuevos del radar." \
-  --skill leverage-radar --workdir ~/radar --model <modelo-barato> --deliver local
-
-# Digest semanal, el único que te escribe
-hermes cron create "0 9 * * 1" \
-  "Modo DIGEST: juzgá los CANDIDATO de la semana y mandame el digest." \
-  --skill leverage-radar --workdir ~/radar --deliver telegram
-
-# Scan semanal con presupuesto cerrado (opcional)
-hermes cron create "0 9 * * 4" \
-  "Modo SCAN: buscá novedades en mis temas Tier 1 y apuestas abiertas." \
-  --skill leverage-radar --workdir ~/radar --model <modelo-barato> --deliver local
-
-# Destilado mensual de sesiones (opcional)
-hermes cron create "0 10 1 * *" \
-  "Destilá mis sesiones de los últimos 30 días y mostrame las propuestas." \
-  --skill session-distill --workdir ~/radar --deliver telegram
+R=~/src/nexar-hub-github/hermes/skills/radar/leverage-radar/scripts/radar.py
+cd ~/radar && python3 $R eval
 ```
 
-Para verificar y operar los jobs:
+Muestra el acierto del filtro, la precisión y el recall de lo que pasa, el veredicto exacto y los desacuerdos.
 
-- `hermes cron list`: lista los jobs.
-- `hermes cron run <id>`: corre un job ahora.
-- La salida queda en `~/.hermes/cron/output/<id>/`.
+Para comparar dos modelos (EXP-002: local vs nube): copiá el workspace dos veces, corré TRIAGE en cada copia con un modelo distinto y comparalas con
 
-Si el modelo barato lo provee un proveedor distinto del principal, sumá `--provider`.
+```bash
+python3 $R eval --compare A/radar-log.jsonl B/radar-log.jsonl
+```
 
-## Memoria
+El resultado incluye acuerdo, kappa y la lista de desacuerdos.
 
-Hermes inyecta `~/.hermes/memories/USER.md`, con un límite de unos 1.375 caracteres, al inicio de cada sesión. Dejá ahí solo lo que cambia el juicio en cualquier conversación: quién sos, el norte y 3 principios. El resto vive en el workspace, que no tiene ese límite. No pises tu USER.md actual: agregale contenido o pedile a Hermes que lo fusione.
+Para ver todo funcionando antes de tener datos propios: `python3 $R demo /tmp/radar-demo` genera un workspace sintético y su dashboard.
 
-## Diseño
+## Verificado contra Hermes
 
-Estas reglas salen de las notas que dieron origen al radar:
+Revisé el código fuente de Hermes Agent (commit `18ea4218`, 14/11/2026). Esto es lo confirmado:
 
-- **El radar no trae más información.** Lo normal es quedarse en silencio: el digest muestra 5 señales como máximo y DROP nunca avisa.
-- **Capability first.** Nada se evalúa como herramienta suelta. Todo se ubica en una capa (identidad, distribución, conversión, aprendizaje u orquestación) y en una capacidad.
-- **Evidencia antes que entusiasmo.** La escalera va de sin-fuente a anécdota, demo, adopción, medido y verificado. Para ADOPT hace falta una prueba propia.
-- **Pruebas acotadas.** Hay 3 experimentos activos como máximo, con bloques de 20 a 40 minutos y cierre obligatorio en ADOPT o DROP.
-- **Anti rabbit hole.** El digest avisa cuando guardás muchos links del mismo tema sin probar ninguno.
-- **Lo determinístico va en scripts.** Parsear, deduplicar y traer texto no gasta tokens. El LLM solo pone juicio.
-- **Mínimo de configuración.** Son 4 skills que cargan bajo demanda, sin MCPs nuevos ni servicios extra.
+- `skills.external_dirs` acepta rutas con `~` y `${VAR}`. La precedencia es proyecto, después `~/.hermes/skills`, después `create_dir` y por último las rutas externas.
+- `${HERMES_SKILL_DIR}` se reemplaza dentro de SKILL.md (`skills.template_vars: true` por defecto).
+- El nombre de una skill solo admite `a-z0-9._-` y hasta 64 caracteres. La descripción admite hasta 1.024 caracteres. `platforms` acepta `[macos, linux, windows]`.
+- `hermes cron create` acepta `--skill` (repetible), `--workdir` (**ruta absoluta y existente**: carga el `AGENTS.md` de ese directorio), `--model`/`--provider`, `--deliver`, `--monitor-script` (si la salida del script no cambia, el agente no corre), `--no-agent --script` (sin LLM; si la salida está vacía, no manda nada), `--continuity`, `--repeat`, `--timezone` y `--name`.
+- Los horarios aceptan formas como `daily at 8am`, `every monday 9am`, `weekdays at 9am` y expresiones cron.
+- Los scripts de cron **tienen que estar dentro de** `<HERMES_HOME>/scripts/`: un symlink hacia afuera se bloquea. Por eso el instalador copia wrappers.
+- La memoria `USER.md` tiene un límite de 1.375 caracteres y `MEMORY.md` de 2.200.
+- `HERMES_HOME` es `~/.hermes` en macOS y Linux, y `%LOCALAPPDATA%\hermes` en Windows nativo. El instalador lo pregunta con `hermes config path`.
+
+Lo que **no** probé:
+
+- Ejecutar Hermes en sí. No pude instalarlo en el entorno donde se armó esto; el instalador se probó contra un `hermes` falso (`tests/hermes-stub`).
+- El fetch de X (fxtwitter y oEmbed) contra la red real.
+- El formato de Codex y de los exports de ChatGPT con archivos reales.
+
+Si algo de esto falla, `--doctor` y los scripts lo dicen. Ninguno inventa un PASS.
 
 ## Pruebas
 
 ```bash
-python3 -I skills/radar/leverage-radar/scripts/whatsapp_to_inbox.py --self-test
-python3 -I skills/radar/leverage-radar/scripts/fetch_post.py --self-test
+bash hermes/tests/run.sh
 ```
 
-`fetch_post.py` se probó en vivo contra READMEs de GitHub. La rama de X (fxtwitter y oEmbed) solo tiene pruebas con datos simulados, porque el sandbox donde se armó no llega a esos hosts. Si falla en tu máquina, la skill cae sola en `web_extract` o en el navegador.
+Corre los self-tests, valida las skills con las reglas de Hermes, hace una instalación completa contra el stub (incluida la segunda corrida, para confirmar que es idempotente) y genera el dashboard demo. CI lo corre en Ubuntu y en macOS (bash 3.2).
