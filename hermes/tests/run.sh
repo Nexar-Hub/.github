@@ -43,6 +43,19 @@ out="$(bash "$T/hh/scripts/radar-alerts.sh")"; [ -z "$out" ] || fail "alertas de
 [ "$(bash "$T/hh/scripts/radar-pending.sh")" = "pendientes=0" ] || fail "monitor-script"
 doc="$(bash "$KIT/install.sh" --doctor)"; echo "$doc" | grep -q "skill /leverage-radar visible" || fail "doctor: $doc"
 
+echo "== pack privado con inbox ya procesado"
+mkdir -p "$T/pack/inbox" "$T/pack/evals"
+printf '# Perfil\nprivado\n' > "$T/pack/perfil.md"
+echo '{"id":"abc123def456","url":"https://x.com/a/status/1","notes":["Bible"],"tags":[],"first_seen":"2026-11-01T10:00:00"}' > "$T/pack/inbox/inbox.jsonl"
+echo '{"id":"abc123def456","veredicto":"WATCH","fuente":"notas"}' > "$T/pack/evals/gold-debil.jsonl"
+(cd "$T/pack" && "$PY" -c 'import zipfile,os; z=zipfile.ZipFile("../pack.zip","w"); [z.write(os.path.join(r,f)) for r,_,fs in os.walk(".") for f in fs]')
+bash "$KIT/install.sh" --workspace "$T/ws2" --private "$T/pack.zip" >/dev/null
+grep -q privado "$T/ws2/perfil.md" || fail "perfil del pack no se aplicó"
+[ "$(cd "$T/ws2" && "$PY" -I "$SK/leverage-radar/scripts/radar.py" pending)" = "pendientes=1 primero=abc123def456" ] || fail "inbox del pack"
+echo '{"id":"zzz"}' > "$T/ws2/inbox/inbox.jsonl"
+bash "$KIT/install.sh" --workspace "$T/ws2" --private "$T/pack.zip" >/dev/null
+grep -q zzz "$T/ws2/inbox/inbox.jsonl" || fail "el pack pisó un inbox existente"
+
 echo "== demo + dashboard"
 "$PY" -I "$SK/leverage-radar/scripts/radar.py" demo "$T/demo" >/dev/null
 grep -q "Radar de Leverage" "$T/demo/dashboard.html" || fail "dashboard"

@@ -116,8 +116,17 @@ if [ -n "$PRIVATE" ]; then
     elif cmp -s "$WS/$f" "$src"; then ok "$f ya está al día"
     else run cp "$src" "$WS/${f%.md}.nuevo.md"; warn "$f ya estaba editado: dejé ${f%.md}.nuevo.md para comparar"; fi
   done
-  for f in primer-pase.md USER-semilla.md; do
+  for f in primer-pase.md USER-semilla.md dashboard.html; do
     src="$(find "$tmpd" -name "$f" | head -1)"; [ -n "$src" ] && run cp "$src" "$WS/$f" && ok "$f copiado"
+  done
+  # inbox and evals already processed (e.g. your history): copy only what is missing, never overwrite
+  for d in inbox evals; do
+    srcd="$(find "$tmpd" -type d -name "$d" | head -1)"; [ -n "$srcd" ] || continue
+    for src in "$srcd"/*; do
+      [ -f "$src" ] || continue
+      dst="$WS/$d/$(basename "$src")"
+      if [ -e "$dst" ]; then ok "$d/$(basename "$src") ya existe (no lo toco)"; else run cp "$src" "$dst"; ok "$d/$(basename "$src") ← pack privado"; fi
+    done
   done
   rm -rf "$tmpd"
 fi

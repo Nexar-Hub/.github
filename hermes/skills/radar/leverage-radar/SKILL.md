@@ -42,6 +42,7 @@ R="python3 ${HERMES_SKILL_DIR}/scripts/radar.py"   # correr siempre desde el wor
 | `$R digest-data` | Todo lo que necesita el digest, en JSON |
 | `$R exp list` · `exp open …` · `exp close EXP-00N ADOPT\|DROP "aprendizaje"` | Experimentos (máximo 3 activos) |
 | `$R label <id\|url> <VEREDICTO> --por-que "…"` | Guarda la corrección del usuario en `evals/gold.jsonl` |
+| `$R gold-from-notes` | Etiquetas débiles a partir de lo que el usuario marcó fuerte ("Bible", "10/10", guardado 2 veces) |
 | `$R eval` · `$R eval --compare logA logB` | Mide qué tan bien juzga el radar, o compara dos modelos |
 | `$R dashboard` | Genera `dashboard.html`, un panel visual para el celular |
 
@@ -89,7 +90,8 @@ Antes de juzgar, leé `perfil.md`, `stack.md`, `decisiones.md` y `experimentos.m
 ### Correcciones: el usuario dice "no, esto era X"
 
 1. `$R label <id o url> <VEREDICTO> --por-que "<lo que dijo>"`, y registrá también la línea corregida con `$R log`.
-2. Cada 20 etiquetas nuevas, corré `$R eval` y mencioná en el digest el acierto del filtro y los desacuerdos repetidos. Si el radar se equivoca 3 veces por el mismo motivo, proponé una regla para `criterios.md`.
+2. Después del primer TRIAGE grande, corré `$R gold-from-notes` y `$R eval --gold evals/gold-debil.jsonl`. Así medís si el radar deja pasar lo que el usuario ya había marcado como "Bible", "10/10" o "clave". Si el recall es menor a 0,8, el filtro está demasiado estricto: revisá los desacuerdos antes de seguir.
+3. Cada 20 etiquetas nuevas, corré `$R eval` y mencioná en el digest el acierto del filtro y los desacuerdos repetidos. Si el radar se equivoca 3 veces por el mismo motivo, proponé una regla para `criterios.md`.
 
 ## Juicio
 

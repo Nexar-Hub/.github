@@ -38,7 +38,9 @@ Sin `--private`, el workspace arranca con plantillas para completar. Sin `--cron
 | querés… | hacés… |
 |---|---|
 | evaluar un link | mandale al bot `/leverage-radar https://… tu nota` |
-| cargar todo lo que ya guardaste | WhatsApp → Exportar chat → Sin archivos → dejá el `.zip` en `~/radar/inbox/` → `/leverage-radar ingest` |
+| cargar todo lo que ya guardaste | WhatsApp → Exportar chat → Sin archivos → dejá el `.zip` en `~/radar/inbox/` → `/leverage-radar ingest` (si tu pack privado ya trae `inbox/`, saltealo) |
+| vaciar el backlog la primera vez | `hermes cron create "every 30m" "Modo TRIAGE: lote de 20." --skill leverage-radar --workdir "$HOME/radar" --model <barato> --repeat 32 --deliver local`: unos 640 ítems en 16 horas, y después se borra solo |
+| saber si el radar respeta lo que vos ya marcaste | `radar.py gold-from-notes` y después `radar.py eval --gold evals/gold-debil.jsonl`: qué porcentaje de tus "Bible", "10/10" y "clave" deja pasar |
 | ver el panel | `/leverage-radar dashboard` → abrí `~/radar/dashboard.html` |
 | corregir al radar | "no, esto era TEST porque…": queda guardado y mejora la medición |
 | construir algo con Claude Code o Codex | `/goal-contract`: contrato + verificador; el juez es un script, no el agente |

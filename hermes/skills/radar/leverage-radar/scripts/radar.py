@@ -14,7 +14,8 @@ evals and the HTML dashboard. Run it from the radar workspace (or pass --ws).
   digest-data                  everything the weekly digest needs, as JSON
   exp list|open|close          experiments in experimentos.md (max 3 active)
   label <id> <VERDICT>         record your correction in evals/gold.jsonl
-  eval [--compare A B]         verdicts vs your labels, or agreement between two runs
+  gold-from-notes              weak labels from what you flagged ("Bible", "10/10", re-shared)
+  eval [--gold F] [--compare A B]  verdicts vs your labels, or agreement between two runs
   dashboard [-o file.html]     self-contained HTML view of the radar
   self-test                    offline tests
 """
@@ -44,6 +45,7 @@ EVIDENCE = ("sin-fuente", "anecdota", "demo", "adopcion", "medido", "verificado"
 STAGES = ("triage", "capture", "digest", "scan")
 WIP_MAX = 3
 RABBIT_MIN, RABBIT_DAYS = 5, 14
+UMBRELLA_TAGS = {"agents-skills"}  # your home turf: too broad to call a rabbit hole
 
 
 def today() -> dt.date:
@@ -342,7 +344,7 @@ def alerts(ws: WS) -> list[dict]:
     tried = {t for r in log if r.get("veredicto") in ("TEST", "ADOPT")
              and (d := _date(r.get("fecha"))) and (now - d).days <= 30 for t in r.get("tags", [])}
     for tag, n in fresh.most_common():
-        if n >= RABBIT_MIN and tag not in tried:
+        if n >= RABBIT_MIN and tag not in tried and tag not in UMBRELLA_TAGS:
             out.append({"nivel": "serious", "tipo": "rabbit-hole", "texto":
                         f"Estás orbitando `{tag}`: {n} links en {RABBIT_DAYS} días y 0 pruebas. "
                         "Elegí 1 para TEST y hacé DROP del resto."})
@@ -435,10 +437,11 @@ def evaluate(gold: list[dict], preds: dict[str, dict]) -> dict:
         fp += gb == "drop" and pb == "pasa"
         fn += gb == "pasa" and pb == "drop"
         tn += gb == "drop" and pb == "drop"
-        if pv != "CANDIDATO":
+        weak = g.get("fuente") == "notas"
+        if pv != "CANDIDATO" and not weak:
             exact_n += 1
             exact += pv == gv
-        if gb != pb or (pv != "CANDIDATO" and pv != gv):
+        if gb != pb or (pv != "CANDIDATO" and pv != gv and not weak):
             misses.append({"id": g["id"], "url": g.get("url"), "esperado": gv, "radar": pv,
                            "por_que_radar": p.get("por_que"), "por_que_tuyo": g.get("por_que")})
     n = tp + fp + fn + tn
@@ -467,6 +470,23 @@ def agreement(a: dict[str, dict], b: dict[str, dict]) -> dict:
              for i in common if _binary(a[i].get("veredicto")) != _binary(b[i].get("veredicto"))]
     return {"comunes": len(common), "acuerdo_filtro": round(po, 3), "acuerdo_exacto": round(exact / len(common), 3),
             "kappa_filtro": kappa, "desacuerdos_filtro": diffs}
+
+
+def gold_from_notes(ws: WS) -> list[dict]:
+    """Weak labels: what YOU flagged ("Bible", "10/10", "clave", "si o si"...) or saved more than
+    once should pass the radar's filter. Measures recall only; regenerated on every call."""
+    rows = []
+    for it in ws.items().values():
+        notes = " / ".join(it.get("notes", []))
+        markers = [k for k in wa.PRIORITY_HIGH if wa._has(notes.lower(), k)]
+        if markers or it.get("times_shared", 1) > 1:
+            why = (f"lo marcaste '{markers[0]}'" if markers else f"lo guardaste {it['times_shared']} veces")
+            rows.append({"id": it["id"], "url": it.get("url"), "veredicto": "WATCH", "fuente": "notas",
+                         "por_que": f"etiqueta débil: {why}", "notas": notes[:120]})
+    path = ws.root / "evals" / "gold-debil.jsonl"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows), encoding="utf-8")
+    return rows
 
 
 def latest_by_id(rows: list[dict], stage: str | None = None) -> dict[str, dict]:
@@ -536,7 +556,7 @@ def _decisions(ws: WS) -> list[list[str]]:
     rows = []
     for line in p.read_text(encoding="utf-8").splitlines():
         if re.match(r"^\|\s*D-\d+", line):
-            cells = [c.strip() for c in line.strip().strip("|").split("|")]
+            cells = [re.sub(r"\*\*|`", "", c).strip() for c in line.strip().strip("|").split("|")]
             if len(cells) >= 6 and "<" not in cells[2]:
                 rows.append([cells[0], cells[1], cells[2], cells[5]])
     return rows
@@ -676,7 +696,9 @@ def main(argv: list[str] | None = None) -> int:
     c = es.add_parser("close"); c.add_argument("exp_id"); c.add_argument("resultado"); c.add_argument("aprendizaje")
     p = sub.add_parser("label"); p.add_argument("target", help="id or url"); p.add_argument("veredicto")
     p.add_argument("--por-que", default="")
+    sub.add_parser("gold-from-notes", help="weak labels from your own notes (recall test)")
     p = sub.add_parser("eval"); p.add_argument("--etapa", choices=STAGES)
+    p.add_argument("--gold", type=Path, help="labels file (default evals/gold.jsonl)")
     p.add_argument("--compare", nargs=2, type=Path, metavar=("LOG_A", "LOG_B")); p.add_argument("--json", action="store_true")
     p = sub.add_parser("dashboard"); p.add_argument("-o", "--out", type=Path)
     p = sub.add_parser("demo", help="create a synthetic workspace to try everything"); p.add_argument("dir", type=Path)
@@ -781,7 +803,7 @@ def main(argv: list[str] | None = None) -> int:
         if a.compare:
             res = agreement(latest_by_id(WS.read_jsonl(a.compare[0]), a.etapa), latest_by_id(WS.read_jsonl(a.compare[1]), a.etapa))
         else:
-            gold = list(latest_by_id(ws.read_jsonl(ws.gold)).values())
+            gold = list(latest_by_id(ws.read_jsonl(a.gold or ws.gold)).values())
             if not gold:
                 print("No hay etiquetas. Usá `radar.py label <id> <VEREDICTO>` cuando corrijas al radar.", file=sys.stderr)
                 return 1
@@ -796,6 +818,10 @@ def main(argv: list[str] | None = None) -> int:
                         print("  - " + " · ".join(f"{kk}={vv}" for kk, vv in d.items() if vv))
                 else:
                     print(f"{k}: {v}")
+        return 0
+    if a.cmd == "gold-from-notes":
+        rows = gold_from_notes(ws)
+        print(f"{len(rows)} etiquetas débiles -> evals/gold-debil.jsonl · medí con: radar.py eval --gold evals/gold-debil.jsonl")
         return 0
     if a.cmd == "dashboard":
         out = a.out or ws.root / "dashboard.html"
@@ -949,6 +975,10 @@ def self_test() -> int:
         b_run = {"x": {"veredicto": "DROP"}, "y": {"veredicto": "CANDIDATO"}, "z": {"veredicto": "DROP"}}
         ag = agreement(a_run, b_run)
         assert ag["comunes"] == 3 and ag["acuerdo_filtro"] == round(2 / 3, 3) and len(ag["desacuerdos_filtro"]) == 1, ag
+        weak = gold_from_notes(ws)
+        assert [w["id"] for w in weak] == [item_id(u2)] and "10/10" in weak[0]["por_que"], weak
+        res = evaluate(weak, ws.latest())
+        assert res["sin_juicio"] == 1 and res["veredicto_exacto"] is None, res
         # capture dedupes and dashboard renders escaped HTML
         assert main(["--ws", tmp, "capture", u1, "--note", "<script>x</script>"]) == 0
         assert len(ws.read_jsonl(ws.capturas)) == 5  # duplicate not appended
