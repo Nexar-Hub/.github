@@ -1,0 +1,128 @@
+name: Issue triage
+
+# Reusable workflow: turns the answers of the Task and Bug forms into labels.
+# Missing labels are created in the calling repository, so the forms' labels work everywhere.
+# The form is the source of truth: edit the issue's answers to change its labels.
+
+on:
+  workflow_call:
+
+permissions: {}
+
+jobs:
+  label:
+    name: Label from form
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+    steps:
+      - name: Apply labels from the form answers
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const issue = context.payload.issue;
+            if (context.eventName !== 'issues' || !issue) {
+              core.info('Nothing to do: this workflow only handles issue events.');
+              return;
+            }
+
+            // Every label the forms can produce. "work: ..." labels come from the Type of work answer.
+            const LABELS = {
+              'task': { color: '5319e7', description: 'Scoped work request (Task form)' },
+              'bug': { color: 'd73a4a', description: 'Something is broken (Bug report form)' },
+              'priority: high': { color: 'b60205', description: 'Blocks people or a deadline' },
+              'priority: medium': { color: 'fbca04', description: 'Needed soon' },
+              'priority: low': { color: '0e8a16', description: 'Nice to have' },
+              'risk: high': { color: 'd93f0b', description: 'A mistake here would hurt; review carefully' },
+              'risk: medium': { color: 'f9d0c4', description: 'Some chance of side effects' },
+              'risk: low': { color: 'c2e0c6', description: 'Little chance of side effects' },
+            };
+            const WORK_COLOR = '1d76db';
+
+            // Form field label -> label group it controls.
+            const FIELDS = { 'Priority': 'priority', 'Risk': 'risk', 'Type of work': 'work' };
+            // A field only one form has tells which form the issue came from.
+            const KINDS = { 'Acceptance criteria': 'task', 'Steps to reproduce': 'bug' };
+
+            // Issue forms render each answer as "### <field label>" followed by the answer.
+            const sections = new Map();
+            let section = null;
+            for (const line of (issue.body || '').replace(/\r\n?/g, '\n').split('\n')) {
+              const heading = line.match(/^###\s+(.+?)\s*$/);
+              if (heading) {
+                section = heading[1];
+                sections.set(section, []);
+              } else if (section !== null) {
+                sections.get(section).push(line);
+              }
+            }
+            const answer = (field) => {
+              const value = (sections.get(field) || []).join('\n').trim();
+              return value && value !== '_No response_' ? value : null;
+            };
+            const slug = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
+            const wanted = new Map(); // label name -> { color, description }
+            const managedGroups = new Set();
+            for (const [field, kind] of Object.entries(KINDS)) {
+              if (sections.has(field)) wanted.set(kind, LABELS[kind]);
+            }
+            for (const [field, group] of Object.entries(FIELDS)) {
+              if (!sections.has(field)) continue;
+              managedGroups.add(group);
+              const value = answer(field);
+              if (!value) continue;
+              const name = `${group}: ${slug(value)}`;
+              wanted.set(name, LABELS[name] || { color: WORK_COLOR, description: `Type of work: ${value}`.slice(0, 100) });
+            }
+
+            if (wanted.size === 0) {
+              core.info('No form answers found; labels left alone.');
+              return;
+            }
+
+            const { owner, repo } = context.repo;
+            const onIssue = new Set((issue.labels || []).map((label) => (typeof label === 'string' ? label : label.name).toLowerCase()));
+            const toAdd = [...wanted.keys()].filter((name) => !onIssue.has(name));
+            const toRemove = (issue.labels || [])
+              .map((label) => (typeof label === 'string' ? label : label.name))
+              .filter((name) => {
+                const group = name.toLowerCase().split(': ')[0];
+                return name.includes(': ') && managedGroups.has(group) && !wanted.has(name.toLowerCase());
+              });
+
+            for (const name of toAdd) {
+              try {
+                await github.rest.issues.getLabel({ owner, repo, name });
+                continue;
+              } catch (error) {
+                if (error.status !== 404) throw error;
+              }
+              try {
+                await github.rest.issues.createLabel({ owner, repo, name, ...wanted.get(name) });
+                core.info(`Created label "${name}".`);
+              } catch (error) {
+                if (error.status !== 422) throw error; // another run created it first
+              }
+            }
+            if (toAdd.length) {
+              await github.rest.issues.addLabels({ owner, repo, issue_number: issue.number, labels: toAdd });
+            }
+            for (const name of toRemove) {
+              try {
+                await github.rest.issues.removeLabel({ owner, repo, issue_number: issue.number, name });
+              } catch (error) {
+                if (error.status !== 404) throw error;
+              }
+            }
+
+            const changes = [
+              ...toAdd.map((name) => `Added \`${name}\``),
+              ...toRemove.map((name) => `Removed \`${name}\``),
+            ];
+            core.info(changes.length ? changes.join('\n') : 'Labels already match the form.');
+            await core.summary
+              .addHeading(`Issue #${issue.number} labels`, 2)
+              .addList(changes.length ? changes : ['Labels already match the form.'])
+              .write();

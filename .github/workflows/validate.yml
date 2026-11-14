@@ -1,0 +1,46 @@
+name: Validate
+
+# Every repository in the organization inherits the forms and templates in this repository,
+# so a mistake here breaks them everywhere. This runs the tests and lints the workflows.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Tests and lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+
+      - name: Install PyYAML
+        run: python -m pip install --disable-pip-version-check pyyaml==6.0.3
+
+      - name: Test forms, templates, and workflow scripts
+        run: python -m unittest discover -s tests -v
+
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.25"
+          cache: false
+
+      # go install checks the download against Go's public checksum database.
+      - name: Lint workflows
+        run: |
+          go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
+          "$(go env GOPATH)/bin/actionlint" -color .github/workflows/*.yml workflow-templates/*.yml

@@ -1,0 +1,6 @@
+{
+  "name": "Nexar Hub defaults",
+  "description": "Turns Task and Bug form answers into labels and checks that every pull request fills in the template.",
+  "iconName": "octicon checklist",
+  "categories": ["Automation", "SDLC"]
+}

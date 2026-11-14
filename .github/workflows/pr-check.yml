@@ -1,0 +1,88 @@
+name: Pull request check
+
+# Reusable workflow: fails while the pull request template is not filled in.
+# Draft pull requests may leave checklist boxes unticked; bots are skipped.
+
+on:
+  workflow_call:
+    inputs:
+      required-sections:
+        description: Comma-separated "## " headings of the pull request template that must not be empty.
+        type: string
+        default: Objective, Linked issue, Scope, Out of scope, Verification
+      require-checklist:
+        description: Fail pull requests that are ready for review while a checklist box is unticked.
+        type: boolean
+        default: true
+
+permissions: {}
+
+jobs:
+  template:
+    name: Template filled in
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions: {}
+    steps:
+      - name: Check the pull request description
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          REQUIRED_SECTIONS: ${{ inputs.required-sections }}
+          REQUIRE_CHECKLIST: ${{ inputs.require-checklist }}
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            if (!pr) {
+              core.setFailed('This check only runs on pull_request events.');
+              return;
+            }
+            if (pr.user?.type === 'Bot') {
+              core.info(`Skipped: opened by ${pr.user.login}, a bot.`);
+              return;
+            }
+
+            const required = (process.env.REQUIRED_SECTIONS || '').split(',').map((s) => s.trim()).filter(Boolean);
+            const requireChecklist = process.env.REQUIRE_CHECKLIST === 'true';
+
+            // The template's prompts are HTML comments, so they don't count as an answer.
+            const body = (pr.body || '').replace(/\r\n?/g, '\n').replace(/<!--[\s\S]*?-->/g, '');
+
+            const sections = new Map();
+            let section = null;
+            for (const line of body.split('\n')) {
+              const heading = line.match(/^##\s+(.+?)\s*$/);
+              if (heading) {
+                section = heading[1].toLowerCase();
+                sections.set(section, []);
+              } else if (section !== null) {
+                sections.get(section).push(line);
+              }
+            }
+
+            const problems = [];
+            for (const name of required) {
+              const lines = sections.get(name.toLowerCase());
+              if (!lines) problems.push(`"## ${name}" is missing. Copy it back from the pull request template.`);
+              else if (!lines.join('\n').trim()) problems.push(`"## ${name}" is empty.`);
+            }
+
+            const unticked = body.split('\n')
+              .map((line) => line.match(/^\s*[-*]\s+\[ \]\s+(.+?)\s*$/))
+              .filter(Boolean)
+              .map((match) => match[1]);
+            if (requireChecklist && unticked.length) {
+              if (pr.draft) {
+                core.info(`Draft: ${unticked.length} checklist item(s) still unticked.`);
+              } else {
+                problems.push(`Unticked: ${unticked.map((item) => `"${item}"`).join(', ')}. Tick each one when it is true, or convert the pull request to a draft.`);
+              }
+            }
+
+            const summary = core.summary.addHeading('Pull request template', 2);
+            if (problems.length) {
+              await summary.addList(problems).write();
+              core.setFailed(`The pull request template is not filled in:\n- ${problems.join('\n- ')}`);
+            } else {
+              await summary.addList(['Every required section is filled in.']).write();
+              core.info('Every required section is filled in.');
+            }

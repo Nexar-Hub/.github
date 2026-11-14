@@ -1,0 +1,27 @@
+name: Nexar Hub defaults
+
+# Labels issues from the Task and Bug forms and checks that pull requests fill in the template.
+# This repository runs its own copy of workflow-templates/nexar-hub-defaults.yml against this commit.
+
+on:
+  issues:
+    types: [opened, edited]
+  pull_request:
+    types: [opened, edited, reopened, synchronize, ready_for_review, converted_to_draft]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.issue.number || github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  issue-triage:
+    if: github.event_name == 'issues'
+    permissions:
+      issues: write
+    uses: ./.github/workflows/issue-triage.yml
+
+  pr-check:
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/pr-check.yml

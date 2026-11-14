@@ -1,0 +1,77 @@
+name: Bug report
+description: Report something that is broken or behaves unexpectedly
+title: "[Bug] "
+labels: ["bug"]
+
+body:
+  - type: markdown
+    attributes:
+      value: One bug per report. For new work or a change, use the **Task / work request** form.
+
+  - type: textarea
+    id: what_happened
+    attributes:
+      label: What happened?
+      description: Describe the problem as you saw it.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Exact steps so someone else can see the bug.
+      placeholder: |
+        1. Go to ...
+        2. Click ...
+        3. See ...
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Where
+      description: URL, page, or screen where it happens.
+      placeholder: https://
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Device and browser
+      placeholder: iPhone 15, Safari 18
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshots, recordings, or logs
+      description: Drag files here. Paste logs as text.
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: "High: blocks people or a deadline. Medium: needed soon. Low: nice to have."
+      options:
+        - Low
+        - Medium
+        - High
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I searched the open issues and this bug is not reported yet.
+          required: true

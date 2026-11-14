@@ -2,6 +2,10 @@
 
 <!-- What should this change accomplish? -->
 
+## Linked issue
+
+<!-- "Closes #123" closes the issue on merge. Write "None" if there is no issue. -->
+
 ## Scope
 
 <!-- What is included in this Pull Request? -->

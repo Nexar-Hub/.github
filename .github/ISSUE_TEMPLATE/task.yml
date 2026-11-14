@@ -1,8 +1,13 @@
 name: Task / work request
 description: Create a clear, scoped work request
 title: "[Task] "
+labels: ["task"]
 
 body:
+  - type: markdown
+    attributes:
+      value: Something broken? Use the **Bug report** form instead.
+
   - type: textarea
     id: objective
     attributes:
@@ -25,13 +30,15 @@ body:
     attributes:
       label: Type of work
       options:
-        - Bug
         - Feature
         - Design / UI
+        - Brand
         - Content
         - SEO
         - Performance
         - Accessibility
+        - Analytics
+        - Automation
         - Refactor
         - Research
         - Other
@@ -62,6 +69,7 @@ body:
     id: priority
     attributes:
       label: Priority
+      description: "High: blocks people or a deadline. Medium: needed soon. Low: nice to have."
       options:
         - Low
         - Medium
@@ -73,6 +81,7 @@ body:
     id: risk
     attributes:
       label: Risk
+      description: How bad would it be if this change broke something?
       options:
         - Low
         - Medium
