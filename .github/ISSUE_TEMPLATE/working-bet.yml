@@ -1,0 +1,61 @@
+name: Working Bet (apuesta de producto)
+description: Cinco líneas para escribir qué creemos y cómo lo vamos a comprobar con gente real.
+title: "[Bet] "
+labels: ["working-bet"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Basado en *The Early Access Playbook v2.0* de Hiten Shah.
+        Escribe lo que crees hoy. Marca como **desconocido** lo que todavía no sabes.
+        Cuando aprendas algo, abre un issue **Learning Thread** y enlázalo a este.
+
+  - type: textarea
+    id: who
+    attributes:
+      label: ¿Quién tiene el problema y cuándo aparece?
+      description: La situación concreta y la persona que hace el trabajo.
+    validations:
+      required: true
+
+  - type: textarea
+    id: today
+    attributes:
+      label: ¿Qué hacen hoy (o qué es posible ahora que antes no lo era)?
+      description: La alternativa real, aunque sea hacerlo a mano o no hacerlo.
+    validations:
+      required: true
+
+  - type: textarea
+    id: better
+    attributes:
+      label: ¿Qué creemos que podría ser mejor?
+      description: El resultado que la persona necesita conseguir, no la función que queremos construir.
+    validations:
+      required: true
+
+  - type: textarea
+    id: unknown
+    attributes:
+      label: Lo más importante que todavía no sabemos
+    validations:
+      required: true
+
+  - type: textarea
+    id: test
+    attributes:
+      label: ¿Qué vamos a hacer para averiguarlo?
+      description: La prueba creíble más barata. Una conversación sobre la última vez, observar el método actual o poner el producto en una tarea real.
+    validations:
+      required: true
+
+  - type: textarea
+    id: change_mind
+    attributes:
+      label: ¿Qué resultado nos haría cambiar de rumbo?
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidencia que ya tenemos (enlaces)

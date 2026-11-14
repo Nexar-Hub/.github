@@ -1,0 +1,71 @@
+name: Learning Thread (aprendizaje)
+description: Registrar una observación real que cambia lo que vamos a hacer.
+title: "[Aprendizaje] "
+labels: ["learning-thread"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Una entrada corta cada vez que algo real cambia lo que haremos.
+        Otra persona debería entender la decisión actual leyendo solo esto.
+
+  - type: input
+    id: bet
+    attributes:
+      label: Apuesta relacionada
+      description: Número del issue Working Bet (por ejemplo, #12).
+
+  - type: input
+    id: version
+    attributes:
+      label: Versión del producto o fecha
+
+  - type: textarea
+    id: who
+    attributes:
+      label: Persona o equipo, y el trabajo que intentaba hacer
+    validations:
+      required: true
+
+  - type: textarea
+    id: happened
+    attributes:
+      label: Qué pasó
+      description: Hechos, no opiniones. Agrega un enlace a la grabación, el mensaje o el evento si lo hay.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: source
+    attributes:
+      label: Fuente
+      options:
+        - Lo contó la persona
+        - Lo observamos directamente
+        - Evento del producto (datos)
+        - Desconocida
+    validations:
+      required: true
+
+  - type: textarea
+    id: meaning
+    attributes:
+      label: Qué creemos que significa, y otra explicación posible
+    validations:
+      required: true
+
+  - type: textarea
+    id: decision
+    attributes:
+      label: Decisión y responsable
+      description: Cambiar algo, volver a probar, invitar a alguien más o parar.
+    validations:
+      required: true
+
+  - type: textarea
+    id: next_check
+    attributes:
+      label: Próxima tarea o resultado real que vamos a revisar
+    validations:
+      required: true
