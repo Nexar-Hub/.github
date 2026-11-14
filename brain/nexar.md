@@ -97,7 +97,7 @@ El objetivo no es cerrar un logo. Es entrar como sistema operativo visual y come
 
 | Formato | Qué es |
 |---------|--------|
-| **Diagnóstico** | Chequeo gratuito de la presencia digital actual. Muestra dónde se pierde crecimiento. Abre la puerta al upgrade. |
+| **Diagnóstico** | Chequeo gratuito de la presencia digital actual. Muestra dónde se pierde crecimiento. Abre la puerta al upgrade. Se produce con el skill `.claude/skills/diagnostico/`. |
 | **Brand ADN** | Núcleo de fundamentación del que se derivan todas las decisiones de marca, web, ads y contenido. |
 | **Website Rebuild Sprint** | Reconstruir la web actual del cliente en una base moderna (Next.js), rápida, editable y medible, manteniendo su identidad. Nunca se vende como "clonar sitios". |
 | **Growth Story Audit** | Auditoría visual en formato scrollytelling: problema → fuga → oportunidad → sistema → mejora medible. "No vendemos dashboards. Mostramos dónde se pierde crecimiento y qué sistema lo recupera." |

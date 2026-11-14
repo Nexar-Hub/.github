@@ -100,6 +100,8 @@ Agente → branch → GitHub → preview → QA visual → aprobación → merge
 
 Checklist automática: build, TypeScript, lint, links rotos, metadata, sitemap, robots.txt, responsive, performance, forms, analytics, errores de consola.
 
+La parte de la web publicada (metadata, sitemap, robots, 404, analytics, velocidad, mobile, headers, screenshots) la cubre el skill de diagnóstico corrido sobre la preview: `node .claude/skills/diagnostico/scripts/audit.mjs <preview-url>`. Criterio: cero `fail`.
+
 Después Playwright con screenshots en **390 · 768 · 1280 · 1440** px y comparación visual. Solo después, producción.
 
 ### 11. Infra final del cliente

@@ -16,6 +16,7 @@ Convertir evidencia relevante en ejecución de alta calidad y resultados medible
    - primera call / brief → `brain/workflows/discovery.md`
    - web → `brain/workflows/website.md` + `templates/proyecto-web/`
    - contenido / distribución → `brain/workflows/contenido.md`
+   - diagnosticar una web (prospecto, cliente o QA pre-launch) → skill `.claude/skills/diagnostico/`
 5. Si vas a generar propuestas creativas o de estrategia: usá `brain/prompts.md` (contexto Nexar + cierre obligatorio).
 6. Ejecutá. Evaluá contra el criterio del workflow. Pará cuando pasa.
 
@@ -44,7 +45,7 @@ Convertir evidencia relevante en ejecución de alta calidad y resultados medible
 - Prometer rankings de SEO o resultados que no se pueden garantizar.
 - Clonar sitios o assets de terceros.
 - Agregar infraestructura, CMS, agentes o automatizaciones sin una necesidad demostrada.
-- Subir a este repo datos privados de clientes, precios o credenciales: **este repo es público**.
+- Subir a este repo datos privados de clientes, precios o credenciales: **este repo es público**. Los diagnósticos van a `diagnosticos/`, que está ignorado por git.
 
 ## Mantener `brain/`
 

@@ -545,7 +545,9 @@ Stack: react-cookie-consent o custom simple.
 ### 12.1b — QA automática
 
 ```
-Corré la QA completa antes de pedir aprobación:
+Corré la QA completa antes de pedir aprobación.
+La evidencia de la web publicada la junta el skill de diagnóstico de Nexar-Hub/.github:
+`node /tmp/nexar-hub/.claude/skills/diagnostico/scripts/audit.mjs <preview-url>` (cero `fail`).
 
 1. Build, TypeScript y lint sin errores
 2. Links rotos, metadata, sitemap y robots.txt

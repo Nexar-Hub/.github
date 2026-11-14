@@ -10,6 +10,7 @@ Repo de organización de **Nexar Hub**. Tiene tres funciones:
 
 ```
 AGENTS.md                         Contrato de entrada para agentes (Claude Code lo carga vía CLAUDE.md)
+.claude/skills/diagnostico/       Skill ejecutable: diagnóstico de una web a partir de su URL (evidencia + informe)
 CLAUDE.md                         Importa AGENTS.md
 profile/README.md                 Perfil público de la organización
 brain/
@@ -38,6 +39,14 @@ cp -r /tmp/nexar-hub/templates/proyecto-web/ ~/projects/cliente-nuevo/
 ```
 
 Después seguir `templates/proyecto-web/README.md`.
+
+**Diagnosticar una web (prospecto, cliente o QA pre-launch)**
+
+```bash
+node .claude/skills/diagnostico/scripts/audit.mjs https://dominio.com
+```
+
+Deja evidencia y screenshots en `diagnosticos/` (ignorado por git). En Claude Code alcanza con pedir "diagnosticá dominio.com": el skill corre el script, mira los screenshots, puntúa con la rúbrica y escribe el informe.
 
 **Darle contexto a un modelo**
 
