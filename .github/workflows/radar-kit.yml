@@ -1,0 +1,25 @@
+name: radar-kit
+
+on:
+  push:
+    paths: ["hermes/**", ".github/workflows/radar-kit.yml"]
+  pull_request:
+    paths: ["hermes/**", ".github/workflows/radar-kit.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]  # macOS valida bash 3.2
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Pruebas del kit (sin red ni LLM)
+        run: bash hermes/tests/run.sh
