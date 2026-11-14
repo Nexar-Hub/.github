@@ -264,6 +264,13 @@ verificable lo pone en el dominio donde cambiar se siente como recuperar.
 cuentas). Sin evidencia, el encuadre de pérdida es una táctica de miedo y no se usa. El auditor
 marca las promesas de ganancia B2B con la regla PT08.
 
+**Cómo se consigue la evidencia:** `node spread/tools/prospect_audit.mjs https://prospecto.com`
+abre su web en escritorio y celular y mide lo que está perdiendo: rastreadores de IA bloqueados,
+layout roto en mobile, links y recursos rotos, CTA fuera de la primera pantalla, velocidad,
+formularios largos, metadatos para compartir. Además pasa su copy por el auditor de esta biblia.
+Devuelve un reporte con capturas y un primer mensaje de outbound armado **solo** con lo medido. Si
+no encuentra pérdidas, no propone mensaje.
+
 ### Superficie por superficie
 
 | Superficie | Palanca | Hacé | Evitá | Métrica principal |
@@ -271,7 +278,7 @@ marca las promesas de ganancia B2B con la regla PT08.
 | **Oferta y posicionamiento** | 2 | Status quo como pérdida: buen producto que nadie encuentra. | Vender la categoría (GTM, distribution, IA). | Tasa de respuesta, reuniones |
 | **Hero de la web** | 2 + 3 | Tres opciones de hero; al menos una con encuadre de pérdida actual. | Promesas de «más» sin referencia. | Clic al CTA, reuniones |
 | **Outbound (email, LinkedIn, X)** | 2 + 3 | Abrir con una pérdida observable de esa cuenta: un prompt de IA que pierde, tráfico que no convierte, una página que rompe en mobile. | Pitch de servicios; jerga. | Respuestas positivas |
-| **Lead magnet: auditoría o demo** | 2 + certeza | Auditoría AEO o demo funcional gratis con datos del prospecto: el «wow moment» lo pone en el dominio de pérdidas con evidencia. | Auditorías genéricas en PDF. | Auditoría → reunión |
+| **Lead magnet: auditoría o demo** | 2 + certeza | Auditoría de evidencia (`prospect_audit.mjs`) o demo funcional gratis con datos del prospecto: el «wow moment» lo pone en el dominio de pérdidas con evidencia. | Auditorías genéricas en PDF. | Auditoría → reunión |
 | **Propuesta y pricing** | R2 + R3 + R1 | Un solo precio por el Pipeline Build; los entregables listados uno por uno. | Cotizar cada componente por separado; un setup fee chico como línea aparte (integralo). | Cierre de propuestas |
 | **Bonus en la propuesta** | R4 (testear) | El extra (por ejemplo, una auditoría AEO de su categoría) como regalo aparte. | «−10 % si firmás hoy» como único incentivo. | Cierre |
 | **Reporting al cliente** | R1 + R2 | Cada reunión u oportunidad nueva como su propio aviso; problemas y costos, juntos en un único reporte. | Un PDF mensual que comprime todo. | Renovación |

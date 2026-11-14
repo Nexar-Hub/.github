@@ -34,10 +34,20 @@ Antes de trabajar en cualquier pieza de Spread, leé:
 - Voz: español rioplatense con voseo para docs internos; la web y el outbound pueden ir en inglés
   (el idioma está abierto, ver `context/POSITIONING.md`).
 
+## Cuando haya un prospecto
+
+1. `node spread/tools/prospect_audit.mjs <url>`: mide lo que pierde y redacta el primer mensaje.
+2. Verificá cada hallazgo en el reporte antes de usarlo. Si no hay pérdidas medibles, no uses
+   encuadre de pérdida.
+3. No envíes nada: el mensaje lo revisa y lo manda una persona.
+
 ## Herramientas
 
+- `node spread/tools/prospect_audit.mjs --help`: auditoría de evidencia por prospecto.
 - `python3 spread/tools/copy_audit.py --list-rules`: reglas del auditor.
 - `python3 spread/tools/prospect_theory.py --help`: calculadora.
 - `python3 spread/tools/render_curves.py`: regenera los SVG de la biblia.
-- Tests: `python3 -m unittest discover -s spread/tools/tests`. Corrélos antes de commitear cambios
-  en `tools/` o en los títulos de la biblia (verifican que los anchors de las reglas existan).
+- Tests: `python3 -m unittest discover -s spread/tools/tests` y
+  `node --test spread/tools/tests/*.test.mjs`. Corrélos antes de commitear cambios en `tools/` o en
+  los títulos de la biblia (verifican que los anchors de las reglas existan).
+- Python: solo stdlib 3.9+. Node: solo Playwright. No agregues otras dependencias.

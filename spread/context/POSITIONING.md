@@ -126,7 +126,7 @@ corre sobre todo lo generado antes de entregarlo.
 | Precio del Pipeline Build | R2 · Juntá las pérdidas | Un solo precio por el sistema completo, no siete líneas. |
 | Entregables | R1 · Separá las ganancias | El «resultado tangible» listado ítem por ítem, como arriba. |
 | Reporting | R1 | Cada reunión u oportunidad nueva como su propio aviso. |
-| Lead magnet | 2 + certeza | Auditoría AEO o demo funcional con datos del prospecto. |
+| Lead magnet | 2 + certeza | Auditoría de evidencia (`spread/tools/prospect_audit.mjs`) o demo funcional con datos del prospecto. Mientras no haya casos, el reporte es la prueba del trabajo. |
 
 Detalle en [`../bible/PLAYBOOK.md`](../bible/PLAYBOOK.md#aplicarlo-en-spread).
 

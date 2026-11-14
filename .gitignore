@@ -1,2 +1,4 @@
 __pycache__/
 *.pyc
+# Reportes de prospect_audit: tienen datos de prospectos, no se versionan.
+audits/

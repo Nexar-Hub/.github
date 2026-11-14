@@ -66,7 +66,9 @@ Del export «27 Distribution» (un post de un founder sobre cómo lo hicieron):
 4. **Hacer todo, medir y preguntar:** nadie sabe todavía qué canal pesa más; se hace todo, se mide,
    se pregunta a quienes llegaron por IA y se duplica lo que funciona. Comunidad y meetups ayudan.
 
-**Uso en Spread:** la auditoría AEO de la categoría del prospecto es el lead magnet ideal para la
+**Uso en Spread:** `spread/tools/prospect_audit.mjs` ya detecta si el robots.txt del prospecto
+bloquea a los rastreadores de búsqueda de OpenAI, Anthropic o Perplexity. El paso siguiente es el
+tracker de prompts. La auditoría AEO de la categoría del prospecto es el lead magnet ideal para la
 palanca 2: «Cuando tu ICP le pregunta a ChatGPT por *[categoría]*, recomienda a
 *[competidor]*». Pérdida actual, con evidencia, del propio prospecto.
 
@@ -109,6 +111,8 @@ palanca 2: «Cuando tu ICP le pregunta a ChatGPT por *[categoría]*, recomienda 
 - Automatizar lead gen: [everestchris6](https://x.com/everestchris6/status/2099161324555309092);
   GTM: [gengdaj](https://x.com/gengdaj/status/2098252168625332263).
 - Outbound con palanca 2: abrir con una pérdida observable de esa cuenta.
+  `node spread/tools/prospect_audit.mjs <url>` la mide y redacta el primer mensaje (ES/EN) solo con
+  los hallazgos verificados.
 
 ## Medición («esto es Distribution en el core»)
 
