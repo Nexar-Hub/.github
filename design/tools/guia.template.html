@@ -1,0 +1,699 @@
+<title>Criterio Nexar</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: una columna editorial con mucho aire; el hero es un paisaje con el
+   horizonte en el tercio inferior y una figura chica (leyes 2, 3 y 6 aplicadas
+   a la propia guía). Un solo acento, elegible. */
+:root {
+  /* Colores de marca: constantes, iguales en los dos temas (muestras) */
+  --mejillon: #E8E2D6; --marron: #5A2E24; --celeste: #A3C4E4;
+  --roca: #55585C; --arena: #AE9C83; --noche: #0E1626;
+
+  /* Tema claro */
+  --bg: #E8E2D6;
+  --surface: #EFEAE1;
+  --fg: #3B241D;
+  --heading: #5A2E24;
+  --muted: #55585C;
+  --line: rgba(90, 46, 36, .18);
+  --sky-top: #A3C4E4;
+  --sky-low: #E3E3DC;
+  --ground: #8E8A82;
+  --ground-far: #AE9C83;
+  --figure: #3B241D;
+  --grain-opacity: .22;
+  --ok: #2F6B4F; --warn: #8A5A12; --bad: #A8321E;
+  --d-sky: #A3C4E4;
+
+  /* Acento (uno solo; cambia con el selector) */
+  --accent: #0055CC; --accent-ink: #E8E2D6;
+
+  --display: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --body: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --step--1: .8125rem; --step-0: 1rem; --step-1: 1.25rem;
+  --step-2: 1.75rem; --step-3: 2.5rem; --step-4: clamp(2.6rem, 7vw, 5.25rem);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1626; --surface: #152036; --fg: #E2DCD0; --heading: #E8E2D6;
+    --muted: #A3A7AE; --line: rgba(232, 226, 214, .14);
+    --sky-top: #0B1322; --sky-low: #2A3B57; --ground: #1B2232; --ground-far: #3A3A40;
+    --figure: #E8E2D6; --grain-opacity: .16;
+    --ok: #7CC4A0; --warn: #E2B15C; --bad: #F08A73; --d-sky: #2C4466;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1626; --surface: #152036; --fg: #E2DCD0; --heading: #E8E2D6;
+  --muted: #A3A7AE; --line: rgba(232, 226, 214, .14);
+  --sky-top: #0B1322; --sky-low: #2A3B57; --ground: #1B2232; --ground-far: #3A3A40;
+  --figure: #E8E2D6; --grain-opacity: .16;
+  --ok: #7CC4A0; --warn: #E2B15C; --bad: #F08A73; --d-sky: #2C4466;
+  color-scheme: dark;
+}
+:root[data-accent="rojo"] { --accent: #E4391F; --accent-ink: #E8E2D6; }
+:root[data-accent="cobalto"] { --accent: #0055CC; --accent-ink: #E8E2D6; }
+:root[data-accent="amarillo"] { --accent: #FEE741; --accent-ink: #0E1626; }
+:root[data-accent="ambar"] { --accent: #F5A65B; --accent-ink: #0E1626; }
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 400 var(--step-0)/1.6 var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 1080px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3 { font-family: var(--display); font-weight: 400; color: var(--heading); text-wrap: balance; margin: 0; }
+h2 { font-size: var(--step-3); line-height: 1.1; letter-spacing: -.01em; }
+h3 { font-size: var(--step-1); line-height: 1.25; }
+p { margin: 0; }
+.eyebrow {
+  font: 500 var(--step--1)/1.2 var(--mono); letter-spacing: .08em;
+  text-transform: uppercase; color: var(--muted);
+}
+.lede { color: var(--muted); max-width: 62ch; }
+a { color: inherit; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+button { font: inherit; color: inherit; }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* ---------- Hero ---------- */
+.hero { position: relative; overflow: hidden; }
+.hero-text { position: relative; z-index: 2; padding-block: 56px 0; display: grid; gap: 20px; }
+.hero h1 { font-size: var(--step-4); line-height: 1.02; letter-spacing: -.02em; max-width: 15ch; }
+.hero h1 em { font-style: italic; font-weight: 300; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; color: var(--muted); font-size: var(--step--1); }
+.land { display: block; width: 100%; height: clamp(180px, 30vw, 340px); margin-top: -8px; }
+.land .sky-a { stop-color: var(--sky-top); }
+.land .sky-b { stop-color: var(--sky-low); }
+.land .far { fill: var(--ground-far); }
+.land .near { fill: var(--ground); }
+.land .fig { fill: var(--figure); }
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  opacity: var(--grain-opacity); mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 0 0.2 0 0 0 1.1 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+:root[data-theme="dark"] .hero::before { mix-blend-mode: screen; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hero::before { mix-blend-mode: screen; } }
+
+nav.index { border-block: 1px solid var(--line); }
+nav.index ul {
+  list-style: none; margin: 0 auto; padding-block: 12px; display: flex; flex-wrap: wrap; gap: 6px 22px;
+  font-size: var(--step--1);
+}
+nav.index a { text-decoration: none; color: var(--muted); }
+nav.index a:hover { color: var(--heading); }
+
+section.block { padding-block: 72px 8px; display: grid; gap: 28px; }
+.head { display: grid; gap: 10px; align-content: start; }
+
+/* ---------- Revisión (10 leyes) ---------- */
+.review { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 32px; align-items: start; }
+.piece { display: grid; gap: 6px; }
+.piece label { font-size: var(--step--1); color: var(--muted); }
+.piece input {
+  font: inherit; color: var(--fg); background: var(--surface); border: 1px solid var(--line);
+  border-radius: 6px; padding: 10px 12px; width: 100%;
+}
+.laws { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.law {
+  display: grid; grid-template-columns: 3.2rem minmax(0, 1fr) auto; gap: 4px 14px; align-items: center;
+  padding-block: 16px; border-bottom: 1px solid var(--line);
+}
+.law .n { font: 300 var(--step-2)/1 var(--display); color: var(--muted); font-variant-numeric: tabular-nums; }
+.law .t { min-width: 0; }
+.law .t strong { display: block; font-weight: 600; color: var(--heading); }
+.law .t span { color: var(--muted); font-size: .94rem; }
+.law.low .n { color: var(--bad); }
+.scale { display: flex; gap: 4px; }
+.scale input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.scale label {
+  width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%;
+  border: 1px solid var(--line); cursor: pointer; font: 500 .9rem var(--mono); color: var(--muted);
+  transition: background .15s, color .15s, border-color .15s;
+}
+.scale label:hover { border-color: var(--heading); color: var(--heading); }
+.scale input:checked + label { background: var(--heading); border-color: var(--heading); color: var(--bg); }
+.scale input:focus-visible + label { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.verdict {
+  position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  padding: 20px; display: grid; gap: 16px;
+}
+.score { display: flex; align-items: baseline; gap: 6px; }
+.score b { font: 300 3.4rem/1 var(--display); color: var(--heading); font-variant-numeric: tabular-nums; }
+.score span { color: var(--muted); }
+.meter { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--heading); transition: width .25s; }
+.pill {
+  display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: .95rem;
+}
+.pill::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: currentColor; }
+.pill.ok { color: var(--ok); } .pill.warn { color: var(--warn); } .pill.bad { color: var(--bad); }
+.final { display: grid; gap: 8px; border-top: 1px solid var(--line); padding-top: 14px; }
+.final p { font-family: var(--display); font-size: 1.12rem; line-height: 1.3; color: var(--heading); }
+.choice { display: flex; gap: 6px; }
+.choice input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.choice label {
+  padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line); cursor: pointer; font-size: .9rem;
+}
+.choice input:checked + label { background: var(--heading); color: var(--bg); border-color: var(--heading); }
+.choice input:focus-visible + label { outline: 2px solid var(--accent); outline-offset: 2px; }
+.todo { color: var(--muted); font-size: .92rem; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn {
+  border: 1px solid var(--line); background: transparent; border-radius: 6px; padding: 8px 12px;
+  cursor: pointer; font-size: .9rem;
+}
+.btn:hover { border-color: var(--heading); }
+.tag { font: 500 .72rem/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+
+/* ---------- Paleta ---------- */
+.bar { display: flex; height: 120px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+.bar div { position: relative; min-width: 0; }
+.bar span {
+  position: absolute; left: 10px; bottom: 8px; font: 500 .75rem var(--mono); white-space: nowrap;
+}
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+.sw { display: grid; gap: 8px; }
+.chip { height: 64px; border-radius: 6px; border: 1px solid var(--line); }
+.sw .name { font-weight: 600; color: var(--heading); }
+.sw .meta { display: flex; justify-content: space-between; gap: 8px; color: var(--muted); font-size: .9rem; }
+.copy {
+  font: 500 .85rem var(--mono); border: 0; background: none; padding: 0; cursor: pointer;
+  color: var(--fg); text-decoration: underline dotted; text-underline-offset: 3px;
+}
+.accents { display: flex; flex-wrap: wrap; gap: 10px; }
+.accents input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.accents label {
+  display: flex; align-items: center; gap: 10px; padding: 8px 14px 8px 8px; border-radius: 999px;
+  border: 1px solid var(--line); cursor: pointer;
+}
+.accents label i { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--line); }
+.accents label small { color: var(--muted); }
+.accents input:checked + label { border-color: var(--heading); box-shadow: inset 0 0 0 1px var(--heading); }
+.accents input:focus-visible + label { outline: 2px solid var(--accent); outline-offset: 2px; }
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: .94rem; }
+th, td { text-align: left; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); }
+th { font: 500 .75rem var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.sample { display: inline-grid; place-items: center; width: 64px; height: 34px; border-radius: 4px; font: 600 1rem var(--body); }
+
+/* ---------- Composición ---------- */
+.diagrams { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 28px 20px; }
+.dg { display: grid; gap: 10px; margin: 0; }
+.dg svg { width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--line); display: block; }
+.dg figcaption { display: grid; gap: 2px; }
+.dg figcaption strong { color: var(--heading); font-weight: 600; }
+.dg figcaption span { color: var(--muted); font-size: .92rem; }
+.mark { font: 600 .78rem var(--mono); }
+.mark.yes { color: var(--ok); } .mark.no { color: var(--bad); }
+.d-sky { fill: var(--d-sky); } .d-sky2 { fill: var(--sky-low); }
+.d-ground { fill: var(--ground); } .d-far { fill: var(--ground-far); }
+.d-fig { fill: var(--figure); } .d-acc { fill: var(--accent); }
+.d-grid { fill: var(--muted); opacity: .55; }
+.d-wall { fill: var(--surface); } .d-frame { fill: none; stroke: var(--heading); stroke-width: 2.5; }
+.d-fore { fill: var(--figure); opacity: .9; }
+.d-bad { stroke: var(--bad); stroke-width: 1.5; stroke-dasharray: 4 3; fill: none; }
+
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px; }
+.list { margin: 0; padding: 0; list-style: none; display: grid; gap: 0; border-top: 1px solid var(--line); }
+.list li { padding-block: 10px; border-bottom: 1px solid var(--line); }
+
+/* ---------- Tipografía ---------- */
+.specimen { display: grid; gap: 18px; padding-block: 8px; }
+.specimen .big { font: 300 clamp(3rem, 11vw, 7.5rem)/.95 var(--display); color: var(--heading); letter-spacing: -.03em; }
+.specimen .big em { font-style: italic; }
+.specimen .small { max-width: 46ch; color: var(--muted); font-size: .95rem; }
+.roles { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.roles div { display: grid; gap: 4px; padding-top: 12px; border-top: 1px solid var(--line); }
+.roles b { color: var(--heading); font-weight: 600; }
+.roles span { color: var(--muted); font-size: .92rem; }
+
+/* ---------- Textura: preset ---------- */
+.preset { display: grid; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; }
+.preset .row { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr) 3rem; gap: 12px; align-items: center; font-size: .92rem; }
+.preset .track { position: relative; height: 4px; background: var(--line); border-radius: 2px; }
+.preset .track::after { content: ""; position: absolute; left: 50%; top: -4px; width: 1px; height: 12px; background: var(--muted); }
+.preset .track i { position: absolute; top: 0; height: 100%; background: var(--heading); border-radius: 2px; }
+.preset .v { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* ---------- Prompts ---------- */
+.prompts { display: grid; gap: 18px; }
+.pr { display: grid; gap: 8px; }
+.pr-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.pr-head h3 { font-size: 1.15rem; }
+pre {
+  margin: 0; white-space: pre-wrap; word-break: break-word; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px;
+  font: 400 .86rem/1.55 var(--mono); color: var(--fg);
+}
+.srefs { display: grid; gap: 10px; }
+.sref { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 14px; align-items: baseline; }
+.sref span { color: var(--muted); font-size: .94rem; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips span { border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; font-size: .9rem; }
+.no-list li::before { content: "×"; font-family: var(--mono); color: var(--bad); margin-right: 10px; }
+
+footer { padding-block: 72px 48px; color: var(--muted); font-size: var(--step--1); display: grid; gap: 6px; }
+.toast {
+  position: fixed; left: 50%; transform: translateX(-50%);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
+  background: var(--heading); color: var(--bg); padding: 8px 14px; border-radius: 6px; font-size: .9rem;
+}
+
+@media (max-width: 820px) {
+  .review { grid-template-columns: minmax(0, 1fr); }
+  .verdict { position: static; order: -1; }
+}
+@media (max-width: 520px) {
+  .law { grid-template-columns: 2.2rem minmax(0, 1fr); }
+  .law .scale { grid-column: 2; }
+  .preset .row { grid-template-columns: 6.2rem minmax(0, 1fr) 2.6rem; }
+  section.block { padding-block: 56px 4px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<header class="hero">
+  <div class="wrap hero-text">
+    <p class="eyebrow">Nexar · Criterio de diseño</p>
+    <h1 id="essence">Poco, con intención y con <em>alma humana</em>.</h1>
+    <p class="lede" id="essence-long"></p>
+    <div class="hero-meta"><span>430 mensajes · 230 links · 200 imágenes</span><span id="version"></span></div>
+  </div>
+  <svg class="land" viewBox="0 0 1200 340" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" class="sky-a"/><stop offset="1" class="sky-b"/>
+      </linearGradient>
+    </defs>
+    <rect width="1200" height="340" fill="url(#sky)"/>
+    <path class="far" d="M0 262 C 180 252, 330 258, 480 254 S 820 246, 960 252 1120 256 1200 250 V340 H0Z"/>
+    <rect class="near" x="0" y="268" width="1200" height="72"/>
+    <g class="fig" transform="translate(806 238)">
+      <circle cx="4" cy="3.2" r="3.2"/><rect x="1.4" y="7" width="5.2" height="13" rx="2"/>
+      <rect x="1.6" y="19" width="2" height="11" rx="1"/><rect x="4.4" y="19" width="2" height="11" rx="1"/>
+    </g>
+  </svg>
+</header>
+
+<nav class="index" aria-label="Secciones">
+  <ul class="wrap">
+    <li><a href="#revisar">Revisar una pieza</a></li>
+    <li><a href="#paleta">Paleta</a></li>
+    <li><a href="#composicion">Composición</a></li>
+    <li><a href="#tipografia">Tipografía</a></li>
+    <li><a href="#textura">Textura y luz</a></li>
+    <li><a href="#prompts">Prompts</a></li>
+    <li><a href="#no">Lo que no</a></li>
+  </ul>
+</nav>
+
+<main class="wrap">
+  <section class="block" id="revisar">
+    <div class="head">
+      <p class="eyebrow">Las 10 leyes</p>
+      <h2>Revisá una pieza antes de entregarla</h2>
+      <p class="lede">Puntuá cada ley de 1 a 5. Cualquier ley por debajo de 3 te manda de vuelta. La última pregunta manda sobre todas.</p>
+    </div>
+    <div class="review">
+      <div style="display:grid;gap:18px;min-width:0">
+        <div class="piece">
+          <label for="piece-name">Pieza</label>
+          <input id="piece-name" type="text" autocomplete="off" placeholder="Ej.: post de lanzamiento, logo, landing">
+        </div>
+        <ol class="laws" id="laws"></ol>
+      </div>
+      <aside class="verdict" aria-live="polite">
+        <span class="tag" id="sample-tag">Ejemplo cargado</span>
+        <div class="score"><b id="total">0</b><span>/ 50</span></div>
+        <div class="meter"><i id="meter"></i></div>
+        <span class="pill" id="status"></span>
+        <p class="todo" id="todo"></p>
+        <div class="final">
+          <p id="final-q"></p>
+          <div class="choice">
+            <input type="radio" name="final" id="final-si" value="si"><label for="final-si">Sí</label>
+            <input type="radio" name="final" id="final-no" value="no"><label for="final-no">No</label>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn" id="reset" type="button">Evaluar una pieza nueva</button>
+          <button class="btn" id="copy-eval" type="button">Copiar resultado</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="block" id="paleta">
+    <div class="head">
+      <p class="eyebrow">Paleta · proporción real</p>
+      <h2>Tierra y cielo, y un solo acento</h2>
+      <p class="lede">La barra está a escala: 40 · 15 · 15 · 15 · 10 · 5. Elegí el acento del proyecto; la guía entera lo toma.</p>
+    </div>
+    <div class="bar" id="bar" role="img" aria-label="Proporción de la paleta"></div>
+    <div class="accents" id="accents" role="radiogroup" aria-label="Acento del proyecto"></div>
+    <div class="swatches" id="swatches"></div>
+    <div class="head" style="margin-top:12px">
+      <h3>¿Se lee?</h3>
+      <p class="lede">Contraste calculado con la fórmula WCAG. Texto normal pide 4.5:1; títulos grandes, 3:1.</p>
+    </div>
+    <div class="table-wrap"><table id="contrast"><thead><tr><th>Muestra</th><th>Combinación</th><th>Contraste</th><th>Uso</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <section class="block" id="composicion">
+    <div class="head">
+      <p class="eyebrow">Composición</p>
+      <h2>Dónde va el horizonte, dónde va el ojo</h2>
+    </div>
+    <div class="diagrams">
+      <figure class="dg">
+        <svg viewBox="0 0 240 150" aria-hidden="true">
+          <rect class="d-sky" width="240" height="150"/><rect class="d-ground" y="112" width="240" height="38"/>
+          <g class="d-fig" transform="translate(168 98)"><circle cx="2" cy="2" r="2"/><rect x=".8" y="4.5" width="2.6" height="9.5" rx="1"/></g>
+        </svg>
+        <figcaption><span class="mark yes">SÍ</span><strong>Horizonte abajo</strong><span>Mucho cielo: calma, aire, escala.</span></figcaption>
+      </figure>
+      <figure class="dg">
+        <svg viewBox="0 0 240 150" aria-hidden="true">
+          <rect class="d-sky" width="240" height="150"/><rect class="d-ground" y="75" width="240" height="75"/>
+          <line class="d-bad" x1="0" y1="75" x2="240" y2="75"/>
+        </svg>
+        <figcaption><span class="mark no">NO</span><strong>Horizonte al medio</strong><span>Parte la imagen en dos y no decide nada.</span></figcaption>
+      </figure>
+      <figure class="dg">
+        <svg viewBox="0 0 240 150" aria-hidden="true">
+          <rect class="d-sky2" width="240" height="150"/><path class="d-far" d="M0 104 C60 96 120 100 240 92 V150 H0Z"/>
+          <rect class="d-ground" y="116" width="240" height="34"/>
+          <g class="d-fig" transform="translate(76 101)"><circle cx="2" cy="2" r="2"/><rect x=".8" y="4.5" width="2.6" height="10.5" rx="1"/></g>
+        </svg>
+        <figcaption><span class="mark yes">SÍ</span><strong>Figura chica, paisaje grande</strong><span>El vacío cuenta la historia: escala, soledad, aspiración.</span></figcaption>
+      </figure>
+      <figure class="dg">
+        <svg viewBox="0 0 240 150" aria-hidden="true">
+          <rect class="d-wall" width="240" height="150"/>
+          <g id="grid-dots"></g>
+        </svg>
+        <figcaption><span class="mark yes">SÍ</span><strong>Base ordenada, una ruptura</strong><span>La repetición hace que el único elemento distinto pese.</span></figcaption>
+      </figure>
+      <figure class="dg">
+        <svg viewBox="0 0 240 150" aria-hidden="true">
+          <rect class="d-wall" width="240" height="150"/>
+          <rect class="d-sky" x="70" y="28" width="100" height="78"/><rect class="d-ground" x="70" y="88" width="100" height="18"/>
+          <rect class="d-frame" x="70" y="28" width="100" height="78"/><line class="d-frame" x1="120" y1="28" x2="120" y2="106"/>
+          <rect class="d-fore" x="0" y="128" width="240" height="22"/>
+        </svg>
+        <figcaption><span class="mark yes">SÍ</span><strong>Marco dentro de marco</strong><span>Ventanas, puertas, cuadros: el soporte también es diseño.</span></figcaption>
+      </figure>
+      <figure class="dg">
+        <svg viewBox="0 0 240 150" aria-hidden="true">
+          <rect class="d-sky" width="240" height="150"/><rect class="d-ground" y="104" width="240" height="46"/>
+          <g class="d-fig" transform="translate(150 89)"><circle cx="2" cy="2" r="2"/><rect x=".8" y="4.5" width="2.6" height="10" rx="1"/></g>
+          <path class="d-fore" d="M0 0 H240 V18 C190 22 120 14 70 26 C40 34 26 60 22 150 H0Z"/>
+        </svg>
+        <figcaption><span class="mark yes">SÍ</span><strong>Primer plano que enmarca</strong><span>Lo principal se ve más principal. No hacen falta efectos.</span></figcaption>
+      </figure>
+    </div>
+    <div class="cols">
+      <div class="head"><h3>Reglas de composición</h3><ul class="list" id="composition"></ul></div>
+      <div class="head"><h3>Motion y web</h3><ul class="list" id="motion"></ul></div>
+    </div>
+  </section>
+
+  <section class="block" id="tipografia">
+    <div class="head">
+      <p class="eyebrow">Tipografía</p>
+      <h2>Contraste de escala, dos familias</h2>
+    </div>
+    <div class="specimen">
+      <p class="big">Con poco, <em>mucho.</em></p>
+      <p class="small">El título enorme y el texto chico y aireado hacen el trabajo. Máximo dos familias por pieza. Buscá referencias en Fonts In Use y descargá lo que funcione.</p>
+    </div>
+    <div class="roles" id="roles"></div>
+  </section>
+
+  <section class="block" id="textura">
+    <div class="head">
+      <p class="eyebrow">Textura y luz</p>
+      <h2>Que se note una mano</h2>
+    </div>
+    <div class="cols">
+      <ul class="list" id="texture"></ul>
+      <div class="preset" id="preset" aria-label="Preset de color"></div>
+    </div>
+  </section>
+
+  <section class="block" id="prompts">
+    <div class="head">
+      <p class="eyebrow">Prompts</p>
+      <h2>Para que la IA trabaje con tu ojo</h2>
+      <p class="lede">El prompt de imagen ya usa el acento que elegiste en la paleta.</p>
+    </div>
+    <div class="prompts">
+      <div class="pr"><div class="pr-head"><h3>Modificadores de imagen</h3><button class="copy" data-copy="p-pos" type="button">Copiar</button></div><pre id="p-pos"></pre></div>
+      <div class="pr"><div class="pr-head"><h3>Negativo</h3><button class="copy" data-copy="p-neg" type="button">Copiar</button></div><pre id="p-neg"></pre></div>
+      <div class="pr"><div class="pr-head"><h3>Códigos de estilo de Midjourney</h3></div><div class="srefs" id="srefs"></div></div>
+      <div class="pr"><div class="pr-head"><h3>Técnicas con Nano Banana</h3></div><ul class="list" id="techniques"></ul></div>
+    </div>
+  </section>
+
+  <section class="block" id="no">
+    <div class="head">
+      <p class="eyebrow">Lo que no</p>
+      <h2 id="final-q2"></h2>
+    </div>
+    <div class="cols">
+      <ul class="list no-list" id="avoid"></ul>
+      <div class="head"><h3>Motivos que el ojo busca</h3><div class="chips" id="motifs"></div></div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span>Generado desde <span class="mono">design/design-dna.json</span>. Para actualizar: <span class="mono">python3 design/tools/build.py</span></span>
+  <span id="updated"></span>
+</footer>
+<div class="toast" id="toast" hidden></div>
+
+<script id="dna" type="application/json">null /*__DNA__*/</script>
+<script>
+(function () {
+  "use strict";
+  var raw = document.getElementById("dna").textContent.replace("/*__DNA__*/", "").trim();
+  var D = JSON.parse(raw);
+  if (!D) return;
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
+  function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k, JSON.stringify(v)); } catch (e) { return null; } }
+  var toastTimer;
+  function toast(msg) { var t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.hidden = true; }, 1600); }
+  function copyText(text, label) {
+    function fallback() { toast("Seleccioná y copiá a mano"); }
+    try {
+      navigator.clipboard.writeText(text).then(function () { toast((label || "Texto") + " copiado"); }, fallback);
+    } catch (e) { fallback(); }
+  }
+
+  // ---------- Esencia ----------
+  var rest = D.essence.split(":").slice(1).join(":").trim();
+  $("essence-long").textContent = rest ? rest.charAt(0).toUpperCase() + rest.slice(1) : D.essence;
+  $("version").textContent = "v" + D.version;
+  $("updated").textContent = "Actualizado: " + D.updated;
+  var finalRule = D.process.final_filter;
+  var finalQ = D.principles[9].test;
+  $("final-q").textContent = finalQ;
+  $("final-q2").textContent = finalRule;
+
+  // ---------- Leyes + revisión ----------
+  var EXAMPLE = { name: "Ejemplo: post de lanzamiento para una cafetería", scores: [4, 3, 2, 4, 2, 3, 4, 3, 5, 2], final: "si" };
+  var lawsEl = $("laws");
+  lawsEl.innerHTML = D.principles.map(function (p, i) {
+    var opts = "";
+    for (var v = 1; v <= 5; v++) {
+      var id = "l" + (i + 1) + "-" + v;
+      opts += '<input type="radio" name="l' + (i + 1) + '" id="' + id + '" value="' + v + '"><label for="' + id + '" title="' + v + '">' + v + "</label>";
+    }
+    return '<li class="law" id="law-' + (i + 1) + '"><span class="n">' + String(p.id).padStart(2, "0") + '</span>' +
+      '<div class="t"><strong>' + esc(p.name) + "</strong><span>" + esc(p.test) + "</span></div>" +
+      '<div class="scale" role="radiogroup" aria-label="Puntaje ley ' + p.id + '">' + opts + "</div></li>";
+  }).join("");
+
+  function readEval() {
+    var scores = D.principles.map(function (_, i) {
+      var c = document.querySelector('input[name="l' + (i + 1) + '"]:checked');
+      return c ? Number(c.value) : 0;
+    });
+    var f = document.querySelector('input[name="final"]:checked');
+    return { name: $("piece-name").value, scores: scores, final: f ? f.value : "" };
+  }
+  function writeEval(e) {
+    $("piece-name").value = e.name || "";
+    D.principles.forEach(function (_, i) {
+      document.querySelectorAll('input[name="l' + (i + 1) + '"]').forEach(function (r) { r.checked = Number(r.value) === e.scores[i]; });
+    });
+    document.querySelectorAll('input[name="final"]').forEach(function (r) { r.checked = r.value === e.final; });
+  }
+  function render(save) {
+    var e = readEval();
+    var total = e.scores.reduce(function (a, b) { return a + b; }, 0);
+    var rated = e.scores.filter(Boolean).length;
+    var low = [];
+    e.scores.forEach(function (s, i) {
+      var li = $("law-" + (i + 1));
+      li.classList.toggle("low", s > 0 && s < 3);
+      if (s > 0 && s < 3) low.push(i + 1);
+    });
+    $("total").textContent = total;
+    $("meter").style.width = (total / 50 * 100) + "%";
+    var st = $("status"), todo = $("todo");
+    if (rated < 10 || !e.final) {
+      st.className = "pill warn"; st.textContent = "Falta puntuar";
+      todo.textContent = (10 - rated) + " leyes sin puntaje" + (e.final ? "." : " y falta la pregunta final.");
+    } else if (e.final === "si" || low.length) {
+      st.className = "pill bad"; st.textContent = "Volvé a trabajarla";
+      var parts = [];
+      if (low.length) parts.push("Leyes por debajo de 3: " + low.join(", ") + ".");
+      if (e.final === "si") parts.push("Un diseñador promedio la habría propuesto: sacá lo obvio.");
+      todo.textContent = parts.join(" ");
+    } else {
+      st.className = "pill ok"; st.textContent = "Lista para entregar";
+      todo.textContent = "Todas las leyes en 3 o más y no es lo que haría cualquiera.";
+    }
+    if (save) { store("criterio.eval", e); $("sample-tag").textContent = "Tu evaluación"; }
+  }
+  var saved = store("criterio.eval");
+  if (saved && saved.scores) { writeEval(saved); $("sample-tag").textContent = "Tu evaluación"; }
+  else { writeEval(EXAMPLE); }
+  render(false);
+  document.querySelector(".review").addEventListener("change", function () { render(true); });
+  $("piece-name").addEventListener("input", function () { render(true); });
+  $("reset").addEventListener("click", function () {
+    writeEval({ name: "", scores: [0,0,0,0,0,0,0,0,0,0], final: "" });
+    render(true); $("piece-name").focus();
+  });
+  $("copy-eval").addEventListener("click", function () {
+    var e = readEval();
+    var lines = ["Revisión: " + (e.name || "sin nombre"), "Total: " + e.scores.reduce(function (a, b) { return a + b; }, 0) + "/50"];
+    D.principles.forEach(function (p, i) { lines.push(p.id + ". " + p.name + ": " + (e.scores[i] || "-")); });
+    lines.push(finalQ + " " + (e.final === "si" ? "Sí" : e.final === "no" ? "No" : "-"));
+    lines.push("Estado: " + $("status").textContent);
+    copyText(lines.join("\n"), "Resultado");
+  });
+
+  // ---------- Paleta ----------
+  var P = D.palette, base = P.base, accents = P.accents.options;
+  var byId = {};
+  base.concat(accents, [P.dark_base]).forEach(function (c) { byId[c.id] = c; });
+  var accentId = store("criterio.accent") || "cobalto";
+  if (!byId[accentId]) accentId = "cobalto";
+
+  function lum(hex) {
+    var c = [1, 3, 5].map(function (i) { var v = parseInt(hex.substr(i, 2), 16) / 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+  function ratio(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+  function ink(hex) { return ratio(hex, "#0E1626") > ratio(hex, "#E8E2D6") ? "#0E1626" : "#E8E2D6"; }
+
+  function renderBar() {
+    var segs = base.map(function (c) { return { hex: c.hex, pct: c.ratio, label: c.name }; });
+    var a = byId[accentId];
+    segs.push({ hex: a.hex, pct: P.accents.ratio, label: a.name });
+    $("bar").innerHTML = segs.map(function (s) {
+      return '<div style="flex:' + s.pct + ' 1 0;background:' + s.hex + '" title="' + esc(s.label) + " · " + s.pct + '%">' +
+        (s.pct >= 15 ? '<span style="color:' + ink(s.hex) + '">' + s.pct + "%</span>" : "") + "</div>";
+    }).join("");
+    $("bar").setAttribute("aria-label", segs.map(function (s) { return s.label + " " + s.pct + "%"; }).join(", "));
+  }
+  $("accents").innerHTML = accents.map(function (a) {
+    return '<input type="radio" name="accent" id="ac-' + a.id + '" value="' + a.id + '"' + (a.id === accentId ? " checked" : "") + ">" +
+      '<label for="ac-' + a.id + '"><i style="background:' + a.hex + '"></i><span>' + esc(a.name) + "<br><small>" + esc(a.use) + "</small></span></label>";
+  }).join("");
+  $("accents").addEventListener("change", function (e) {
+    accentId = e.target.value; store("criterio.accent", accentId); applyAccent();
+  });
+
+  function swatch(c, pct, role) {
+    return '<div class="sw"><div class="chip" style="background:' + c.hex + '"></div>' +
+      '<div class="name">' + esc(c.name) + "</div>" +
+      '<div class="meta"><button class="copy" type="button" data-hex="' + c.hex + '">' + c.hex + "</button><span>" + (pct != null ? pct + "%" : "") + "</span></div>" +
+      '<div class="meta"><span>' + esc(role) + "</span></div></div>";
+  }
+  $("swatches").innerHTML = base.map(function (c) { return swatch(c, c.ratio, c.role); }).join("") +
+    swatch(P.dark_base, null, P.dark_base.role);
+
+  var PAIRS = [["marron","mejillon"],["roca","mejillon"],["cobalto","mejillon"],["rojo","mejillon"],["arena","mejillon"],["amarillo","mejillon"],["ambar","mejillon"],
+               ["mejillon","celeste"],["marron","celeste"],["mejillon","noche"],["celeste","noche"],["amarillo","noche"],["ambar","noche"]];
+  $("contrast").querySelector("tbody").innerHTML = PAIRS.map(function (p) {
+    var f = byId[p[0]], b = byId[p[1]], r = ratio(f.hex, b.hex);
+    var use = r >= 4.5 ? '<span class="pill ok">Texto</span>' : r >= 3 ? '<span class="pill warn">Solo títulos grandes</span>' : '<span class="pill bad">No para texto</span>';
+    return "<tr><td><span class=\"sample\" style=\"background:" + b.hex + ";color:" + f.hex + ";border:1px solid var(--line)\">Aa</span></td>" +
+      "<td>" + esc(f.name) + " sobre " + esc(b.name.toLowerCase()) + "</td><td class=\"num\">" + r.toFixed(1) + ":1</td><td>" + use + "</td></tr>";
+  }).join("");
+
+  // ---------- Diagrama de grilla con una ruptura ----------
+  var g = "";
+  for (var r = 0; r < 4; r++) for (var c = 0; c < 7; c++) {
+    var x = 30 + c * 28, y = 28 + r * 26;
+    if (r === 1 && c === 5) g += '<rect class="d-acc" x="' + (x + 6) + '" y="' + (y - 7) + '" width="14" height="14" rx="1"/>';
+    else g += '<rect class="d-grid" x="' + x + '" y="' + y + '" width="12" height="12" rx="1"/>';
+  }
+  $("grid-dots").innerHTML = g;
+
+  // ---------- Listas ----------
+  function list(id, items) { $(id).innerHTML = items.map(function (t) { return "<li>" + esc(t.charAt(0).toUpperCase() + t.slice(1)) + "</li>"; }).join(""); }
+  list("composition", D.composition);
+  list("motion", D.motion_web);
+  list("texture", D.texture_finish);
+  list("avoid", D.avoid);
+  list("techniques", D.image_prompt_modifiers.ai_techniques);
+  $("motifs").innerHTML = D.motifs.map(function (m) { return "<span>" + esc(m) + "</span>"; }).join("");
+  $("roles").innerHTML = D.typography.families.map(function (f) {
+    return "<div><b>" + esc(f.type.charAt(0).toUpperCase() + f.type.slice(1)) + "</b><span>" + esc(f.use) + "</span></div>";
+  }).join("");
+
+  // ---------- Preset de color ----------
+  var cp = D.color_preset;
+  $("preset").innerHTML = '<div class="pr-head"><h3>Preset de color</h3><span class="tag">' + esc(cp.app) + " · " + esc(cp.base_filter) + "</span></div>" +
+    cp.settings.map(function (s) {
+      var pos = Math.max(-10, Math.min(10, s.value)), left = s.value < 0 ? 50 + pos * 5 : 50, w = Math.abs(pos) * 5;
+      return '<div class="row"><span>' + esc(s.name) + '</span><span class="track"><i style="left:' + left + "%;width:" + w + '%"></i></span><span class="v">' + (s.value > 0 ? "+" : s.value < 0 ? "−" : "") + Math.abs(s.value) + "</span></div>";
+    }).join("") + '<span class="tag">Escala de −10 a +10</span>';
+
+  // ---------- Prompts ----------
+  var M = D.image_prompt_modifiers;
+  $("p-neg").textContent = M.negative;
+  $("srefs").innerHTML = M.midjourney_sref.map(function (s) {
+    return '<div class="sref"><button class="copy" type="button" data-text="' + esc(s.code) + '">' + esc(s.code) + "</button><span>" + esc(s.look) + "</span></div>";
+  }).join("");
+
+  function applyAccent() {
+    document.documentElement.setAttribute("data-accent", accentId);
+    renderBar();
+    $("p-pos").textContent = M.positive.replace("{accent}", byId[accentId].prompt_en);
+  }
+  applyAccent();
+
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest(".copy");
+    if (!b) return;
+    if (b.dataset.hex) copyText(b.dataset.hex, b.dataset.hex);
+    else if (b.dataset.text) copyText(b.dataset.text, "Código");
+    else if (b.dataset.copy) copyText($(b.dataset.copy).textContent, "Prompt");
+  });
+})();
+</script>

@@ -1,7 +1,7 @@
 {
   "$comment": "Criterio de diseño en formato máquina. Pegalo como contexto en Claude, Gemini o ChatGPT, o usalo como base de tokens. Fuente legible: criterios.md",
   "version": "1.0.0",
-  "updated": "2026-11-12",
+  "updated": "2026-11-14",
   "essence": "Poco, con intención y con alma humana: base calma y terrosa, una sola tensión que rompe el orden, y una emoción que se entiende sin que nadie la explique.",
   "principles": [
     {
@@ -76,30 +76,35 @@
   "palette": {
     "base": [
       {
+        "id": "mejillon",
         "name": "Blanco mejillón",
         "hex": "#E8E2D6",
         "ratio": 40,
         "role": "fondo, aire"
       },
       {
+        "id": "marron",
         "name": "Marrón marco de ventana",
         "hex": "#5A2E24",
         "ratio": 15,
         "role": "texto, marcos, estructura"
       },
       {
+        "id": "celeste",
         "name": "Celeste cielo",
         "hex": "#A3C4E4",
         "ratio": 15,
         "role": "calma, superficies"
       },
       {
+        "id": "roca",
         "name": "Gris roca",
         "hex": "#55585C",
         "ratio": 15,
         "role": "texto secundario, sombras"
       },
       {
+        "id": "arena",
         "name": "Arena",
         "hex": "#AE9C83",
         "ratio": 10,
@@ -110,29 +115,38 @@
       "$comment": "Elegí uno por proyecto. Máximo 5-10% de la superficie.",
       "options": [
         {
+          "id": "rojo",
           "name": "Rojo señal",
           "hex": "#E4391F",
-          "use": "energía, deporte, comida"
+          "use": "energía, deporte, comida",
+          "prompt_en": "signal red"
         },
         {
+          "id": "cobalto",
           "name": "Azul cobalto",
           "hex": "#0055CC",
-          "use": "tech, futuro, nitidez"
+          "use": "tech, futuro, nitidez",
+          "prompt_en": "cobalt blue"
         },
         {
+          "id": "amarillo",
           "name": "Amarillo editorial",
           "hex": "#FEE741",
-          "use": "estudio, editorial, pop"
+          "use": "estudio, editorial, pop",
+          "prompt_en": "editorial yellow"
         },
         {
+          "id": "ambar",
           "name": "Ámbar atardecer",
           "hex": "#F5A65B",
-          "use": "calidez, golden hour"
+          "use": "calidez, golden hour",
+          "prompt_en": "sunset amber"
         }
       ],
       "ratio": 5
     },
     "dark_base": {
+      "id": "noche",
       "name": "Noche",
       "hex": "#0E1626",
       "role": "modo oscuro, nocturno"
@@ -198,7 +212,6 @@
     "golden hour",
     "contraluz",
     "LUT cálido levemente desaturado",
-    "preset de color (CapCut, filtro Green Orange): brillo -4, contraste +10, saturación +10, exposición -2, nitidez +10, luces +2, sombras -2, temperatura +2",
     "motion blur / larga exposición",
     "blur selectivo",
     "materiales orgánicos: piedra, enredadera, cerámica, azulejo, madera",
@@ -206,6 +219,44 @@
     "claymation, 3D táctil",
     "sombras reales y relieve"
   ],
+  "color_preset": {
+    "app": "CapCut",
+    "base_filter": "Green Orange",
+    "settings": [
+      {
+        "name": "Brillo",
+        "value": -4
+      },
+      {
+        "name": "Contraste",
+        "value": 10
+      },
+      {
+        "name": "Saturación",
+        "value": 10
+      },
+      {
+        "name": "Exposición",
+        "value": -2
+      },
+      {
+        "name": "Nitidez",
+        "value": 10
+      },
+      {
+        "name": "Luces",
+        "value": 2
+      },
+      {
+        "name": "Sombras",
+        "value": -2
+      },
+      {
+        "name": "Temperatura",
+        "value": 2
+      }
+    ]
+  },
   "motion_web": [
     "pocas animaciones, muy clean",
     "transiciones de texto que dejan lo importante",

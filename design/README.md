@@ -10,6 +10,21 @@ un criterio que se puede **usar** y no solo mirar.
 | [`prompts.md`](prompts.md) | Prompts listos para que Claude, Gemini o ChatGPT trabajen con tu criterio. |
 | [`design-dna.json`](design-dna.json) | El mismo criterio en formato máquina (para IA, tokens o herramientas). |
 | [`referencias.md`](referencias.md) | La biblioteca de links del chat, limpia y ordenada por tema. |
+| [`guia.html`](guia.html) | **La guía visual.** Paleta a escala con HEX para copiar, contraste calculado, diagramas de composición, preset de color, prompts listos y las 10 leyes como herramienta para puntuar una pieza antes de entregarla. Abrila en el navegador. |
+| [`tokens.css`](tokens.css) | La paleta como variables CSS, lista para Webflow (panel Variables) o Figma. |
+| [`tools/build.py`](tools/build.py) | Regenera `guia.html`, `tokens.css` y el zip de la skill desde `design-dna.json`. |
+
+## Una sola fuente
+
+`design-dna.json` es la fuente. La guía, los tokens y la skill salen de ahí:
+
+```bash
+python3 design/tools/build.py                                  # guia.html + tokens.css
+python3 design/tools/build.py --skill-zip criterio-diseno.zip  # + zip de la skill para claude.ai
+```
+
+Cambiás un color o una regla en el JSON, corrés el comando y todo queda
+alineado. `guia.html` y `tokens.css` no se editan a mano.
 
 ## Cómo aprovecharlo a tu favor
 

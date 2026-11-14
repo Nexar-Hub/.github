@@ -1,0 +1,22 @@
+/* Tokens del criterio de diseño. Generado por design/tools/build.py desde design-dna.json. */
+/* Webflow: copiá estos valores en el panel Variables. Figma: creá una colección con los mismos nombres. */
+:root {
+  --nx-mejillon: #E8E2D6; /* Blanco mejillón · 40% · fondo, aire */
+  --nx-marron: #5A2E24; /* Marrón marco de ventana · 15% · texto, marcos, estructura */
+  --nx-celeste: #A3C4E4; /* Celeste cielo · 15% · calma, superficies */
+  --nx-roca: #55585C; /* Gris roca · 15% · texto secundario, sombras */
+  --nx-arena: #AE9C83; /* Arena · 10% · apoyo, texturas */
+  --nx-noche: #0E1626; /* Noche · modo oscuro, nocturno */
+  --nx-acento-rojo: #E4391F; /* Rojo señal · energía, deporte, comida */
+  --nx-acento-cobalto: #0055CC; /* Azul cobalto · tech, futuro, nitidez */
+  --nx-acento-amarillo: #FEE741; /* Amarillo editorial · estudio, editorial, pop */
+  --nx-acento-ambar: #F5A65B; /* Ámbar atardecer · calidez, golden hour */
+
+  /* Roles: cambiá --nx-acento por el acento elegido del proyecto */
+  --nx-fondo: var(--nx-mejillon);
+  --nx-texto: var(--nx-marron);
+  --nx-texto-secundario: var(--nx-roca);
+  --nx-superficie: var(--nx-celeste);
+  --nx-apoyo: var(--nx-arena);
+  --nx-acento: var(--nx-acento-cobalto);
+}
