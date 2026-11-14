@@ -1,0 +1,16 @@
+# dependencias y builds
+node_modules/
+.next/
+.open-next/
+.wrangler/
+*.tsbuildinfo
+next-env.d.ts
+cloudflare-env.d.ts
+
+# entorno y secretos
+.env*.local
+.env
+.dev.vars
+
+# QA
+diagnosticos/

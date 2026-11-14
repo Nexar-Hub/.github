@@ -19,11 +19,13 @@
 - Tailwind CSS (no inline styles, no styled-components) + shadcn/ui
 - Contenido en Markdown / JSON en el repo por default. Sanity solo si `BRIEF.md` dice que el cliente edita contenido seguido
 - GSAP (+ ScrollTrigger, Lenis) para timelines y scrollytelling; Motion para micro-interacciones de UI
-- React Hook Form + Zod para formularios
+- Server actions + Zod para formularios
 - Server actions + Resend o ZeptoMail para email transaccional
 - GA4 + Search Console + Microsoft Clarity como analytics base
 - Lucide React para íconos
 - Deploy en Cloudflare Workers (adaptador OpenNext). No Vercel
+- Medición con `track()` de `lib/analytics.ts`; la medición nunca puede romper el sitio
+- Datos del sitio solo en `content/site.ts` (metadata, sitemap, robots, `llms.txt` y JSON-LD salen de ahí)
 
 ## Convenciones de código
 
@@ -82,9 +84,8 @@ Cada componente que carga data debe tener:
 
 ### Formularios
 
-- React Hook Form para manejo
-- Zod para schema de validación
-- Validación on blur, no on change
+- Partir del formulario del starter: server action + `useActionState` + Zod
+- React Hook Form solo si hace falta validación compleja del lado del cliente
 - Mensajes de error en español
 - Estados visuales: idle / submitting / success / error
 - Honeypot field anti-spam
@@ -196,7 +197,7 @@ Cada componente que carga data debe tener:
 
 Al empezar una sesión, leer en este orden:
 
-1. `BRIEF.md` — contexto del cliente y proyecto
+1. `BRIEF.md` — contexto del cliente y proyecto (y `content/site.ts`, que es su versión en código)
 2. `DESIGN_SYSTEM.md` — tokens visuales y reglas
 3. `CHECKLIST.md` — estado actual del proyecto
 4. `WORKFLOW.md` — fase en la que estamos

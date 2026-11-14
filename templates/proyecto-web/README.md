@@ -18,7 +18,11 @@ Tres principios no negociables:
 git clone https://github.com/Nexar-Hub/.github.git /tmp/nexar-hub
 cp -r /tmp/nexar-hub/templates/proyecto-web/ ~/projects/cliente-nuevo/
 cd ~/projects/cliente-nuevo/
+git init && npm install && cp .env.example .env.local
+npm run dev
 ```
+
+El sitio arranca en http://localhost:3000 con el esqueleto neutro: header, hero, contacto y footer.
 
 ### Después:
 
@@ -53,11 +57,50 @@ proyecto-web/
 ├── HANDOFF.md                   Plantilla de entrega al cliente
 ├── SUPPORT_POLICY.md            Política de soporte post-entrega
 ├── CLAUDE.md                    Instrucciones que Claude Code carga solo al iniciar
-└── references/
-    ├── inspiration/             Sitios que le gustan al cliente
-    ├── competitors/             Capturas de competencia
-    └── brand-assets/            Logo, colores oficiales, fuentes
+├── references/
+│   ├── inspiration/             Sitios que le gustan al cliente
+│   ├── competitors/             Capturas de competencia
+│   └── brand-assets/            Logo, colores oficiales, fuentes
+└── (código: ver abajo)
 ```
+
+## Código incluido
+
+Un starter que ya pasa el diagnóstico de Nexar (31 de 33 checks en local; los otros dos son HTTPS y la carga de GA4/Clarity, que se resuelven en producción).
+
+```
+content/site.ts                  Datos del sitio (desde BRIEF.md): única fuente para metadata, sitemap, robots, llms.txt y JSON-LD
+app/
+  layout.tsx                     Metadata, Open Graph, JSON-LD Organization, skip link, medición
+  page.tsx                       Home: hero + contacto (las secciones se suman en la fase 2)
+  actions.ts                     Server action del formulario: Zod, honeypot, envío por Resend
+  globals.css                    Tokens (desde DESIGN_SYSTEM.md), compatibles con shadcn/ui
+  not-found.tsx                  404 real
+  robots.ts · sitemap.ts         SEO técnico
+  llms.txt/route.ts              Resumen para motores de IA (GEO)
+  icon.svg                       Favicon (reemplazar)
+components/
+  analytics/Analytics.tsx        GA4 + Microsoft Clarity si hay IDs
+  analytics/TrackedLink.tsx      Link que mide clics (CTA, WhatsApp)
+  contact/ContactForm.tsx        Formulario accesible con estados y evento generate_lead
+  layout/Header.tsx · Footer.tsx
+lib/analytics.ts                 track() y nombres de eventos; nunca rompe el sitio
+lib/utils.ts                     cn() de shadcn/ui
+public/og.png                    Imagen OG 1200×630 (reemplazar)
+next.config.ts                   Headers de seguridad (CSP, HSTS, nosniff, frame) y AVIF
+wrangler.jsonc · open-next.config.ts   Deploy en Cloudflare Workers
+.env.example                     Variables de build y secretos
+```
+
+| Comando | Para qué |
+|---------|----------|
+| `npm run dev` | Desarrollo local |
+| `npm run build` | Build de Next.js (incluye TypeScript) |
+| `npm run typecheck` | Solo TypeScript |
+| `npm run preview` | Build para Cloudflare + Worker local (runtime real) |
+| `npm run deploy` | Deploy manual. Lo normal es Workers Builds conectado al repo, con preview por branch |
+
+Para sumar componentes de shadcn/ui: `npx shadcn@latest add button`. Para la QA: el skill de diagnóstico de `Nexar-Hub/.github` sobre la preview (cero `fail`).
 
 ## Reglas de oro del sistema
 

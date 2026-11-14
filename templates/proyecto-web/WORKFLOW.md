@@ -44,7 +44,7 @@ Antes de escribir cualquier código, leé estos archivos en este orden exacto:
 
 1. BRIEF.md
 2. DESIGN_SYSTEM.md
-3. CLAUDE.md (ya cargado, pero confirmá que lo leíste)
+3. CLAUDE.md (ya cargado, pero confirmá que lo leíste) y content/site.ts
 4. Las imágenes en references/inspiration/
 5. Las imágenes en references/competitors/
 6. Las imágenes en references/brand-assets/
@@ -84,21 +84,25 @@ Incluí:
 Mostrame el plan completo en un solo mensaje, sin escribir código.
 ```
 
-### 1.5 — Iniciar el proyecto Next.js
+### 1.5 — Adaptar el starter (no se inicializa nada desde cero)
+
+La plantilla ya trae el proyecto funcionando: Next.js + TypeScript strict + Tailwind (listo para shadcn/ui), deploy en Cloudflare Workers, metadata, sitemap, robots, `llms.txt`, JSON-LD, 404, headers de seguridad, GA4 + Clarity con eventos, y formulario de contacto con server action. Ver la sección "Código incluido" de README.md.
+
+```bash
+npm install
+cp .env.example .env.local
+npm run dev
+```
 
 ```
-Inicializá el proyecto:
-- Next.js (App Router, versión estable actual) y TypeScript estricto
-- shadcn/ui inicializado
-- Tailwind con la config que refleje DESIGN_SYSTEM.md (paleta, tipografía, espaciado, breakpoints)
-- Estructura de carpetas que definimos en el plan
-- Carga de fuentes en layout.tsx (next/font)
-- Metadata base configurada
-- Sin CMS todavía
-- Sin componentes de página todavía
-- Solo el esqueleto
+Adaptá el starter al proyecto. Solo esto, sin páginas nuevas todavía:
+- content/site.ts con los datos de BRIEF.md (nombre, claim, descripción, URL, contacto)
+- Tokens de app/globals.css con los valores de DESIGN_SYSTEM.md (color, radio)
+- Fuentes del DESIGN_SYSTEM con next/font/local (archivos en /public/fonts)
+- name del Worker en wrangler.jsonc
+- public/og.png con la imagen OG del proyecto
 
-Mostrame el árbol de archivos cuando termines.
+Corré npm run build y mostrame el diff.
 ```
 
 ---
@@ -231,6 +235,8 @@ Aplicalo a: [lista]
 ## FASE 4: Formularios profesionales
 
 ### 4.1 — Setup base del form
+
+> El starter ya trae el formulario de contacto (`components/contact/ContactForm.tsx` + `app/actions.ts`): validación con Zod, honeypot, estados, valores conservados al fallar y evento `generate_lead`. Para formularios nuevos, partí de ese.
 
 ```
 Vamos a construir el formulario de contacto.
@@ -481,6 +487,8 @@ Mostrame issues y arreglemos.
 
 ### 10.1 — Setup de analytics
 
+> El starter ya carga GA4 y Clarity si están `NEXT_PUBLIC_GA_ID` y `NEXT_PUBLIC_CLARITY_ID`, y mide `cta_click`, `whatsapp_click` y `generate_lead` con `lib/analytics.ts` y `TrackedLink`. Acá se suman los eventos propios del proyecto.
+
 ```
 Configurar tracking:
 
@@ -582,6 +590,8 @@ Reportá lo que falla y arreglemos uno por uno.
 ### 13.1 — Deploy (Cloudflare Workers)
 
 Pipeline: branch → GitHub → preview → QA visual → aprobación → merge a main → producción. **Nunca se edita producción directamente.**
+
+Setup en Cloudflare (Workers Builds, conectado al repo): build command `npx opennextjs-cloudflare build`, deploy command `npx opennextjs-cloudflare deploy`, previews por branch activadas. Variables `NEXT_PUBLIC_*` como variables de build; `RESEND_API_KEY` y los emails de contacto como secretos del Worker. Para probar el runtime real en local: `npm run preview`.
 
 ```
 - [ ] Preview aprobada por el cliente

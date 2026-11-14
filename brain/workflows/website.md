@@ -48,7 +48,7 @@ Default: **Lean Company Web** — Next.js, TypeScript, Tailwind, shadcn/ui, GitH
 
 ### 3. Scaffold
 
-El agente recibe `BRIEF.md` + blueprint + referencias de diseño + brand assets y genera: repo, páginas, componentes, SEO base, analytics, `.env.example`, config de deploy y README. Queda en GitHub con preview URL.
+Se copia `templates/proyecto-web/`: ya trae el starter funcionando (Next.js en Cloudflare Workers, SEO base, `llms.txt`, JSON-LD, headers de seguridad, GA4 + Clarity con eventos, formulario con server action, `.env.example`). El agente lo adapta con `BRIEF.md` + `DESIGN_SYSTEM.md` + brand assets, se sube a GitHub y queda con preview URL.
 
 ### 4. Diseño (el trabajo diferencial)
 

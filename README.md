@@ -23,7 +23,7 @@ brain/
     website.md                    Blueprint de webs: intake → deploy → loop de optimización
     contenido.md                  Contenido y distribución (incluye flow de video IA)
 templates/
-  proyecto-web/                   Plantilla para cada cliente nuevo (BRIEF, DESIGN_SYSTEM, WORKFLOW, CHECKLIST, HANDOFF, SUPPORT_POLICY, CLAUDE.md)
+  proyecto-web/                   Plantilla para cada cliente nuevo: documentos (BRIEF, DESIGN_SYSTEM, WORKFLOW, CHECKLIST, HANDOFF, SUPPORT_POLICY, CLAUDE.md) + starter Next.js para Cloudflare que ya pasa el diagnóstico
 .github/
   pull_request_template.md        Plantilla de PR por default para todos los repos
   ISSUE_TEMPLATE/task.yml         Formulario de tarea por default para todos los repos

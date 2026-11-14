@@ -147,6 +147,11 @@ async function measureVisit(browser, url, viewport, { throttle }) {
 
   const requests = [];
   page.on('requestfinished', (request) => requests.push(request));
+  const consoleErrors = [];
+  page.on('console', (message) => {
+    if (message.type() === 'error') consoleErrors.push(message.text().slice(0, 300));
+  });
+  page.on('pageerror', (error) => consoleErrors.push(`JS: ${String(error.message).slice(0, 300)}`));
 
   const started = Date.now();
   const response = await page.goto(url, { waitUntil: 'load', timeout: NAV_TIMEOUT_MS });
@@ -172,7 +177,8 @@ async function measureVisit(browser, url, viewport, { throttle }) {
     }
   }));
 
-  return { context, page, response, loadMs, vitals, sizes };
+  // Copia: los pedidos que el diagnóstico hace después de la carga no cuentan como errores del sitio.
+  return { context, page, response, loadMs, vitals, sizes, consoleErrors: [...consoleErrors] };
 }
 
 async function extractDom(page) {
@@ -335,6 +341,8 @@ function buildChecks(evidence) {
   add('base', 'Content-Security-Policy', security['content-security-policy'] ? 'ok' : 'warn', security['content-security-policy'] ? 'presente' : 'ausente');
   add('base', 'X-Content-Type-Options', security['x-content-type-options'] ? 'ok' : 'warn', security['x-content-type-options'] ?? 'ausente');
   add('base', 'Favicon', dom.favicon ? 'ok' : 'warn', dom.favicon ? 'presente' : 'ausente');
+  const csp = desktop.consoleErrors.filter((e) => /Content Security Policy/i.test(e));
+  add('base', 'Errores de consola en la carga', desktop.consoleErrors.length === 0 ? 'ok' : 'warn', desktop.consoleErrors.length ? `${desktop.consoleErrors.length} errores${csp.length ? ` (${csp.length} de CSP)` : ''}: ${desktop.consoleErrors.slice(0, 3).join(' | ')}` : 'ninguno');
 
   return checks;
 }
@@ -437,7 +445,7 @@ async function main() {
       tracking,
       security,
       files: { robots, sitemap, llms, notFound },
-      desktop: { loadMs: desktopVisit.loadMs, vitals: desktopVisit.vitals, weight: weightOf(desktopVisit.sizes), heavyImages: heavyImages.map(({ url: u, bytes }) => ({ url: u, bytes })) },
+      desktop: { loadMs: desktopVisit.loadMs, vitals: desktopVisit.vitals, weight: weightOf(desktopVisit.sizes), heavyImages: heavyImages.map(({ url: u, bytes }) => ({ url: u, bytes })), consoleErrors: desktopVisit.consoleErrors },
       mobile: { loadMs: mobileVisit.loadMs, vitals: mobileVisit.vitals, weight: weightOf(mobileVisit.sizes), conditions: { ...MOBILE_NETWORK, cpuSlowdown: MOBILE_CPU_SLOWDOWN } },
       dom: { ...dom, htmlSample: undefined, images: dom.images.slice(0, 60) },
       screens,

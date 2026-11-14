@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+/* Tokens del proyecto. Se completan desde DESIGN_SYSTEM.md (§2 color, §3 tipografía).
+   Los nombres siguen la convención de shadcn/ui para que `npx shadcn add` use estos valores.
+   Valores neutros por default: cada cliente tiene su propio mundo visual. */
+:root {
+  --background: #ffffff;
+  --foreground: #111111;
+  --muted: #f4f4f4;
+  --muted-foreground: #5c5c5c;
+  --border: #e3e3e3;
+  --primary: #111111;
+  --primary-foreground: #ffffff;
+  --destructive: #c62828;
+  --ring: #111111;
+  --radius: 0.5rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-destructive: var(--destructive);
+  --color-ring: var(--ring);
+  --radius-md: var(--radius);
+  /* Fuentes del sistema hasta cargar las del DESIGN_SYSTEM con next/font/local. */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-border);
+  }
+
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
