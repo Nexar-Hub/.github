@@ -51,6 +51,32 @@ export const AI_BOTS = [
 ];
 
 const SEVERITY = { alta: 3, media: 2, baja: 1 };
+
+// Only the prospect's own static assets count as their loss.
+const ASSET_TYPES = new Set(['image', 'script', 'stylesheet', 'font', 'media']);
+// Failures caused by the auditor's side (its network or the browser cancelling a
+// request) are not evidence about the prospect: they are reported as "not measured".
+const AUDITOR_SIDE = /ERR_ABORTED|ERR_BLOCKED_BY_CLIENT|ERR_TUNNEL_CONNECTION_FAILED|ERR_PROXY|ERR_INTERNET_DISCONNECTED|ERR_NETWORK_CHANGED|ERR_TIMED_OUT/;
+
+/** example.com, www.example.com and cdn.example.com share the site "example.com". */
+export function siteOf(host) {
+  const h = String(host).toLowerCase().replace(/:\d+$/, '');
+  if (/^[\d.]+$/.test(h) || !h.includes('.')) return h;
+  const parts = h.split('.');
+  const twoLevelTld = parts.length > 2 && parts.at(-2).length <= 3 && parts.at(-1).length === 2; // com.ar, co.uk
+  return parts.slice(twoLevelTld ? -3 : -2).join('.');
+}
+
+/** Classifies a resource failure: 'own' (prospect's loss), 'auditor' (not measured) or null (ignore). */
+export function classifyFailure({ url, type, status, errorText }, pageHost) {
+  if (!ASSET_TYPES.has(type)) return null;
+  let host;
+  try { host = new URL(url).host; } catch { return null; }
+  if (siteOf(host) !== siteOf(pageHost)) return null; // third parties are not the prospect's assets
+  if (errorText && AUDITOR_SIDE.test(errorText)) return 'auditor';
+  if (errorText || (typeof status === 'number' && status >= 400)) return 'own';
+  return null;
+}
 const LCP_GOOD_MS = 2500; // umbral de Core Web Vitals para "bueno"
 const LCP_POOR_MS = 4000; // umbral para "malo"
 const MAX_FORM_FIELDS = 6;
@@ -164,7 +190,7 @@ export function buildFindings(raw) {
       },
       fix: 'Agregar meta viewport y revisar el layout responsive.',
     });
-  } else if (m.scrollW && m.viewportW && m.scrollW > m.viewportW + 2) {
+  } else if (m.viewportW && (m.innerW ?? m.scrollW) > m.viewportW + 2) {
     add({
       id: 'MOBILE_OVERFLOW', severity: 'alta', lever: '2 · Punto de referencia',
       title: 'En celular la página se corre de costado',
@@ -196,7 +222,9 @@ export function buildFindings(raw) {
       add({
         id: 'NO_CTA_MOBILE_FOLD', severity: 'media', lever: '2 + certeza',
         title: 'Sin llamada a la acción en la primera pantalla del celular',
-        evidence: `Primer CTA en celular: «${(m.ctas || [])[0]?.text || '—'}» a ${Math.round((m.ctas || [])[0]?.top ?? 0)} px (pantalla de ${m.viewportH} px)`,
+        evidence: (m.ctas || []).length
+          ? `Primer CTA en celular: «${m.ctas[0].text}» a ${Math.round(m.ctas[0].top)} px (pantalla de ${m.viewportH} px)`
+          : `Ningún CTA visible en celular sin abrir el menú (en escritorio: «${(d.ctas || [])[0]?.text || '—'}»)`,
         loss: {
           es: 'En la primera pantalla del celular no hay ningún botón para avanzar.',
           en: "On a phone, the first screen has no button to take the next step.",
@@ -333,11 +361,37 @@ export function buildFindings(raw) {
     });
   }
 
+  // CTA detection reads button labels, so it can miss unusual wording: flag it and
+  // keep it out of the opener until someone confirms it on the screenshot.
+  for (const x of f) {
+    if (HEURISTIC.has(x.id)) {
+      x.heuristic = true;
+      x.evidence += ' · heurístico: confirmalo en la captura';
+    }
+  }
+
+  // If the auditor could not load part of the site, findings that depend on the full
+  // render are partial: flagged in the evidence and never used in the outbound opener.
+  const missing = (raw.unmeasured || []).filter((u) => !String(u.error).startsWith('link')).length;
+  if (missing) {
+    for (const x of f) {
+      if (RENDER_DEPENDENT.has(x.id)) {
+        x.partial = true;
+        x.evidence += ` · medición parcial: ${missing} recursos no cargaron desde el entorno del auditor`;
+      }
+    }
+  }
   return f.sort((a, b) => SEVERITY[b.severity] - SEVERITY[a.severity]);
 }
 
+const HEURISTIC = new Set(['NO_CTA', 'NO_CTA_MOBILE_FOLD', 'NO_CTA_DESKTOP_FOLD']);
+
+const RENDER_DEPENDENT = new Set([
+  'MOBILE_OVERFLOW', 'NO_CTA', 'NO_CTA_MOBILE_FOLD', 'NO_CTA_DESKTOP_FOLD', 'SLOW_LCP', 'CONSOLE_ERRORS',
+]);
+
 export function buildOpener(findings, host) {
-  const usable = findings.filter((x) => x.loss).slice(0, 2);
+  const usable = findings.filter((x) => x.loss && !x.partial && !x.heuristic).slice(0, 2);
   if (!usable.length) return null;
   return {
     es: `Hola {nombre}: revisé ${host}. ${usable.map((x) => x.loss.es).join(' ')} Armé un reporte corto con capturas y cómo resolverlo. ¿Te lo paso?`,
@@ -382,6 +436,8 @@ export function renderReport(audit) {
     `- **Links internos revisados:** ${checkedLinks}`,
     '',
     '> Mediciones de laboratorio desde un solo entorno; pueden variar con la red y el dispositivo.',
+    ...(audit.unmeasured ? [`> ${audit.unmeasured} recursos o links del sitio no se pudieron medir desde este entorno; no cuentan como hallazgos y los hallazgos marcados como parciales no se usan en el mensaje.`] : []),
+    ...(audit.robotsStatus === 0 ? ['> No se pudo leer robots.txt: el chequeo de rastreadores de IA no se hizo.'] : []),
     '> Verificá cada dato antes de usarlo con el prospecto (biblia de Spread, límites éticos).',
     '',
     '## Lo que está perdiendo',
@@ -438,8 +494,8 @@ function collectInPage() {
   const q = (s) => document.querySelector(s);
   const meta = (n) => (q(`meta[name="${n}"]`)?.content || '').trim();
   const prop = (p) => (q(`meta[property="${p}"]`)?.content || '').trim();
-  const EN = /\b(book a demo|demo|contact(?: us)?|book|schedule|get started|start(?: now| free| today)?|try(?: it)?(?: free)?|sign ?up|join|request|talk to (?:us|sales)|let'?s talk)\b/i;
-  const ES = /(^|\s)(agend[aá]|contact[aá]|contacto|empez[aá]|prob[aá]|registr[aá]te|habl[aá]|solicit[aá]|cotiz[aá]|reserv[aá]|ped[ií])/i;
+  const EN = /\b(demo|contact(?: us)?|book|schedule|get started|get (?:a|an|your|free|in touch)|start(?: now| free| today)?|try(?: it)?(?: free)?|sign ?up|join|request|apply|talk to (?:us|sales|an expert)|let'?s talk|call|consultation|quote|proposal|audit|download|subscribe)\b/i;
+  const ES = /(^|\s)(agend[aá]|contact[aá]|contacto|empez[aá]|prob[aá]|registr[aá]te|habl[aá]|solicit[aá]|cotiz[aá]|reserv[aá]|ped[ií]|llamada|reuni[oó]n|consulta|presupuesto|descarg[aá]|suscrib)/i;
   const label = (el) => (el.innerText || el.value || el.getAttribute('aria-label') || '').trim();
   const visible = (el) => {
     const r = el.getBoundingClientRect();
@@ -447,7 +503,7 @@ function collectInPage() {
     return r.width > 0 && r.height > 0 && s.visibility !== 'hidden' && s.display !== 'none' && Number(s.opacity) !== 0;
   };
   const ctas = [...document.querySelectorAll('a, button, [role="button"], input[type="submit"]')]
-    .filter((el) => { const t = label(el); return t && (EN.test(t) || ES.test(t)) && visible(el); })
+    .filter((el) => { const t = label(el); return t && t.length <= 40 && (EN.test(t) || ES.test(t)) && visible(el); })
     .map((el) => ({ text: label(el).slice(0, 60), top: el.getBoundingClientRect().top + window.scrollY }))
     .sort((a, b) => a.top - b.top);
   const forms = [...document.forms]
@@ -471,27 +527,61 @@ function collectInPage() {
     viewportW: document.documentElement.clientWidth,
     viewportH: document.documentElement.clientHeight,
     scrollW: document.documentElement.scrollWidth,
+    // On mobile the browser zooms out (innerWidth grows) only when the overflow is real;
+    // overflow clipped with overflow-x: hidden keeps innerWidth equal to clientWidth.
+    innerW: window.innerWidth,
     lcp: typeof window.__lcp === 'number' ? Math.round(window.__lcp) : null,
     load: nav ? Math.round(nav.loadEventEnd) : null,
     text: document.body ? document.body.innerText.slice(0, 20000) : '',
   };
 }
 
-async function checkLinks(request, links, max) {
-  const broken = [];
-  const sample = links.slice(0, max);
-  for (const link of sample) {
-    let status = 0;
+/* Runs inside the page: same-origin requests use the browser's own network stack. */
+async function fetchStatusesInPage(urls) {
+  const one = async (u) => {
+    const ctl = new AbortController();
+    const t = setTimeout(() => ctl.abort(), 10000);
     try {
-      let r = await request.head(link, { timeout: 10000, maxRedirects: 5 });
-      if ([405, 501].includes(r.status())) r = await request.get(link, { timeout: 10000, maxRedirects: 5 });
-      status = r.status();
-    } catch {
-      status = 0;
+      let r = await fetch(u, { method: 'HEAD', redirect: 'follow', signal: ctl.signal });
+      if (r.status === 405 || r.status === 501) r = await fetch(u, { redirect: 'follow', signal: ctl.signal });
+      return { url: u, status: r.status };
+    } catch (e) {
+      return { url: u, status: 0 };
+    } finally {
+      clearTimeout(t);
     }
-    if (status === 0 || status >= 400) broken.push({ url: link, status: status || 'sin respuesta' });
+  };
+  const out = [];
+  for (let i = 0; i < urls.length; i += 4) out.push(...(await Promise.all(urls.slice(i, i + 4).map(one))));
+  return out;
+}
+
+async function fetchRobotsInPage() {
+  try {
+    const r = await fetch('/robots.txt', { redirect: 'follow' });
+    return { status: r.status, text: r.ok ? await r.text() : '' };
+  } catch (e) {
+    return { status: 0, text: '' };
   }
-  return { broken, checked: sample.length };
+}
+
+// 401/403/429 usually mean bot protection or login walls: not evidence of a broken link.
+const RESTRICTED = new Set([401, 403, 429]);
+
+export function classifyLinks(results) {
+  const broken = [];
+  const unmeasured = [];
+  for (const r of results) {
+    if (r.status === 0 || RESTRICTED.has(r.status)) unmeasured.push(r);
+    else if (r.status >= 400) broken.push(r);
+  }
+  return { broken, unmeasured };
+}
+
+async function checkLinks(page, links, max) {
+  const sample = links.slice(0, max);
+  const results = sample.length ? await page.evaluate(fetchStatusesInPage, sample) : [];
+  return { ...classifyLinks(results), checked: sample.length };
 }
 
 export async function runAudit(url, { outDir, maxLinks = 15, links = true, timeout = 30000 } = {}) {
@@ -514,8 +604,19 @@ export async function runAudit(url, { outDir, maxLinks = 15, links = true, timeo
       // Failed network loads are reported separately as FAILED_RESOURCES.
       if (msg.type() === 'error' && !/^Failed to load resource/.test(msg.text())) consoleErrors.push(msg.text().slice(0, 200));
     });
-    page.on('response', (r) => { if (r.status() >= 400 && r.request().resourceType() !== 'document') failedResources.push({ url: r.url(), status: r.status() }); });
-    page.on('requestfailed', (req) => { if (req.resourceType() !== 'document') failedResources.push({ url: req.url(), status: 'falló' }); });
+    const unmeasured = [];
+    const pageHost = new URL(url).host;
+    const record = (ev) => {
+      const kind = classifyFailure(ev, pageHost);
+      if (kind === 'own') failedResources.push({ url: ev.url, status: ev.status || ev.errorText });
+      else if (kind === 'auditor') unmeasured.push({ url: ev.url, error: ev.errorText });
+    };
+    page.on('response', (r) => {
+      if (r.status() >= 400) record({ url: r.url(), type: r.request().resourceType(), status: r.status() });
+    });
+    page.on('requestfailed', (req) => {
+      record({ url: req.url(), type: req.resourceType(), errorText: (req.failure() || {}).errorText || 'failed' });
+    });
     page.on('pageerror', (err) => consoleErrors.push(String(err && err.message ? err.message : err).slice(0, 200)));
     const resp = await page.goto(url, { waitUntil: 'load', timeout });
     await page.waitForTimeout(1500);
@@ -530,18 +631,14 @@ export async function runAudit(url, { outDir, maxLinks = 15, links = true, timeo
     const mobile = await mPage.evaluate(collectInPage);
     await mPage.screenshot({ path: path.join(outDir, 'mobile.png') });
 
-    let robots = { status: 0, text: '' };
-    try {
-      const r = await desktopCtx.request.get(new URL('/robots.txt', finalUrl).href, { timeout: 10000 });
-      robots = { status: r.status(), text: r.status() === 200 ? await r.text() : '' };
-    } catch { /* sin robots.txt */ }
-
-    const linkResult = links ? await checkLinks(desktopCtx.request, desktop.links, maxLinks) : { broken: [], checked: 0 };
+    const robots = await page.evaluate(fetchRobotsInPage);
+    const linkResult = links ? await checkLinks(page, desktop.links, maxLinks) : { broken: [], unmeasured: [], checked: 0 };
+    for (const l of linkResult.unmeasured) unmeasured.push({ url: l.url, error: `link ${l.status || 'sin respuesta'}` });
     const { text, ...desktopRest } = desktop;
     return {
       url, finalUrl, status: resp ? resp.status() : 0, date: new Date().toISOString().slice(0, 10),
       host: new URL(finalUrl).host,
-      desktop: desktopRest, mobile: { ...mobile, text: undefined }, consoleErrors, failedResources, robots,
+      desktop: desktopRest, mobile: { ...mobile, text: undefined }, consoleErrors, failedResources, unmeasured, robots,
       brokenLinks: linkResult.broken, checkedLinks: linkResult.checked, text,
     };
   } finally {
@@ -555,7 +652,8 @@ export async function audit(url, opts) {
   const copy = runCopyAudit(raw.text);
   const result = {
     url: raw.url, finalUrl: raw.finalUrl, host: raw.host, date: raw.date, status: raw.status,
-    checkedLinks: raw.checkedLinks, findings, opener: buildOpener(findings, raw.host), copy,
+    checkedLinks: raw.checkedLinks, unmeasured: (raw.unmeasured || []).length, robotsStatus: raw.robots.status,
+    findings, opener: buildOpener(findings, raw.host), copy,
     measurements: {
       desktop: raw.desktop, mobile: raw.mobile, consoleErrors: raw.consoleErrors,
       failedResources: raw.failedResources, robotsStatus: raw.robots.status,

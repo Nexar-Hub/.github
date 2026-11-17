@@ -135,10 +135,12 @@ Detalle en [`../bible/PLAYBOOK.md`](../bible/PLAYBOOK.md#aplicarlo-en-spread).
 ## Preguntas abiertas
 
 1. ¿Spread es el nombre definitivo de lo que en el chat se llama Distribution?
-2. ICP: ¿B2B SaaS, «builders» en general, o primero solo los proyectos propios?
+2. ICP: ¿B2B SaaS, «builders» en general, o primero solo los proyectos propios? Hay una propuesta
+   en [`ICP_PRICING_DRAFT.md`](ICP_PRICING_DRAFT.md).
 3. Idioma: ¿web y contenido en inglés, en español o en ambos?
 4. Valores exactos de marca (hex, tipografías, logo): no están en estos archivos.
-5. Pricing: no hay números en las fuentes.
+5. Pricing: no hay números en las fuentes. Borrador para corregir en
+   [`ICP_PRICING_DRAFT.md`](ICP_PRICING_DRAFT.md).
 6. Casos verificables: todavía no hay. Hasta que existan, mostrar trabajo demostrable propio
    (Nexar, MG, FUT AI) sin inventar resultados.
 7. Dos conversaciones de ChatGPT marcadas como «Clave» (25/8) y «Si realmente quiero arrancar es

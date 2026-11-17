@@ -141,6 +141,8 @@ pierde sin ella) y la certeza de un resultado visible vale más que una promesa 
 
 - Visual primaria de la web: [guillaumezhu.com](https://guillaumezhu.com/) (ver
   [`WEBSITE_BRIEF.md`](WEBSITE_BRIEF.md)).
+- Omniscient abre su hero con la palanca 2: «You can't win the deals you're never considered for.»
+  (visto el 17/11 al validar `prospect_audit.mjs` sobre las referencias).
 - Copy y claridad: [beomniscient.com](https://beomniscient.com/),
   [demandcurve.com](https://www.demandcurve.com/), [linear.app](https://linear.app/).
 - Inspiración guardada: identidad de LLYLL, anotada como «Distribution + media» (negro y amarillo,

@@ -7,7 +7,7 @@ import path from 'node:path';
 import { after, before, describe, test } from 'node:test';
 
 import {
-  audit, buildFindings, buildOpener, parseRobots, renderReport, rootBlocked,
+  audit, buildFindings, buildOpener, classifyFailure, classifyLinks, parseRobots, renderReport, rootBlocked, siteOf,
 } from '../prospect_audit.mjs';
 
 // ---------------------------------------------------------------- pure logic
@@ -44,6 +44,36 @@ Allow: /
   });
 });
 
+describe('resource failures', () => {
+  test('site grouping', () => {
+    assert.equal(siteOf('www.acme.com'), 'acme.com');
+    assert.equal(siteOf('cdn.acme.com'), 'acme.com');
+    assert.equal(siteOf('www.acme.com.ar'), 'acme.com.ar');
+    assert.equal(siteOf('127.0.0.1:8080'), '127.0.0.1');
+  });
+
+  test('only the prospect\'s own assets count, and auditor-side errors are not evidence', () => {
+    const host = 'www.acme.com';
+    assert.equal(classifyFailure({ url: 'https://cdn.acme.com/a.png', type: 'image', status: 404 }, host), 'own');
+    assert.equal(classifyFailure({ url: 'https://www.acme.com/a.js', type: 'script', errorText: 'net::ERR_NAME_NOT_RESOLVED' }, host), 'own');
+    assert.equal(classifyFailure({ url: 'https://www.acme.com/a.js', type: 'script', errorText: 'net::ERR_ABORTED' }, host), 'auditor');
+    assert.equal(classifyFailure({ url: 'https://www.acme.com/a.js', type: 'script', errorText: 'net::ERR_TUNNEL_CONNECTION_FAILED' }, host), 'auditor');
+    assert.equal(classifyFailure({ url: 'https://tracker.example/p.gif', type: 'image', status: 403 }, host), null);
+    assert.equal(classifyFailure({ url: 'https://www.acme.com/api', type: 'fetch', status: 500 }, host), null);
+  });
+});
+
+describe('links', () => {
+  test('bot walls and network errors are not broken links', () => {
+    const r = classifyLinks([
+      { url: 'a', status: 404 }, { url: 'b', status: 500 }, { url: 'c', status: 403 },
+      { url: 'd', status: 429 }, { url: 'e', status: 0 }, { url: 'f', status: 200 },
+    ]);
+    assert.deepEqual(r.broken.map((x) => x.url), ['a', 'b']);
+    assert.deepEqual(r.unmeasured.map((x) => x.url), ['c', 'd', 'e']);
+  });
+});
+
 describe('findings', () => {
   const clean = {
     status: 200, url: 'https://x.test/', host: 'x.test',
@@ -75,6 +105,30 @@ describe('findings', () => {
   test('slow LCP thresholds follow Core Web Vitals', () => {
     assert.equal(buildFindings({ ...clean, desktop: { ...clean.desktop, lcp: 3000 } })[0].severity, 'media');
     assert.equal(buildFindings({ ...clean, desktop: { ...clean.desktop, lcp: 4500 } })[0].severity, 'alta');
+  });
+
+  test('clipped overflow (innerWidth unchanged) is not a mobile problem', () => {
+    const clipped = { ...clean, mobile: { ...clean.mobile, scrollW: 3889, innerW: 390 } };
+    assert.deepEqual(buildFindings(clipped), []);
+    const real = { ...clean, mobile: { ...clean.mobile, scrollW: 808, innerW: 809 } };
+    assert.equal(buildFindings(real)[0].id, 'MOBILE_OVERFLOW');
+  });
+
+  test('render-dependent findings become partial when resources were not measured', () => {
+    const raw = { ...clean, desktop: { ...clean.desktop, lcp: 4500 }, brokenLinks: [{ url: 'https://x.test/a', status: 404 }],
+      unmeasured: [{ url: 'https://cdn.x.test/app.js', error: 'net::ERR_TUNNEL_CONNECTION_FAILED' }] };
+    const f = buildFindings(raw);
+    assert.equal(f.find((x) => x.id === 'SLOW_LCP').partial, true);
+    assert.equal(f.find((x) => x.id === 'BROKEN_LINKS').partial, undefined);
+    assert.deepEqual(buildOpener(f, 'x.test').basedOn, ['BROKEN_LINKS']);
+  });
+
+  test('CTA findings are heuristic and never reach the opener', () => {
+    const noCta = { ...clean, mobile: { ...clean.mobile, ctas: [] } };
+    const f = buildFindings(noCta);
+    assert.equal(f[0].id, 'NO_CTA_MOBILE_FOLD');
+    assert.equal(f[0].heuristic, true);
+    assert.equal(buildOpener(f, 'x.test'), null);
   });
 
   test('the opener uses only measured losses, highest severity first', () => {
@@ -128,7 +182,7 @@ const GOOD = {
 <meta property="og:image" content="/og.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Good Co"}</script>
 </head><body><h1>Great products don't distribute themselves.</h1>
-<a href="/demo">Book a demo</a> <a href="/about">About</a></body></html>`,
+<a href="/demo">Get a strategy call</a> <a href="/about">About</a></body></html>`,
   },
   '/robots.txt': { type: 'text/plain', body: 'User-agent: *\nAllow: /\n' },
   '/demo': { body: '<p>demo</p>' },
