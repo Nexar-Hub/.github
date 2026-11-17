@@ -1,0 +1,73 @@
+name: Agent mistake → guardrail
+description: Turn a mistake an agent made into a lint rule, test, or check so it cannot happen again
+title: "[Guardrail] "
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Fix agent mistakes once, with an automated check, instead of adding another instruction to AGENTS.md or CLAUDE.md.
+
+  - type: textarea
+    id: mistake
+    attributes:
+      label: What the agent did wrong
+      description: Link the PR, commit, or paste the snippet.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Correct behavior
+      description: What should the code look like instead?
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Repository and paths
+      placeholder: e.g. spred-ia, src/components/**
+    validations:
+      required: true
+
+  - type: dropdown
+    id: enforcement
+    attributes:
+      label: How it will be enforced
+      options:
+        - Lint rule
+        - Ban the API or pattern (e.g. no-restricted-syntax, no-restricted-imports)
+        - Test
+        - Type check
+        - CI check / script
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation
+    attributes:
+      label: Proposed rule or test
+      description: The rule config, test case, or script that would have caught this.
+      render: text
+
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: How often agents make this mistake
+      options:
+        - First time
+        - Seen before
+        - Frequent
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: This will be closed by an automated check that fails CI, not only by a new written instruction.
+          required: true
