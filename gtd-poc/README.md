@@ -74,8 +74,9 @@ Requisitos: git, Go 1.24+ (descarga solo el toolchain 1.27), Node 22+ con `playw
 6. **La sincronización de calendario escribe toda tarea con fecha**, también las propuestas, en el calendario elegido. Se filtra por workspace o proyecto, no por etiqueta.
 7. **Google Calendar** necesita que el dueño del servidor cree un cliente OAuth y habilite la API CalDAV (unos 10 minutos). En modo Testing, el acceso vence a los 7 días. OpenTodo marca a Google como «no verificado» contra el servicio real. Esta prueba usó CalDAV local. La alternativa solo lectura es la dirección iCal secreta de Google como feed, que se refresca cada hora.
 8. **Horolog es joven:** 0.2.0 beta, 29 commits en 5 días de agosto de 2026, AGPL. Se usa solo el solver, fijado por commit, y el pegamento es lo único que lo conoce.
-9. **Lo que no modela el planificador:** el tope de horas por día y los colchones entre bloques. El lunes quedó con 4 h 45 m seguidas.
-10. **No probado:**
+9. **Orden dentro de un proyecto paralelo:** no se respeta (una corrida agendó «Editar el video» antes de «Escribir el guion»). Se resuelve marcando el proyecto como secuencial o con dependencias `⛔`. Entre tareas con la misma prioridad, el desempate usa el id de la tarea: es estable dentro de una cuenta, pero cambia entre corridas desde cero.
+10. **Lo que no modela el planificador:** el tope de horas por día y los colchones entre bloques. El lunes quedó con 4 h 45 m seguidas.
+11. **No probado:**
     - el plugin de Obsidian (enviar línea y carpeta en el celular): requiere Obsidian;
     - Google y Microsoft reales;
     - el asistente integrado de OpenTodo;
