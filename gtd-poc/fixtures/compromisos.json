@@ -1,0 +1,30 @@
+[
+ {
+  "uid": "equipo-lun",
+  "titulo": "Reunión semanal de equipo [ficticio]",
+  "inicio": "20261123T140000",
+  "fin": "20261123T150000",
+  "rrule": "FREQ=WEEKLY;BYDAY=MO"
+ },
+ {
+  "uid": "turno-2411",
+  "titulo": "Turno médico [ficticio]",
+  "inicio": "20261124T100000",
+  "fin": "20261124T110000",
+  "rrule": null
+ },
+ {
+  "uid": "grupal-mar",
+  "titulo": "Reunión grupal [ficticio]",
+  "inicio": "20261124T133000",
+  "fin": "20261124T143000",
+  "rrule": "FREQ=WEEKLY;BYDAY=TU"
+ },
+ {
+  "uid": "cliente-vie",
+  "titulo": "Reunión con cliente [ficticio]",
+  "inicio": "20261127T130000",
+  "fin": "20261127T140000",
+  "rrule": "FREQ=WEEKLY;BYDAY=FR"
+ }
+]
